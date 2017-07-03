@@ -1,0 +1,7 @@
+# Red Hat JBoss Data Grid 7.1 for OpenShift container image
+
+NOTE: Extends link:https://github.com/jboss-container-images/jboss-datagrid-7-image[Red Hat JBoss Data Grid 7.1 container image]
+
+# License
+
+See link:LICENSE[LICENSE] file.
