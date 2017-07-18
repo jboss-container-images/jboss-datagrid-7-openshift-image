@@ -211,7 +211,7 @@ sources:
     - artifact: tomcat-7-valves-1.0.3.Final-redhat-1.jar
       md5: f286f6748e6d134ed0a9dadd8320ecd2
 cct:
-    - name: EAP
+    - name: JDG
       modules:
           - url: https://github.com/jboss-openshift/cct_module
       changes:
@@ -277,7 +277,7 @@ cct:
           - cct_module.openshift-layer:
                 - configure_passwd_sh:
 dogen:
-    version: 2.1.0
+    version: 2.3.0
     plugins:
         cct:
             verbose: true
