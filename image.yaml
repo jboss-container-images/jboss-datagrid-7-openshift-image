@@ -88,12 +88,6 @@ envs:
     - name: REST_SECURITY_DOMAIN
       description: "The security domain to use for authentication/authorization purposes. Defaults to none (no authentication)"
       example: "other"
-    - name: REST_AUTHENTICATION_BASIC
-      description: "If defined the rest-connectors will be configured with BASIC authentication in the ApplicationRealm."
-      example: "true"
-    - name: REST_ENCRYPTION
-      description: "If defined the hotrod-connectors will be configured with encryption in the ApplicationRealm."
-      example: "true"
     - name: "USERNAME"
       example: "openshift"
       description: "Username for JDG user"
