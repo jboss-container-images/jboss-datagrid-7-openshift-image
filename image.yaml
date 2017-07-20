@@ -208,6 +208,7 @@ cct:
     - name: JDG
       modules:
           - url: https://github.com/jboss-openshift/cct_module
+            version: "1.0"
       changes:
           - cct_module.dynamic-resources:
                 - install_sh:
