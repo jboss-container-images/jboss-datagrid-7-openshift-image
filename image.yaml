@@ -174,7 +174,7 @@ ports:
     - value: 8778
     - value: 11211
     - value: 11222
-    - value: 11223
+    - value: 11333
 cmd:
     - "/opt/datagrid/bin/openshift-launch.sh"
 packages:
