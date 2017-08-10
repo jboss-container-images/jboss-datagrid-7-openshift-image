@@ -272,7 +272,7 @@ cct:
           - cct_module.openshift-layer:
                 - configure_passwd_sh:
 dogen:
-    version: 2.3.0
+    version: 2.4.0
     plugins:
         cct:
             verbose: true
