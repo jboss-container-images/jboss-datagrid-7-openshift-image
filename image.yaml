@@ -133,6 +133,9 @@ envs:
     - name: AB_JOLOKIA_AUTH_OPENSHIFT
       description: Switch on client authentication for OpenShift TLS communication. The value of this parameter can be a relative distinguished name which must be contained in a presented client's certificate. Enabling this parameter will automatically switch Jolokia into https communication mode. The default CA cert is set to `/var/run/secrets/kubernetes.io/serviceaccount/ca.crt`.
       example: "true"
+    - name: DATAGRID_SPLIT
+      example: true
+      description: "Allow multiple instances to share the same Persistent Volume.  If set to true each instance will use a separate area within the Persistent Volume as its data directory.  Default is unset."
     - name: SCRIPT_DEBUG
       description: If set to true, ensurses that the bash scripts are executed with the -x option, printing the commands and their arguments as they are executed.
       example: "true"
@@ -204,6 +207,7 @@ modules:
           - name: datagrid7-openshift
           - name: os-jdg7-conffiles
           - name: os-java-run
+          - name: os-partition
           - name: os-jdg7-launch
           - name: os-eap-extensions
           - name: openshift-layer
