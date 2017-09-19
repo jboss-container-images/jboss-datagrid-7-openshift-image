@@ -1,5 +1,5 @@
 name: "jboss-datagrid-7/datagrid71-openshift"
-# description: "Red Hat JBoss Data Grid 7.1 for OpenShift container image"
+description: "Red Hat JBoss Data Grid 7.1 for OpenShift container image"
 version: "1.1"
 from: "jboss-datagrid-7/datagrid71:latest"
 user: 185
