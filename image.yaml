@@ -2,7 +2,7 @@ schema_version: 1
 
 name: "jboss-datagrid-7/datagrid71-openshift"
 description: "Red Hat JBoss Data Grid 7.1 for OpenShift container image"
-version: "1.1"
+version: "1.2"
 from: "jboss-datagrid-7/datagrid71:latest"
 labels:
     - name: "io.k8s.description"
@@ -250,4 +250,4 @@ run:
 osbs:
       repository:
             name: jboss-datagrid-7-docker
-            branch: ce-1.1-openshift-datagrid-7.1-jdk-8-rhel-7
+            branch: ce-1.2-openshift-datagrid-7.1-jdk-8-rhel-7
