@@ -1,0 +1,4 @@
+schema_version: 1
+name: os-jdg72-kube-ping
+execute:
+  - script: install.sh
