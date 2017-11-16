@@ -1,0 +1,18 @@
+What it is?
+===========
+
+JDG 7.2 is shipped with the https://github.com/jgroups-extras/jgroups-kubernetes[upstream version of KUBE_PING] we
+need to change a few bits in order to make it work.
+
+Why this has been implemented here and not in the modules repo?
+===============================================================
+
+Upstream KUBE_PING is a thing we would like to test early in development loop. Having said that, we need to be able to quickly
+revert changes when needed. A perfect way to do it is to limit required actions to a single repo.
+
+Ok, so what we need to do?
+==========================
+
+1. Change layer order in `layers.conf`
+2. Alter configuration (replace `openshift` with `kubernetes` in xml files)
+3. use new labels in a backwards-compatible way (we will probably deprecate old versions in 7.x timeline)

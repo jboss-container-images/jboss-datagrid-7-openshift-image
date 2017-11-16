@@ -212,6 +212,7 @@ modules:
           - name: os-eap-extensions
           - name: openshift-layer
           - name: openshift-passwd
+          - name: os-jdg72-kube-ping
 packages:
       repositories:
           - jboss-os
