@@ -3,7 +3,7 @@ schema_version: 1
 name: "jboss-datagrid-7/datagrid72-openshift"
 description: "Red Hat JBoss Data Grid 7.2 for OpenShift container image"
 version: "1.0"
-from: "jboss-datagrid-7/datagrid72:dev"
+from: "jboss-datagrid-7/datagrid72:latest"
 labels:
     - name: "com.redhat.component"
       value: "jboss-datagrid-7-datagrid72-openshift-container"
@@ -139,7 +139,7 @@ modules:
           - name: cct_module
             git:
                   url: https://github.com/jboss-openshift/cct_module.git
-                  ref: master
+                  ref: sprint-14
       install:
           - name: dynamic-resources
           - name: s2i-common
