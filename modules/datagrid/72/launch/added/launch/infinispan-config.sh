@@ -268,6 +268,14 @@ function configure_cache() {
       local CACHE_L1_LIFESPAN="l1-lifespan=\"$(find_env "${prefix}_CACHE_L1_LIFESPAN")\""
     fi
   fi
+
+  if [ "$(find_env "${prefix}_REST_STORE_AS_STRING")" == "true" ]; then
+    local encoding="\
+       <encoding>\
+         <key media-type=\"application/x-java-object; type=java.lang.String\"/>\
+       </encoding>"
+  fi
+
   if [ -n "$(find_env "${prefix}_CACHE_EVICTION_STRATEGY")$(find_env "${prefix}_CACHE_EVICTION_MAX_ENTRIES")" ]; then
     if [ -n "$(find_env "${prefix}_CACHE_EVICTION_STRATEGY")" ]; then
       local CACHE_EVICTION_STRATEGY="strategy=\"$(find_env "${prefix}_CACHE_EVICTION_STRATEGY")\""
@@ -381,7 +389,7 @@ function configure_cache() {
     fi
   fi
 
-  cache="$cache $CACHE_START $CACHE_BATCHING $CACHE_STATISTICS  $CACHE_OWNERS $CACHE_SEGMENTS $CACHE_L1_LIFESPAN>$eviction $expiration $jdbcstore $indexing $cachesecurity $partitionhandling $locking $transaction $state_transfer $compatibility\
+  cache="$cache $CACHE_START $CACHE_BATCHING $CACHE_STATISTICS  $CACHE_OWNERS $CACHE_SEGMENTS $CACHE_L1_LIFESPAN>$encoding $eviction $expiration $jdbcstore $indexing $cachesecurity $partitionhandling $locking $transaction $state_transfer $compatibility\
                 </$CACHE_TYPE-cache><!-- ##INFINISPAN_CACHE## -->"
 
   sed -i "s|<!-- ##INFINISPAN_CACHE## -->|$cache|" "$CONFIG_FILE"

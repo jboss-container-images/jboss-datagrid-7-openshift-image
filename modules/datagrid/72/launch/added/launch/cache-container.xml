@@ -10,15 +10,6 @@
                 <distributed-cache-configuration name="indexed">
                     <indexing index="LOCAL" auto-config="true"/>
                 </distributed-cache-configuration>
-                <distributed-cache-configuration name="memory-bounded">
-                    <eviction strategy="LRU" size="10000000" type="MEMORY"/>
-                </distributed-cache-configuration>
-                <distributed-cache-configuration name="persistent-file-store-passivation">
-                    <eviction strategy="LRU" size="10000"/>
-                    <file-store shared="false" fetch-state="true" passivation="true">
-                        <write-behind modification-queue-size="1024" thread-pool-size="1"/>
-                    </file-store>
-                </distributed-cache-configuration>
                 <distributed-cache-configuration name="persistent-file-store-write-behind">
                     <file-store shared="false" fetch-state="true" passivation="false">
                         <write-behind modification-queue-size="1024" thread-pool-size="1"/>

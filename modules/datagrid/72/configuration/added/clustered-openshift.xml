@@ -164,7 +164,7 @@
             </datasources>
         </subsystem>
 <!-- ##INFINISPAN_ENDPOINT## -->
-        <subsystem xmlns="urn:infinispan:server:core:8.4" default-cache-container="clustered">
+        <subsystem xmlns="urn:infinispan:server:core:8.5" default-cache-container="clustered">
           <!-- ##INFINISPAN_CORE## -->
         </subsystem>
         <subsystem xmlns="urn:infinispan:server:jgroups:8.0">
