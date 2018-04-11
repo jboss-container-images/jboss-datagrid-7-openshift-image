@@ -1,0 +1,7 @@
+schema_version: 1
+name: datagrid.configuration
+version: '1.0'
+description: JDG 72 script package.
+execute:
+- script: configure.sh
+  user: '185'
