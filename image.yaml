@@ -132,10 +132,6 @@ modules:
           - name: openshift-passwd
           - name: os-logging
 
-run:
-      user: 185
-      cmd:
-          - "/opt/datagrid/bin/openshift-launch.sh"
 osbs:
       repository:
             name: containers/jboss-datagrid-7
