@@ -131,11 +131,6 @@ modules:
           - name: openshift-layer
           - name: openshift-passwd
           - name: os-logging
-packages:
-      repositories:
-          - jboss-os
-      install:
-          - coreutils
 
 run:
       user: 185
