@@ -1,16 +1,16 @@
 schema_version: 1
 
-name: "jboss-datagrid-7/datagrid71-openshift"
-description: "Red Hat JBoss Data Grid 7.1 for OpenShift container image"
-version: "1.4"
-from: "jboss-datagrid-7/datagrid71:latest"
+name: "jboss-datagrid-7/datagrid72-openshift"
+description: "Red Hat JBoss Data Grid 7.2 for OpenShift container image"
+version: "1.0"
+from: "jboss-datagrid-7/datagrid72:latest"
 labels:
     - name: "com.redhat.component"
-      value: "jboss-datagrid-7-datagrid71-openshift-container"
+      value: "jboss-datagrid-7-datagrid72-openshift-container"
     - name: "io.k8s.description"
       value: "Provides a scalable in-memory distributed database designed for fast access to large volumes of data."
     - name: "io.k8s.display-name"
-      value: "JBoss Data Grid 7.1"
+      value: "JBoss Data Grid 7.2"
     - name: "io.openshift.expose-services"
       value: "8080:http"
     - name: "io.openshift.tags"
@@ -179,7 +179,6 @@ packages:
           - python-enum34
           - coreutils
           - PyYAML
-
 run:
       user: 185
       cmd:
@@ -187,4 +186,4 @@ run:
 osbs:
       repository:
             name: containers/jboss-datagrid-7
-            branch: jb-datagrid-7.1-openshift-rhel-7
+            branch: jb-datagrid-7.2-openshift-rhel-7
