@@ -5,3 +5,13 @@ NOTE: Extends link:https://github.com/jboss-container-images/jboss-datagrid-7-im
 # License
 
 See link:LICENSE[LICENSE] file.
+
+# Documentation
+
+First install python script requirements:
+
+    $ pip install -r requirements.txt
+
+To create and/or update the documents associated with the templates, run the gen_template_docs.py python script:
+
+    $ ./gen_template_docs.py

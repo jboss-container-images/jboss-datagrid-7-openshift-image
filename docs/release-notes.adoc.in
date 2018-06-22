@@ -1,0 +1,15 @@
+
+////
+  the source for the release notes part of this page is in the file
+  ./release-notes.adoc.in
+////
+
+== Release Notes
+
+Red Hat Data Grid 7.2
+
+=== Release 1.0
+ * Initial release of DG 7.2 images, templates, image-stream and quickstarts
+
+
+
