@@ -227,7 +227,7 @@
         },
         {
             "displayName": "Encryption Requires SSL Client Authentication?",
-            "description": "",
+            "description": "Whether to require client certificate authentication. Defaults to false",
             "name": "ENCRYPTION_REQUIRE_SSL_CLIENT_AUTH",
             "value": "",
             "required": false
