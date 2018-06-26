@@ -85,13 +85,6 @@
             "required": false
         },
         {
-            "displayName": "Encryption Requires SSL Client Authentication?",
-            "description": "Whether to require client certificate authentication. Defaults to false",
-            "name": "ENCRYPTION_REQUIRE_SSL_CLIENT_AUTH",
-            "value": "",
-            "required": false
-        },
-        {
             "displayName": "Memcached Cache Name",
             "description": "The name of the cache to expose through this memcached connector",
             "name": "MEMCACHED_CACHE",
@@ -459,10 +452,6 @@
                                     {
                                         "name": "CACHE_TYPE_DEFAULT",
                                         "value": "${CACHE_TYPE_DEFAULT}"
-                                    },
-                                    {
-                                        "name": "ENCRYPTION_REQUIRE_SSL_CLIENT_AUTH",
-                                        "value": "${ENCRYPTION_REQUIRE_SSL_CLIENT_AUTH}"
                                     },
                                     {
                                         "name": "HOTROD_SERVICE_NAME",
