@@ -282,16 +282,47 @@ function configure_cache() {
        </encoding>"
   fi
 
-  if [ -n "$(find_env "${prefix}_CACHE_EVICTION_STRATEGY")$(find_env "${prefix}_CACHE_EVICTION_MAX_ENTRIES")" ]; then
-    if [ -n "$(find_env "${prefix}_CACHE_EVICTION_STRATEGY")" ]; then
-      local CACHE_EVICTION_STRATEGY="strategy=\"$(find_env "${prefix}_CACHE_EVICTION_STRATEGY")\""
-    fi
+  if [ -n "$(find_env "${prefix}_CACHE_MEMORY_EVICTION_SIZE")$(find_env "${prefix}_CACHE_EVICTION_MAX_ENTRIES")" ]; then
+
+    local evictionSize="$(find_env "${prefix}_CACHE_MEMORY_EVICTION_SIZE")"
     if [ -n "$(find_env "${prefix}_CACHE_EVICTION_MAX_ENTRIES")" ]; then
-      local CACHE_EVICTION_MAX_ENTRIES="size=\"$(find_env "${prefix}_CACHE_EVICTION_MAX_ENTRIES")\""
+      log_warning "Environment variable {$prefix}_CACHE_EVICTION_MAX_ENTRIES has been deprecated. Use {$prefix}_CACHE_MEMORY_EVICTION_SIZE instead."
+      if [ -z "$(find_env "${prefix}_CACHE_MEMORY_EVICTION_SIZE")" ]; then
+      	evictionSize="$(find_env "${prefix}_CACHE_EVICTION_MAX_ENTRIES")"
+      fi
+    fi
+
+    #if cache eviction type is not specified default is COUNT
+    local evictionType="COUNT"
+    if [ "$(find_env "${prefix}_CACHE_MEMORY_EVICTION_TYPE")" == "MEMORY" ]; then
+      evictionType="MEMORY"
+    fi
+
+
+    #if cache eviction strategy is not specified default is REMOVE
+    local evictionStrategyType="REMOVE"
+    if [ -n "$(find_env "${prefix}_CACHE_MEMORY_EVICTION_STRATEGY")" ]; then
+      evictionStrategyType="$(find_env "${prefix}_CACHE_MEMORY_EVICTION_STRATEGY")"
+    fi
+
+    #if cache storage is not specified the default is object storage type
+    local CACHE_MEMORY_STORAGE_TYPE="\
+               <object size=\"$evictionSize\" strategy=\"$evictionStrategyType\"/>"
+    if [ "$(find_env "${prefix}_CACHE_MEMORY_STORAGE_TYPE")" == "binary" ]; then
+      CACHE_MEMORY_STORAGE_TYPE="\
+               <binary size=\"$evictionSize\" eviction=\"$evictionType\" strategy=\"$evictionStrategyType\"/>"
+    elif [ "$(find_env "${prefix}_CACHE_MEMORY_STORAGE_TYPE")" == "off-heap" ]; then
+      # default value taken from configuration xsd	
+      local addressCount="1048576"
+      if [ -n "$(find_env "${prefix}_CACHE_MEMORY_OFF_HEAP_ADDRESS_COUNT")" ]; then
+        addressCount="$(find_env "${prefix}_CACHE_MEMORY_OFF_HEAP_ADDRESS_COUNT")"
+      fi
+      CACHE_MEMORY_STORAGE_TYPE="\
+               <off-heap size=\"$evictionSize\" eviction=\"$evictionType\" strategy=\"$evictionStrategyType\" address-count=\"$addressCount\"/>"
     fi
 
     local eviction="\
-                    <eviction $CACHE_EVICTION_STRATEGY $CACHE_EVICTION_MAX_ENTRIES/>"
+                    <memory> $CACHE_MEMORY_STORAGE_TYPE </memory>"
   fi
   if [ -n "$(find_env "${prefix}_CACHE_EXPIRATION_LIFESPAN")$(find_env "${prefix}_CACHE_EXPIRATION_MAX_IDLE")$(find_env "${prefix}_CACHE_EXPIRATION_INTERVAL")" ]; then
     if [ -n "$(find_env "${prefix}_CACHE_EXPIRATION_LIFESPAN")" ]; then
