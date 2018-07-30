@@ -403,9 +403,25 @@ function configure_cache() {
                       <authorization $CACHE_SECURITY_AUTHORIZATION_ENABLED $CACHE_SECURITY_AUTHORIZATION_ROLES/>\
                     </security>"
   fi
-  if [ -n "$(find_env "${prefix}_CACHE_PARTITION_HANDLING_ENABLED")" ]; then
+  if [ -n "$(find_env "${prefix}_CACHE_PARTITION_HANDLING_ENABLED")$(find_env "${prefix}_CACHE_PARTITION_HANDLING_WHEN_SPLIT")$(find_env "${prefix}_CACHE_PARTITION_HANDLING_MERGE_POLICY")" ]; then
+
+    if [ -n "$(find_env "${prefix}_CACHE_PARTITION_HANDLING_ENABLED")" ]; then
+      log_warning "Deprecated paramater '${prefix}_CACHE_PARTITION_HANDLING_ENABLED' since 7.2, please use '${prefix}_CACHE_PARTITION_HANDLING_WHEN_SPLIT' and '${prefix}_CACHE_PARTITION_MERGE_POLICY' instead"
+      if [ "$(find_env "${prefix}_CACHE_PARTITION_HANDLING_ENABLED")" == "true" ]; then
+        local when_split="when-split=\"DENY_READ_WRITES\""
+      fi
+    fi
+
+    if [ -n "$(find_env "${prefix}_CACHE_PARTITION_HANDLING_WHEN_SPLIT")" ]; then
+      local when_split="when-split=\"$(find_env "${prefix}_CACHE_PARTITION_HANDLING_WHEN_SPLIT")\""
+    fi
+
+    if [ -n "$(find_env "${prefix}_CACHE_PARTITION_HANDLING_MERGE_POLICY")" ]; then
+      local merge_policy="merge-policy=\"$(find_env "${prefix}_CACHE_PARTITION_HANDLING_MERGE_POLICY")\""
+    fi
+
     local partitionhandling="\
-                    <partition-handling enabled=\"$(find_env "${prefix}_CACHE_PARTITION_HANDLING_ENABLED")\"/>"
+                    <partition-handling $when_split $merge_policy />"
   fi
 
   configure_jdbc_store $1
