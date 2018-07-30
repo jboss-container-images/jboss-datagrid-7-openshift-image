@@ -55,7 +55,7 @@ envs:
     - name: "CACHE_EXPIRATION_INTERVAL"
       description: "Interval, in milliseconds, between subsequent runs to purge expired entries from memory and any cache stores. "
       example: "5000"
-    - name: CONTAINER_SECURITY_IDENTITY_ROLE_MAPPER
+    - name: CONTAINER_SECURITY_ROLE_MAPPER
       description: "Set a role mapper for this cache container. Valid values are: identity-role-mapper,common-name-role-mapper,cluster-role-mapper,custom-role-mapper"
       example: "identity-role-mapper"
     - name: CONTAINER_SECURITY_CUSTOM_ROLE_MAPPER_CLASS
