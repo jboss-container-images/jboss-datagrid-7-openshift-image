@@ -286,8 +286,10 @@ function configure_cache() {
 
     local evictionSize="$(find_env "${prefix}_CACHE_MEMORY_EVICTION_SIZE")"
     if [ -n "$(find_env "${prefix}_CACHE_EVICTION_MAX_ENTRIES")" ]; then
-      log_warning "Environment variable <cacheName>_CACHE_EVICTION_MAX_ENTRIES has been deprecated. Use <cacheName>_CACHE_MEMORY_EVICTION_SIZE instead."
-      evictionSize="$(find_env "${prefix}_CACHE_EVICTION_MAX_ENTRIES")"
+      log_warning "Environment variable {$prefix}_CACHE_EVICTION_MAX_ENTRIES has been deprecated. Use {$prefix}_CACHE_MEMORY_EVICTION_SIZE instead."
+      if [ -z "$(find_env "${prefix}_CACHE_MEMORY_EVICTION_SIZE")" ]; then
+      	evictionSize="$(find_env "${prefix}_CACHE_EVICTION_MAX_ENTRIES")"
+      fi
     fi
 
     #if cache eviction type is not specified default is COUNT
@@ -310,8 +312,13 @@ function configure_cache() {
       CACHE_MEMORY_STORAGE_TYPE="\
                <binary size=\"$evictionSize\" eviction=\"$evictionType\" strategy=\"$evictionStrategyType\"/>"
     elif [ "$(find_env "${prefix}_CACHE_MEMORY_STORAGE_TYPE")" == "off-heap" ]; then
+      # default value taken from configuration xsd	
+      local addressCount="1048576"
+      if [ -n "$(find_env "${prefix}_CACHE_MEMORY_OFF_HEAP_ADDRESS_COUNT")" ]; then
+        addressCount="$(find_env "${prefix}_CACHE_MEMORY_OFF_HEAP_ADDRESS_COUNT")"
+      fi
       CACHE_MEMORY_STORAGE_TYPE="\
-               <off-heap size=\"$evictionSize\" eviction=\"$evictionType\" strategy=\"$evictionStrategyType\"/>"
+               <off-heap size=\"$evictionSize\" eviction=\"$evictionType\" strategy=\"$evictionStrategyType\" address-count=\"$addressCount\"/>"
     fi
 
     local eviction="\
