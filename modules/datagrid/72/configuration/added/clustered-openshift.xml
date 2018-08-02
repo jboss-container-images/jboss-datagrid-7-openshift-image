@@ -74,7 +74,6 @@
                     <named-formatter name="##CONSOLE-FORMATTER##"/>
                 </formatter>
             </console-handler>
-            <!-- XXX: do these need to be converted to CONSOLE -->
             <periodic-rotating-file-handler name="FILE" autoflush="true">
                 <formatter>
                     <named-formatter name="PATTERN"/>
@@ -115,13 +114,6 @@
                 <level name="INFO"/>
                 <handlers>
                     <handler name="HR-ACCESS-FILE"/>
-                </handlers>
-            </logger>
-            <logger category="org.infinispan.REST_ACCESS_LOG" use-parent-handlers="false">
-                <!-- Set to TRACE to enable access logging for rest or use DMR -->
-                <level name="INFO"/>
-                <handlers>
-                    <handler name="REST-ACCESS-FILE"/>
                 </handlers>
             </logger>
             <!-- ##ACCESS_LOG_HANDLER## -->
