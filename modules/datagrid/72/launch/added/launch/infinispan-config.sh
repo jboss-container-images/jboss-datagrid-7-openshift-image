@@ -286,7 +286,7 @@ function configure_cache() {
 
     local evictionSize="$(find_env "${prefix}_CACHE_MEMORY_EVICTION_SIZE")"
     if [ -n "$(find_env "${prefix}_CACHE_EVICTION_MAX_ENTRIES")" ]; then
-      log_warning "Environment variable {$prefix}_CACHE_EVICTION_MAX_ENTRIES has been deprecated. Use {$prefix}_CACHE_MEMORY_EVICTION_SIZE instead."
+      log_warning "Environment variable ${prefix}_CACHE_EVICTION_MAX_ENTRIES has been deprecated. Use ${prefix}_CACHE_MEMORY_EVICTION_SIZE instead."
       if [ -z "$(find_env "${prefix}_CACHE_MEMORY_EVICTION_SIZE")" ]; then
       	evictionSize="$(find_env "${prefix}_CACHE_EVICTION_MAX_ENTRIES")"
       fi
