@@ -520,6 +520,8 @@ function configure_jdbc_store() {
           ;;
       esac
     fi
+
+    JDBC_STORE_PASSIVATION=false
     if [ -n "$(find_env "${prefix}_CACHE_MEMORY_EVICTION_SIZE")$(find_env "${prefix}_CACHE_EVICTION_MAX_ENTRIES")" ]; then
       local evictionSize="$(find_env "${prefix}_CACHE_MEMORY_EVICTION_SIZE")"
       if [ -n "$(find_env "${prefix}_CACHE_EVICTION_MAX_ENTRIES")" ]; then
@@ -529,8 +531,6 @@ function configure_jdbc_store() {
       fi 
       if [ "$evictionSize" -gt "0" ]; then
         JDBC_STORE_PASSIVATION=true 
-      else
-        JDBC_STORE_PASSIVATION=false
       fi
     fi
 
