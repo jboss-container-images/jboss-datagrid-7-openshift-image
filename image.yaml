@@ -2,7 +2,7 @@ schema_version: 1
 
 name: "jboss-datagrid-7/datagrid72-openshift"
 description: "Red Hat JBoss Data Grid 7.2 for OpenShift container image"
-version: "1.0"
+version: "1.1"
 from: "jboss-datagrid-7/datagrid72:latest"
 labels:
     - name: "com.redhat.component"
@@ -24,6 +24,10 @@ envs:
       value: "jdgadmin"
     - name: "JAVA_OPTS_APPEND"
       example: "-Dfoo=bar"
+      description: "Server startup options."
+    - name: "JBOSS_MODULES_SYSTEM_PKGS_APPEND"
+      example: "org.jboss.byteman"
+      description: "Comma-separated list of package names that will be appended to the JBOSS_MODULES_SYSTEM_PKGS environment variable."
     - name: "JGROUPS_CLUSTER_PASSWORD"
       example: "miR0JaDR"
       description: "A password to control access to the JGroup. Needs to be set consistently cluster-wide. The image default is to use the `OPENSHIFT_KUBE_PING_LABELS` variable value, however the JBoss application templates generate and supply a random value."
@@ -51,7 +55,7 @@ envs:
     - name: "CACHE_EXPIRATION_INTERVAL"
       description: "Interval, in milliseconds, between subsequent runs to purge expired entries from memory and any cache stores. "
       example: "5000"
-    - name: CONTAINER_SECURITY_IDENTITY_ROLE_MAPPER
+    - name: CONTAINER_SECURITY_ROLE_MAPPER
       description: "Set a role mapper for this cache container. Valid values are: identity-role-mapper,common-name-role-mapper,cluster-role-mapper,custom-role-mapper"
       example: "identity-role-mapper"
     - name: CONTAINER_SECURITY_CUSTOM_ROLE_MAPPER_CLASS
