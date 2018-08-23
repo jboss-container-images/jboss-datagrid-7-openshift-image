@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<arquillian xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns="http://jboss.org/schema/arquillian"
+            xsi:schemaLocation="http://jboss.org/schema/arquillian http://jboss.org/schema/arquillian/arquillian_1_0.xsd">
+
+    <!-- Uncomment to have test archives exported to the file system for inspection -->
+
+    <!--
+    <engine>
+            <property name="deploymentExportPath">target/arquillian</property>
+    </engine>
+    -->
+
+    <extension qualifier="openshift">
+        <property name="originServer">https://127.0.0.1:8443</property>
+        <!--
+           Just comment those two lines to run it efficiently while debugging. Just create those resources once
+           and restart test only
+        -->
+        <property name="env.setup.script.url">setup.sh</property>
+        <property name="env.teardown.script.url">destroy.sh</property>
+        <property name="namespace.use.current">true</property>
+        <!-- For debugging purposes:
+           * comment out this line and start the definitions manually before the test via:
+              oc create -f target/classes/eap7-testrunner.json
+           * turn on port forwarding manually in a different console:
+              oc port-forward testrunner 9990 8787
+           * attach remote debugger to localhost:8787
+           * debug the test class
+           Note: The EAP pod has to have DEBUG=true in the json definition so that EAP start in debug mode
+        -->
+        <property name="definitionsFile">target/classes/eap7-testrunner.json</property>
+        <property name="wait.for.service.list">caching-service-hotrod, caching-service-https</property>
+        <property name="env.script.env">image=${image}</property>
+        <property name="proxiedContainerPorts">testrunner:9990</property>
+        <!-- Fetch the logs from Openshift and pods, and save them into target/surefire-reports -->
+        <property name="logs.copy">true</property>
+
+        <!-- Set these two props to false if you don't want the server to be destroyed after the tests finish -->
+        <property name="namespace.cleanup.enabled">true</property>
+        <property name="namespace.destroy.enabled">true</property>
+    </extension>
+
+    <container qualifier="testrunner" mode="suite" default="true">
+        <!-- Pod running remote tests. -->
+        <configuration>
+            <property name="chameleonTarget">jboss eap:7.0:remote</property>
+            <property name="username">admin</property>
+            <property name="password">Admin#70365</property>
+        </configuration>
+        <protocol type="Servlet 3.0">
+            <property name="host">${TESTRUNNER_HOST}</property>
+            <property name="port">${TESTRUNNER_PORT}</property>
+        </protocol>
+    </container>
+
+</arquillian>

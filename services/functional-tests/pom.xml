@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.infinispan</groupId>
+    <artifactId>datagrid-online-services-functional-tests</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <version.arquillian.bom>1.1.8.Final</version.arquillian.bom>
+        <version.infinispan.bom>8.5.0.ER3-redhat-1</version.infinispan.bom>
+        <openshift-client.version>3.0.3</openshift-client.version>
+        <arquillian-cube-openshift.version>1.10.0</arquillian-cube-openshift.version>
+        <assertj-core.version>3.8.0</assertj-core.version>
+        <jetty-client.version>9.4.8.v20171121</jetty-client.version>
+        <version.chameleon>1.0.0.Beta2</version.chameleon>
+        <org.apache.maven.user-settings/>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.jboss.arquillian</groupId>
+                <artifactId>arquillian-bom</artifactId>
+                <version>${version.arquillian.bom}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.infinispan</groupId>
+                <artifactId>infinispan-bom</artifactId>
+                <version>${version.infinispan.bom}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <!-- https://github.com/arquillian/arquillian-cube/blob/master/docs/kubernetes.adoc#dealing-with-version-conflicts -->
+        <dependency>
+            <groupId>org.infinispan</groupId>
+            <artifactId>infinispan-client-hotrod</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>openshift-client</artifactId>
+            <version>${openshift-client.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.arquillian.cube</groupId>
+            <artifactId>arquillian-cube-openshift</artifactId>
+            <version>${arquillian-cube-openshift.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.arquillian.cube</groupId>
+            <artifactId>arquillian-cube-requirement</artifactId>
+            <version>${arquillian-cube-openshift.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj-core.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-client</artifactId>
+            <version>${jetty-client.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.arquillian.junit</groupId>
+            <artifactId>arquillian-junit-container</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.arquillian.container</groupId>
+            <artifactId>arquillian-container-chameleon</artifactId>
+            <version>${version.chameleon}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.shrinkwrap.resolver</groupId>
+            <artifactId>shrinkwrap-resolver-impl-maven</artifactId>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.20</version>
+                <configuration>
+                    <runOrder>alphabetical</runOrder>
+                    <redirectTestOutputToFile>true</redirectTestOutputToFile>
+                    <trimStackTrace>false</trimStackTrace>
+                    <forkMode>once</forkMode>
+                    <systemPropertyVariables>
+                        <https.protocols>TLSv1.2</https.protocols>
+                        <!--Custom DNS resolver for OpenShift routes-->
+                        <sun.net.spi.nameservice.provider.1>dns,CEArquillianNameService
+                        </sun.net.spi.nameservice.provider.1>
+                        <sun.net.spi.nameservice.provider.2>default</sun.net.spi.nameservice.provider.2>
+                        <org.apache.maven.user-settings>${org.apache.maven.user-settings}
+                        </org.apache.maven.user-settings>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

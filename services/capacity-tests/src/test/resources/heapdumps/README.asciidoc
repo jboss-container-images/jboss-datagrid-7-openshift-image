@@ -1,0 +1,1 @@
+This directory is mounted into the running container and will contain heap dumps after it crashes.
