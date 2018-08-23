@@ -1,7 +1,7 @@
 #!/bin/sh
 
 source ${JBOSS_HOME}/bin/launch/openshift-common.sh
-source $JBOSS_HOME/bin/launch/logging.sh
+source ${JBOSS_HOME}/bin/launch/logging.sh
 
 function runServer() {
   local instanceDir=$1

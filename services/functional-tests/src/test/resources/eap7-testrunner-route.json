@@ -1,0 +1,22 @@
+{
+  "apiVersion": "v1",
+  "kind": "Route",
+  "metadata": {
+    "annotations": {
+      "openshift.io/host.generated": "true",
+      "haproxy.router.openshift.io/timeout": "5m"
+    },
+    "name": "testrunner"
+  },
+  "spec": {
+    "port": {
+      "targetPort": 8080
+    },
+    "to": {
+      "kind": "Service",
+      "name": "testrunner-http",
+      "weight": 100
+    },
+    "wildcardPolicy": "None"
+  }
+}

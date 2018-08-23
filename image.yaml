@@ -184,6 +184,7 @@ packages:
           - python-enum34
           - coreutils
           - PyYAML
+          - openssl
 run:
       user: 185
       cmd:
