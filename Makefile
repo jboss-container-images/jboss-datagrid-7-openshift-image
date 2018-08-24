@@ -201,7 +201,7 @@ clean-docker:
 clean: clean-docker clean-maven stop-openshift
 .PHONY: clean
 
-test-ci: clean start-openshift-with-catalog login-to-openshift prepare-openshift-project build-image push-image-to-local-openshift test-functional
+test-ci: clean start-openshift-with-catalog login-to-openshift prepare-openshift-project build-image push-image-to-local-openshift test-functional stop-openshift
 .PHONY: test-ci
 
 #Before running this target, login to the remote OpenShift from console in whatever way recommended by the provider
