@@ -1,0 +1,75 @@
+= Development guide
+
+Prior to exploring this repository, it is highly advised to visit our https://docs.google.com/a/redhat.com/document/d/1gSGmytIW3u4IR1tXGmEekEa1AzhKfNvAPOAP0Fh32kQ/edit?usp=sharing[Contributing Guide].
+
+This repository has the following structure:
+
+```
++- Root
+      +-- image.yaml - Image build recipe
+      +-- Makefile - A set of useful scripts for development work
+      +-- templates - Example OpenShift templates for this image
+      +-- modules - Modules used by the image
+      +-- services - Templates for DG services as well as end-to-end tests with Arquillian Cube
+      +-- docs - Documentation for this image
+```
+
+The `modules` directory contains modules used in `image.yaml`. See http://cekit.readthedocs.io/en/develop/[Cekit] documentation for more details.
+
+The `services/functional-tests` directory contains http://arquillian.org/arquillian-cube/[Arquillian Cube tests]. The tests assume there is a running OpenShift cluster and `oc` or `kubectl` is already attached to it.
+
+== Building the image
+The `image.yaml` uses a Python framework called http://cekit.readthedocs.io/en/develop/[Cekit] to build the image. The easiest way to start the build is to invoke `cekit image.yaml target` and invoke a standard container build from the `target` directory.
+
+Before using cekit, you should create a `~/.cekit/config` file in your home directory with the following content:
+```
+[common]
+ssl_verify = False
+cache_url = http://ce-cacher.usersys.redhat.com/get?#algorithm#=#hash#
+redhat = True
+
+[repositories]
+jboss-os = http://git.app.eng.bos.redhat.com/git/jboss-container-tools.git/plain/repos/jboss-rhel-os.repo
+jboss-ocp = http://git.app.eng.bos.redhat.com/git/jboss-container-tools.git/plain/repos/jboss-rhel-ocp.repo
+jboss-rhscl = http://git.app.eng.bos.redhat.com/git/jboss-container-tools.git/plain/repos/jboss-rhel-rhscl.repo
+jboss-rhom = http://git.app.eng.bos.redhat.com/git/jboss-container-tools.git/plain/repos/jboss-rhom.repo
+```
+
+== Testing Services
+=== Local
+In order to perform a full end-to-end test, invoke `make test-ci`. This will spin up a local OpenShift cluster, build the image, install the template, invoke end-to-end tests and kill the cluster.
+
+=== Remote with local image
+In order to run the functional test suite against a remote OpenShift instance, follow these steps:
+
+1. Login to the remote instance from command line using `oc`
+
+   oc login <openshift address> --token=<token>
+
+2. Set the environment variable with the address of the remote OpenShift container registry
+
+   export OPENSHIFT_ONLINE_REGISTRY=<registry address>
+
+3. Invoke `make test-remote`.
+This procedure will create a new project in the remote OpenShift, build the image, push the image to the OpenShift internal registry, install the templates in the project and invoke functional tests.
+
+4. Optional: When the image is already available in a remote Docker registry, invoke the following command to pull the image instead of building it. It is also necessary to specify the remote Docker registry and possibly different image coordinates:
+
+   make DEV_IMAGE_ORG=jboss-datagrid-7 DEV_IMAGE_NAME=datagrid72-openshift DOCKER_REGISTRY_ENGINEERING=brew-pulp-docker01.web.prod.ext.phx2.redhat.com:8888 test-remote-with-pull
+
+=== Remote with pulled image
+
+```
+make DEV_IMAGE_ORG=<insert org> \
+              DEV_IMAGE_NAME=<insert image name> \
+              DEV_IMAGE_TAG=<insert tag> \
+              DOCKER_REGISTRY_ENGINEERING=<insert registry of pulled image> \
+              OPENSHIFT_ONLINE_REGISTRY=<insert online registry where the tests will be ran> \
+              test-remote-with-pull
+```
+
+=== Build image, create local openshift cluster and deploy caching-service
+
+```
+make test-caching-service-manually
+```

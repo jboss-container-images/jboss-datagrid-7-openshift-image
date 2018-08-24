@@ -15,3 +15,7 @@ First install python script requirements:
 To create and/or update the documents associated with the templates, run the gen_template_docs.py python script:
 
     $ ./gen_template_docs.py
+
+# Development
+* link:docs/cache-service.asciidoc[Red Hat Cache Service]
+* link:docs/development-guide.asciidoc[Development Guide]
