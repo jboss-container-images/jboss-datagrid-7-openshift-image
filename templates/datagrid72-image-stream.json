@@ -32,9 +32,12 @@
                             "version": "1.0",
                             "openshift.io/display-name": "Red Hat JBoss Data Grid 7.2"
                         },
+                        "referencePolicy": {
+                            "type": "Local"
+                        },
                         "from": {
                             "kind": "DockerImage",
-                            "name": "registry.access.redhat.com/jboss-datagrid-7/datagrid72-openshift:1.0"
+                            "name": "registry.redhat.io/jboss-datagrid-7/datagrid72-openshift:1.0"
                         }
                     },
                     {
