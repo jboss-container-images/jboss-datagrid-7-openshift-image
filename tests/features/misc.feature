@@ -44,7 +44,7 @@ Feature: Openshift DataGrid tests
 
   Scenario: Check if jolokia is configured correctly
     When container is ready
-    Then container log should contain -javaagent:/opt/jolokia/jolokia.jar=config=/opt/jolokia/etc/jolokia.properties
+    Then container log should contain -javaagent:/opt/jboss/container/jolokia/jolokia.jar=config=/opt/jboss/container/jolokia/etc/jolokia.properties
 
   Scenario: Check for add-user failures
     When container is ready
