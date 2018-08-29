@@ -42,9 +42,11 @@ endif
 _ANSIBLE_SERVICE_BROKER_USERNAME = admin
 _ANSIBLE_SERVICE_BROKER_PASSWORD = admin
 
+OPENSHIFT_PUBLIC_HOSTNAME?=127.0.0.1
+
 start-openshift-with-catalog:
 	@echo "---- Starting OpenShift ----"
-	oc cluster up
+	oc cluster up --public-hostname=$(OPENSHIFT_PUBLIC_HOSTNAME)
 	oc cluster add service-catalog
 	@echo "---- Granting admin rights to Developer ----"
 	oc login -u system:admin
@@ -168,6 +170,7 @@ _relist-template-service-broker:
 
 _install_templates_in_openshift_namespace:
 	oc create -f services/caching-service.json -n openshift || true
+	oc create -f services/datagrid-service.json -n openshift || true
 .PHONY: _install_templates_in_openshift_namespace
 
 install-templates-in-openshift-namespace: _install_templates_in_openshift_namespace _relist-template-service-broker
@@ -175,6 +178,7 @@ install-templates-in-openshift-namespace: _install_templates_in_openshift_namesp
 
 install-templates:
 	oc create -f services/caching-service.json || true
+	oc create -f services/datagrid-service.json || true
 .PHONY: install-templates
 
 clear-templates:
@@ -190,6 +194,15 @@ test-caching-service-manually:
 	oc expose svc/caching-service-hotrod || true
 	oc get routes
 .PHONY: test-caching-service-manually
+
+test-datagrid-service-manually:
+	oc set image-lookup $(DEV_IMAGE_NAME)
+	oc process datagrid-service -p APPLICATION_USER=test \
+	-p APPLICATION_USER_PASSWORD=test -p IMAGE=$(_DEV_IMAGE_STREAM) | oc create -f -
+	oc expose svc/datagrid-service-https || true
+	oc expose svc/datagrid-service-hotrod || true
+	oc get routes
+.PHONY: test-datagrid-service-manually
 
 clean-maven:
 	$(MVN_COMMAND) clean -f services/functional-tests/pom.xml || true
@@ -228,6 +241,9 @@ test-capacity:
 
 run-caching-service-locally: stop-openshift start-openshift-with-catalog login-to-openshift prepare-openshift-project build-image push-image-to-local-openshift install-templates test-caching-service-manually
 .PHONY: run-caching-service-locally
+
+run-datagrid-service-locally: stop-openshift start-openshift-with-catalog login-to-openshift prepare-openshift-project build-image push-image-to-local-openshift install-templates test-datagrid-service-manually
+.PHONY: run-datagrid-service-locally
 
 #Before running this target, login to the remote OpenShift from console in whatever way recommended by the provider, make sure you specify the _TEST_PROJECT and OPENSHIFT_ONLINE_REGISTRY variables
 run-caching-service-remotely: clean-docker clean-maven prepare-openshift-project build-image push-image-to-online-openshift install-templates test-caching-service-manually

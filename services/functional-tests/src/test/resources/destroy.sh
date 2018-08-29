@@ -21,7 +21,9 @@ oc logs testrunner
 
 echo "---- Clearing up test resources ---"
 oc delete all,secrets,sa,templates,configmaps,daemonsets,clusterroles,rolebindings,serviceaccounts --selector=template=caching-service || true
+oc delete all,secrets,sa,templates,configmaps,daemonsets,clusterroles,rolebindings,serviceaccounts --selector=template=datagrid-service || true
 oc delete template caching-service || true
+oc delete template datagrid-service || true
 oc delete service testrunner || true
 oc delete route testrunner || true
 

@@ -9,9 +9,9 @@ import io.fabric8.openshift.client.OpenShiftClient;
 
 public class ScalingTester {
 
-   public void scaleUpStatefulSet(String statefulSetName, OpenShiftClient client, OpenShiftCommandlineClient commandlineClient, ReadinessCheck readinessCheck) {
-      commandlineClient.scaleStatefulSet(statefulSetName, 2);
-      readinessCheck.waitUntilTargetNumberOfReplicasAreReady(statefulSetName, 2, client);
+   public void scaleUpStatefulSet(int numReplicas, String statefulSetName, OpenShiftClient client, OpenShiftCommandlineClient commandlineClient, ReadinessCheck readinessCheck) {
+      commandlineClient.scaleStatefulSet(statefulSetName, numReplicas);
+      readinessCheck.waitUntilTargetNumberOfReplicasAreReady(statefulSetName, numReplicas, client);
    }
 
    public void waitForClusterToForm(HotRodTester hotRodTester) {
@@ -22,8 +22,8 @@ public class ScalingTester {
       waiter.waitFor(() -> hotRodTester.getNumberOfNodesInTheCluster() == 2);
    }
 
-   public void scaleDownStatefulSet(String statefulSetName, OpenShiftClient client, OpenShiftCommandlineClient commandlineClient, ReadinessCheck readinessCheck) {
-      commandlineClient.scaleStatefulSet(statefulSetName, 1);
+   public void scaleDownStatefulSet(int numReplicas, String statefulSetName, OpenShiftClient client, OpenShiftCommandlineClient commandlineClient, ReadinessCheck readinessCheck) {
+      commandlineClient.scaleStatefulSet(statefulSetName, numReplicas);
       readinessCheck.waitUntilTargetNumberOfReplicasAreReady(statefulSetName, 1, client);
    }
 }

@@ -30,7 +30,7 @@
            Note: The EAP pod has to have DEBUG=true in the json definition so that EAP start in debug mode
         -->
         <property name="definitionsFile">target/classes/eap7-testrunner.json</property>
-        <property name="wait.for.service.list">caching-service-hotrod, caching-service-https</property>
+        <property name="wait.for.service.list">caching-service-hotrod, caching-service-https, datagrid-service-hotrod, datagrid-service-https</property>
         <property name="env.script.env">image=${image}</property>
         <property name="proxiedContainerPorts">testrunner:9990</property>
         <!-- Fetch the logs from Openshift and pods, and save them into target/surefire-reports -->

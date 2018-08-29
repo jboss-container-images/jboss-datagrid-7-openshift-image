@@ -53,6 +53,23 @@ function configure() {
          # EVICTION_TOTAL_MEMORY_B exported by adjust_memory.sh
          source ${JBOSS_HOME}/bin/launch/adjust_memory.sh
          export DEFAULT_CACHE_MEMORY_EVICTION_SIZE=${EVICTION_TOTAL_MEMORY_B}
+      elif [ "${SERVICE_PROFILE}" == "datagrid-service" ]; then
+         SERVICE_NAME=${SERVICE_NAME:-datagrid-service}
+
+         createKeystoresFromSecrets
+
+         # Endpoints
+         export INFINISPAN_CONNECTORS="hotrod,rest"
+         export HOTROD_AUTHENTICATION="TRUE"
+         export HOTROD_ENCRYPTION="TRUE"
+         export REST_SECURITY_DOMAIN="ApplicationRealm"
+
+         # Infinispan
+         export DEFAULT_CACHE_OWNERS="2"
+         export DEFAULT_CACHE_PARTITION_HANDLING_WHEN_SPLIT="DENY_READ_WRITES"
+         export DEFAULT_CACHE_PARTITION_HANDLING_MERGE_POLICY="REMOVE_ALL"
+         export DEFAULT_CACHE_MEMORY_STORAGE_TYPE="off-heap"
+         export ENABLE_OVERLAY_CONFIGURATION_STORAGE="true"
       fi
    fi
 }
