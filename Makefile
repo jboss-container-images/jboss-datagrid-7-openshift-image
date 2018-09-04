@@ -18,7 +18,7 @@ CEKIT_CMD = cekit build --target target-docker --tag $(DEV_IMAGE_FULL_NAME)
 endif
 
 DOCKER_MEMORY=512M
-MVN_COMMAND = mvn
+MVN_COMMAND = mvn -s services/functional-tests/maven-settings.xml
 _TEST_PROJECT = myproject
 
 #Set variables for remote openshift when OPENSHIFT_ONLINE_REGISTRY is defined
