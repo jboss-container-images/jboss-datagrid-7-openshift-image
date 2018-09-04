@@ -11,7 +11,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <version.arquillian.bom>1.1.8.Final</version.arquillian.bom>
-        <version.infinispan.bom>8.5.0.ER3-redhat-1</version.infinispan.bom>
+        <version.infinispan.bom>8.5.0.Final-redhat-9</version.infinispan.bom>
         <openshift-client.version>3.0.3</openshift-client.version>
         <arquillian-cube-openshift.version>1.10.0</arquillian-cube-openshift.version>
         <assertj-core.version>3.8.0</assertj-core.version>
