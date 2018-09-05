@@ -24,7 +24,7 @@ _TEST_PROJECT = myproject
 #Set variables for remote openshift when OPENSHIFT_ONLINE_REGISTRY is defined
 ifeq ($(OPENSHIFT_ONLINE_REGISTRY),)
 _OPENSHIFT_MASTER = https://127.0.0.1:8443
-_DOCKER_REGISTRY = "$(shell oc get svc/docker-registry -n default -o yaml | grep 'clusterIP:' | awk '{print $$2}'):5000"
+_DOCKER_REGISTRY = $(shell oc get svc/docker-registry -n default -o yaml | grep 'clusterIP:' | awk '{print $$2":5000"}')
 _IMAGE = $(_DOCKER_REGISTRY)/$(_TEST_PROJECT)/$(DEV_IMAGE_NAME):$(DEV_IMAGE_TAG)
 _OPENSHIFT_USERNAME = developer
 _OPENSHIFT_PASSWORD = developer
