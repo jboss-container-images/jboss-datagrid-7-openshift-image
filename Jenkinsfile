@@ -44,9 +44,16 @@ pipeline {
       stage('Gather test results') {
          steps {
             script {
-               junit allowEmptyResults: true, testResults: '**/target/*-reports/*.xml'
+               junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
             }
          }
+      }
+   }
+
+   post {
+      always {
+         archiveArtifacts artifacts: '**/target/surefire-reports/*.txt, **/target/surefire-reports/*.log', fingerprint: true
+         junit '**/target/surefire-reports/*.xml'
       }
    }
 }
