@@ -17,7 +17,7 @@
         <assertj-core.version>3.11.1</assertj-core.version>
         <jetty-client.version>9.4.12.v20180830</jetty-client.version>
         <version.chameleon>1.0.0.CR2</version.chameleon>
-        <org.apache.maven.user-settings/>
+        <org.apache.maven.user-settings>maven-settings.xml</org.apache.maven.user-settings>
     </properties>
 
     <dependencyManagement>

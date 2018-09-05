@@ -27,16 +27,12 @@ pipeline {
       stage('Unit and Functional tests') {
          steps {
             script {
-               configFileProvider([configFile(fileId: 'maven-settings-with-prod', variable: 'MAVEN_SETTINGS')]) {
-                  script {
-                     try {
-                        sh 'make MVN_COMMAND="$MAVEN_HOME/bin/mvn -s $MAVEN_SETTINGS -Dorg.apache.maven.user-settings=$MAVEN_SETTINGS" test-ci'
-                     } finally {
-                        sh 'tail -n +1 -- services/functional-tests/target/surefire-reports/*.txt'
-                        sh 'make MVN_COMMAND="$MAVEN_HOME/bin/mvn -s $MAVEN_SETTINGS" clean-ci'
-                     }
-                  }
-               }
+                try {
+                    sh 'make MVN_COMMAND="$MAVEN_HOME/bin/mvn -s services/functional-tests/maven-settings.xml" test-ci'
+                } finally {
+                    sh 'tail -n +1 -- services/functional-tests/target/surefire-reports/*.txt'
+                    sh 'make MVN_COMMAND="$MAVEN_HOME/bin/mvn -s services/functional-tests/maven-settings.xml" clean-ci'
+                }
             }
          }
       }
