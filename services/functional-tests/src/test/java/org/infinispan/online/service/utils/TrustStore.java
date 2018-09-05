@@ -33,7 +33,7 @@ public class TrustStore {
    public String getPath() {
       Path currentRelativePath = Paths.get(trustStoreDir);
       String absolutePath = currentRelativePath.toAbsolutePath().toString();
-      return String.format("%s/%s.p12", absolutePath, serviceName);
+      return String.format("%s/truststore.p12", absolutePath);
    }
 
    private void create() {

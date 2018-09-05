@@ -82,7 +82,7 @@
           },
           {
             "name": "TRUSTSTORE_FILE",
-            "value": "/var/run/secrets/java.io/keystores/caching-service.p12"
+            "value": "/var/run/secrets/java.io/keystores/truststore.p12"
           },
           {
             "name": "TRUSTSTORE_PASSWORD",
