@@ -20,6 +20,7 @@
         <property name="env.setup.script.url">setup.sh</property>
         <property name="env.teardown.script.url">destroy.sh</property>
         <property name="namespace.use.current">true</property>
+        <property name="namespace.destroy.timeout">120</property>
         <!-- For debugging purposes:
            * comment out this line and start the definitions manually before the test via:
               oc create -f target/classes/eap7-testrunner.json
