@@ -102,6 +102,9 @@ stop-openshift:
 	# Hack to remove leftover mounts https://github.com/openshift/origin/issues/19141
 	for i in $(shell mount | grep openshift | awk '{ print $$3}'); do sudo umount "$$i"; done
 	sudo rm -rf ./openshift.local.clusterup
+
+	# Remove leftover containers
+	sudo rm -rf /var/lib/origin
 .PHONY: stop-openshift
 
 build-image:
