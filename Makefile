@@ -8,7 +8,7 @@ ADDITIONAL_ARGUMENTS =
 CE_DOCKER = $(shell docker version | grep Version | head -n 1 | grep -e "-ce")
 ifneq ($(CE_DOCKER),)
 DOCKER_REGISTRY_ENGINEERING = docker-registry.engineering.redhat.com
-DOCKER_REGISTRY_REDHAT = registry.access.redhat.com/
+DOCKER_REGISTRY_REDHAT = registry.redhat.io/
 DEV_IMAGE_FULL_NAME = $(DOCKER_REGISTRY_ENGINEERING)/$(DEV_IMAGE_ORG)/$(DEV_IMAGE_NAME):$(DEV_IMAGE_TAG)
 IMAGE_FULL_NAME = $(DOCKER_REGISTRY_ENGINEERING)/$(DEV_IMAGE_ORG)/$(IMAGE_NAME):$(DEV_IMAGE_TAG)
 CEKIT_CMD = cekit build --overrides=overrides.yaml --target target-docker --tag $(DEV_IMAGE_FULL_NAME)
