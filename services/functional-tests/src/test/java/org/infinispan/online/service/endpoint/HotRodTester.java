@@ -17,6 +17,7 @@ import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.Configuration;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 import org.infinispan.client.hotrod.configuration.SaslQop;
+import org.infinispan.client.hotrod.impl.RemoteCacheImpl;
 import org.infinispan.commons.util.CloseableIteratorSet;
 import org.infinispan.online.service.utils.TrustStore;
 
@@ -37,9 +38,11 @@ public class HotRodTester implements EndpointTester {
    }
 
    public void clear() {
-      RemoteCache<String, String> defaultCache = cacheManager.getCache();
-      CloseableIteratorSet<String> entriesToBeDeleted = defaultCache.keySet();
-      entriesToBeDeleted.forEach(defaultCache::remove);
+      RemoteCacheImpl<String, String> defaultCache = (RemoteCacheImpl) cacheManager.getCache();
+      if (defaultCache.ping().isSuccess()) {
+         CloseableIteratorSet<String> entriesToBeDeleted = defaultCache.keySet();
+         entriesToBeDeleted.forEach(defaultCache::remove);
+      }
    }
 
    public void testBasicEndpointCapabilities(URL urlToService) {
