@@ -324,7 +324,7 @@
          "description": "Infinispan image.",
          "name": "IMAGE",
          "required": true,
-         "value": "registry.access.redhat.com/jboss-datagrid-7/datagrid72-openshift"
+         "value": "registry.redhat.io/jboss-datagrid-7/datagrid72-openshift"
       },
       {
          "description": "Number of instances in the cluster.",
