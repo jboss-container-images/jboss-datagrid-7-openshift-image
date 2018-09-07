@@ -62,7 +62,6 @@ public class CachingServiceTest {
       readinessCheck.waitUntilAllPodsAreReady(client);
       hotRodService = handle.getServiceWithName(SERVICE_NAME + "-hotrod");
       restService = handle.getServiceWithName(SERVICE_NAME + "-https");
-      URL hotRodService = handle.getServiceWithName(SERVICE_NAME + "-hotrod");
       hotRodTester = new HotRodTester(SERVICE_NAME, hotRodService, client);
    }
 
