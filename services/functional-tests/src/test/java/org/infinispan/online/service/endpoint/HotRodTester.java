@@ -17,9 +17,8 @@ import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.Configuration;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 import org.infinispan.client.hotrod.configuration.SaslQop;
-import org.infinispan.client.hotrod.impl.RemoteCacheImpl;
+import org.infinispan.client.hotrod.exceptions.TransportException;
 import org.infinispan.commons.api.CacheContainerAdmin;
-import org.infinispan.commons.util.CloseableIteratorSet;
 import org.infinispan.online.service.utils.TrustStore;
 
 import io.fabric8.kubernetes.api.model.Pod;
@@ -39,10 +38,11 @@ public class HotRodTester implements EndpointTester {
    }
 
    public void clear() {
-      RemoteCacheImpl<String, String> defaultCache = (RemoteCacheImpl) cacheManager.getCache();
-      if (defaultCache.ping().isSuccess()) {
-         CloseableIteratorSet<String> entriesToBeDeleted = defaultCache.keySet();
-         entriesToBeDeleted.forEach(defaultCache::remove);
+      RemoteCache<String, String> defaultCache = cacheManager.getCache();
+      try {
+         defaultCache.clear();
+      } catch (TransportException ignore) {
+         // no-op as TransportException can be thrown if the os service has been terminated before @After is called on a arquillian test
       }
    }
 
