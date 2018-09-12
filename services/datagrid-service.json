@@ -6,13 +6,13 @@
    },
    "metadata": {
       "annotations": {
-         "description": "Red Hat Data Grid is a high performance, linearly scalable, key/value data grid solution. It provides many features to serve a variety of use cases.",
+         "description": "Red Hat Data Grid is an in-memory, distributed key/value store.",
          "iconClass": "icon-datagrid",
          "tags": "database,datagrid",
          "openshift.io/display-name": "Red Hat Data Grid Service",
          "openshift.io/provider-display-name": "Red Hat, Inc.",
          "openshift.io/documentation-url": "https://github.com/jboss-container-images/datagrid-7-image/blob/datagrid-services-dev/documentation/datagrid-service.asciidoc",
-         "openshift.io/long-description": "In this service, Red Hat Data Grid is configured as an in-memory data grid service.",
+         "openshift.io/long-description": "This service provides a stable, persistent, and linearly scalable implementation of Red Hat Data Grid.",
          "openshift.io/support-url": "https://www.redhat.com/en/services/support"
       },
       "name": "datagrid-service"
@@ -34,7 +34,7 @@
          "kind": "Service",
          "metadata": {
             "annotations": {
-               "description": "Headless service for StatefulSets",
+               "description": "Provides a headless service for the StatefulSet.",
                "service.alpha.openshift.io/serving-cert-secret-name": "service-certs"
             },
             "labels": {
@@ -66,7 +66,7 @@
          "kind": "Service",
          "metadata": {
             "annotations": {
-               "description": "The JGroups ping port for clustering.",
+               "description": "Provides a ping service for clustered applications.",
                "service.alpha.kubernetes.io/tolerate-unready-endpoints": "true"
             },
             "labels": {
@@ -92,7 +92,7 @@
          "kind": "Service",
          "metadata": {
             "annotations": {
-               "description": "The web server's HTTPS port."
+               "description": "Provides a service for accessing the application over HTTPS."
             },
             "labels": {
                "application": "${APPLICATION_NAME}"
@@ -116,7 +116,7 @@
          "kind": "Service",
          "metadata": {
             "annotations": {
-               "description": "Hot Rod's port."
+               "description": "Provides a service for accessing the application through the Hot Rod protocol."
             },
             "labels": {
                "application": "${APPLICATION_NAME}"
@@ -314,42 +314,42 @@
    ],
    "parameters": [
       {
-         "description": "The name for the application.",
+         "description": "Specifies a name for the application.",
          "name": "APPLICATION_NAME",
          "displayName": "Application Name",
          "required": true,
          "value": "datagrid-service"
       },
       {
-         "description": "Infinispan image.",
+         "description": "Defines the image to bootstrap the service.",
          "name": "IMAGE",
          "required": true,
          "value": "registry.access.redhat.com/jboss-datagrid-7/datagrid72-openshift"
       },
       {
-         "description": "Number of instances in the cluster.",
+         "description": "Specifies how many instances of the application to create in the cluster.",
          "name": "NUMBER_OF_INSTANCES",
          "displayName": "Number of Instances",
          "required": true,
          "value": "1"
       },
       {
-         "description": "Total container memory in MiB.",
+         "description": "Sets the total memory, in MiB, available to the application.",
          "displayName": "Total Memory",
          "name": "TOTAL_CONTAINER_MEM",
          "required": false,
          "value": "512"
       },
       {
+         "description": "Specifies a username to authenticate client applications",
          "name": "APPLICATION_USER",
          "displayName": "Client User",
-         "description": "Username for client applications",
          "required": true
       },
       {
+         "description": "Sets a password to authenticate client applications",
          "name": "APPLICATION_USER_PASSWORD",
          "displayName": "Client Password",
-         "description": "Password for client applications",
          "generate": "expression",
          "from": "[a-zA-Z0-9]{16}"
       }

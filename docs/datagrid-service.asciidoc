@@ -1,3 +1,29 @@
 = Red Hat Data Grid Service
 
-TODO
+Red Hat Data Grid is an in-memory, distributed key/value store. This service provides a stable, persistent, and linearly scalable implementation of Data Grid for Red Hat OpenShift.
+
+== Creating a Data Grid Service
+
+Use this template to create a StatefulSet Pod that you can customize to your specific needs. Do the following:
+
+. Add the template to the `openshift` namespace.
+.. `$ oc login -u system:admin`
+.. `$ oc create
+-n openshift
+-f https://raw.githubusercontent.com/jboss-container-images/jboss-datagrid-7-openshift-image/f91b94cfd7da4630ca188cd43c26755ecfc99bdd/services/datagrid-service.json`
+. Instantiate the template.
+.. `$ oc login -u developer`
+.. `$ oc new-project mydatagrid`
+.. `$ oc process openshift//datagrid-service -p APPLICATION_USER=username | oc create -f -`
++
+The command output shows the resources that the template creates, as follows:
++
+[source,bash,options=nowrap]
+----
+secret "datagrid-service" created
+service "datagrid-service-headless" created
+service "datagrid-service-ping" created
+service "datagrid-service-https" created
+service "datagrid-service-hotrod" created
+statefulset "datagrid-service" created
+----
