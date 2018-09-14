@@ -169,31 +169,31 @@ _relist-template-service-broker:
 .PHONY: _relist-template-service-broker
 
 _install_templates_in_openshift_namespace:
-	oc create -f services/caching-service.json -n openshift || true
-	oc create -f services/datagrid-service.json -n openshift || true
+	oc create -f services/cache-service-template.json -n openshift || true
+	oc create -f services/datagrid-service-template.json -n openshift || true
 .PHONY: _install_templates_in_openshift_namespace
 
 install-templates-in-openshift-namespace: _install_templates_in_openshift_namespace _relist-template-service-broker
 .PHONY: install-templates-in-openshift-namespace
 
 install-templates:
-	oc create -f services/caching-service.json || true
-	oc create -f services/datagrid-service.json || true
+	oc create -f services/cache-service-template.json || true
+	oc create -f services/datagrid-service-template.json || true
 .PHONY: install-templates
 
 clear-templates:
-	oc delete all,secrets,sa,templates,configmaps,daemonsets,clusterroles,rolebindings,serviceaccounts --selector=template=caching-service || true
-	oc delete template caching-service || true
+	oc delete all,secrets,sa,templates,configmaps,daemonsets,clusterroles,rolebindings,serviceaccounts --selector=template=cache-service || true
+	oc delete template cache-service || true
 .PHONY: clear-templates
 
-test-caching-service-manually:
+test-cache-service-manually:
 	oc set image-lookup $(DEV_IMAGE_NAME)
-	oc process caching-service -p APPLICATION_USER=test \
+	oc process cache-service -p APPLICATION_USER=test \
 	-p APPLICATION_USER_PASSWORD=test -p IMAGE=$(_DEV_IMAGE_STREAM) | oc create -f -
-	oc expose svc/caching-service-https || true
-	oc expose svc/caching-service-hotrod || true
+	oc expose svc/cache-service-https || true
+	oc expose svc/cache-service-hotrod || true
 	oc get routes
-.PHONY: test-caching-service-manually
+.PHONY: test-cache-service-manually
 
 test-datagrid-service-manually:
 	oc set image-lookup $(DEV_IMAGE_NAME)
@@ -239,12 +239,12 @@ test-capacity:
 	$(MVN_COMMAND) clean test -f services/capacity-tests/pom.xml $(ADDITIONAL_ARGUMENTS)
 .PHONY: test-capacity
 
-run-caching-service-locally: stop-openshift start-openshift-with-catalog login-to-openshift prepare-openshift-project build-image push-image-to-local-openshift install-templates test-caching-service-manually
-.PHONY: run-caching-service-locally
+run-cache-service-locally: stop-openshift start-openshift-with-catalog login-to-openshift prepare-openshift-project build-image push-image-to-local-openshift install-templates test-cache-service-manually
+.PHONY: run-cache-service-locally
 
 run-datagrid-service-locally: stop-openshift start-openshift-with-catalog login-to-openshift prepare-openshift-project build-image push-image-to-local-openshift install-templates test-datagrid-service-manually
 .PHONY: run-datagrid-service-locally
 
 #Before running this target, login to the remote OpenShift from console in whatever way recommended by the provider, make sure you specify the _TEST_PROJECT and OPENSHIFT_ONLINE_REGISTRY variables
-run-caching-service-remotely: clean-docker clean-maven prepare-openshift-project build-image push-image-to-online-openshift install-templates test-caching-service-manually
+run-cache-service-remotely: clean-docker clean-maven prepare-openshift-project build-image push-image-to-online-openshift install-templates test-cache-service-manually
 .PHONY: test-online

@@ -68,8 +68,8 @@ make DEV_IMAGE_ORG=<insert org> \
               test-remote-with-pull
 ```
 
-=== Build image, create local openshift cluster and deploy caching-service
+=== Build image, create local openshift cluster and deploy cache-service
 
 ```
-make test-caching-service-manually
+make test-cache-service-manually
 ```

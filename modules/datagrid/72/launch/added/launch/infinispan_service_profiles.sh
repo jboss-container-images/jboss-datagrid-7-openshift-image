@@ -32,8 +32,8 @@ function configure() {
    if [ -n ${SERVICE_PROFILE} ]; then
 
       # Perform profile specific configuration
-      if [ "${SERVICE_PROFILE}" == "caching-service" ]; then
-         SERVICE_NAME=${SERVICE_NAME:-caching-service}
+      if [ "${SERVICE_PROFILE}" == "cache-service" ]; then
+         SERVICE_NAME=${SERVICE_NAME:-cache-service}
 
          createKeystoresFromSecrets
 

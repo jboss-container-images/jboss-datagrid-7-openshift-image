@@ -63,7 +63,7 @@ public class CachingServiceCapacityTest {
                .realm("ApplicationRealm")
                .saslMechanism("DIGEST-MD5")
                .saslQop(SaslQop.AUTH)
-               .serverName("caching-service");
+               .serverName("cache-service");
          RemoteCacheManager remoteCacheManager = new RemoteCacheManager(configurationBuilder.build());
          remoteCache = remoteCacheManager.getCache("default");
       }

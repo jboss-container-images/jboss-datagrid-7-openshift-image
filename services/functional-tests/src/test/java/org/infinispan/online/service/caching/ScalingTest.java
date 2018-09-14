@@ -26,7 +26,7 @@ import io.fabric8.openshift.client.OpenShiftClient;
 @RequiresOpenshift
 public class ScalingTest {
 
-   private static final String SERVICE_NAME = "caching-service";
+   private static final String SERVICE_NAME = "cache-service";
 
    ScalingTester scalingTester = new ScalingTester();
    OpenShiftCommandlineClient commandlineClient = new OpenShiftCommandlineClient();

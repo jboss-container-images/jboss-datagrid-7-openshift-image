@@ -26,7 +26,7 @@ Before you begin working with Red Hat Cache Service, you will need a working Ope
 
 Red Hat Cache Service is supported on OpenShift Container Platform 3.7 (and equivalents such as OpenShift Online). In order to
  make Red Hat Cache Service available in the Service Catalog, the administrator needs to add the template into the `openshift`
- namespace. This can be done by invoking `oc create -f templates/caching-service.json -n openshift`.
+ namespace. This can be done by invoking `oc create -f templates/cache-service-template.json -n openshift`.
 
 === Instantiating Red Hat Cache Service
 
@@ -40,7 +40,7 @@ The list of parameters is explained below:
 [options="header"]
 |======================
 |Option                    |Required/Optional? |Description                                                                               |Default option
-|APPLICATION_NAME          |Required           |Application name                                                                          |caching-service-app
+|APPLICATION_NAME          |Required           |Application name                                                                          |cache-service-app
 |IMAGE                     |Required           |Image that will be used to bootstrap the service                                          |jboss-datagrid-7/datagrid72-openshift
 |NUMBER_OF_INSTANCES       |Required           |Number of instances                                                                       |1
 |TOTAL_CONTAINER_MEM       |Optional           |Total container size (both limits and requests)                                           |512

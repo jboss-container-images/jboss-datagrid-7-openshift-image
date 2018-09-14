@@ -35,7 +35,7 @@ import io.fabric8.openshift.client.OpenShiftClient;
 @RequiresOpenshift
 public class CachingServiceTest {
 
-   private static final String SERVICE_NAME = "caching-service";
+   private static final String SERVICE_NAME = "cache-service";
 
    URL hotRodService;
    URL restService;
