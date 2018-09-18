@@ -136,8 +136,8 @@
          }
       },
       {
-         "apiVersion": "apps/v1beta1",
-         "kind": "StatefulSet",
+         "kind": "DeploymentConfig",
+         "apiVersion": "v1",
          "metadata": {
             "labels": {
                "application": "${APPLICATION_NAME}"
@@ -148,14 +148,7 @@
             "serviceName": "${APPLICATION_NAME}-headless",
             "replicas": "${{NUMBER_OF_INSTANCES}}",
             "strategy": {
-               "type": "Rolling",
-               "rollingParams": {
-                  "updatePeriodSeconds": 20,
-                  "intervalSeconds": 20,
-                  "timeoutSeconds": 1200,
-                  "maxUnavailable": 1,
-                  "maxSurge": 1
-               }
+               "type": "Recreate"
             },
             "template": {
                "metadata": {
@@ -288,6 +281,20 @@
                }
             },
             "triggers": [
+               {
+                  "type": "ImageChange",
+                  "imageChangeParams": {
+                     "automatic": true,
+                     "containerNames": [
+                        "${APPLICATION_NAME}"
+                     ],
+                     "from": {
+                        "kind": "ImageStreamTag",
+                        "namespace": "openshift",
+                        "name": "jboss-datagrid72-openshift:1.1"
+                     }
+                  }
+               },
                {
                   "type": "ConfigChange"
                }
