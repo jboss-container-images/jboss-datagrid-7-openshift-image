@@ -278,20 +278,6 @@
             },
             "triggers": [
                {
-                  "type": "ImageChange",
-                  "imageChangeParams": {
-                     "automatic": true,
-                     "containerNames": [
-                        "${APPLICATION_NAME}"
-                     ],
-                     "from": {
-                        "kind": "ImageStreamTag",
-                        "namespace": "openshift",
-                        "name": "jboss-datagrid72-openshift:1.1"
-                     }
-                  }
-               },
-               {
                   "type": "ConfigChange"
                }
             ]
