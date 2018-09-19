@@ -242,10 +242,6 @@
                         ],
                         "volumeMounts": [
                            {
-                              "name": "srv-data",
-                              "mountPath": "/opt/datagrid/standalone/data"
-                           },
-                           {
                               "name": "keystore-volume",
                               "mountPath": "/var/run/secrets/java.io/keystores"
                            },
@@ -297,23 +293,6 @@
                },
                {
                   "type": "ConfigChange"
-               }
-            ],
-            "volumeClaimTemplates": [
-               {
-                  "metadata": {
-                     "name": "srv-data"
-                  },
-                  "spec": {
-                     "accessModes": [
-                        "ReadWriteOnce"
-                     ],
-                     "resources": {
-                        "requests": {
-                           "storage": "1Gi"
-                        }
-                     }
-                  }
                }
             ]
          }
