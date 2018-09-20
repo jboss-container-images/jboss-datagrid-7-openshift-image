@@ -324,7 +324,7 @@
          "description": "Defines the image to bootstrap the service.",
          "name": "IMAGE",
          "required": true,
-         "value": "registry.access.redhat.com/jboss-datagrid-7/datagrid72-openshift"
+         "value": "registry.redhat.io/jboss-datagrid-7/datagrid72-openshift"
       },
       {
          "description": "Specifies how many instances of the application to create in the cluster.",
