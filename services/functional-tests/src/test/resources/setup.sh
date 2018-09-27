@@ -15,7 +15,11 @@ echo "Using image $IMAGE_NAME"
 
 oc create -f ../cache-service-template.json
 
-oc process cache-service -p IMAGE=${IMAGE_NAME} -p APPLICATION_USER=test -p APPLICATION_USER_PASSWORD=test | oc create -f -
+oc new-app cache-service \
+  -p IMAGE=${IMAGE_NAME} \
+  -p APPLICATION_USER=test \
+  -p APPLICATION_USER_PASSWORD=test
+  -e SCRIPT_DEBUG=true
 
 echo "---- Creating Datagrid Service for test ----"
 echo "Current dir $PWD"
@@ -23,4 +27,8 @@ echo "Using image $IMAGE_NAME"
 
 oc create -f ../datagrid-service-template.json
 
-oc process datagrid-service -p IMAGE=${IMAGE_NAME} -p APPLICATION_USER=test -p APPLICATION_USER_PASSWORD=test | oc create -f -
+oc new-app datagrid-service \
+  -p IMAGE=${IMAGE_NAME} \
+  -p APPLICATION_USER=test \
+  -p APPLICATION_USER_PASSWORD=test \
+  -e SCRIPT_DEBUG=true

@@ -14,7 +14,7 @@ Use this template to create a StatefulSet Pod that you can customize to your spe
 . Instantiate the template.
 .. `$ oc login -u developer`
 .. `$ oc new-project mydatagrid`
-.. `$ oc process openshift//datagrid-service -p APPLICATION_USER=username | oc create -f -`
+.. `$ oc new-app datagrid-service -p APPLICATION_USER=username
 +
 The command output shows the resources that the template creates, as follows:
 +
