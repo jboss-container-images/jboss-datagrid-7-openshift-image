@@ -209,7 +209,8 @@ clean-maven:
 .PHONY: clean-maven
 
 clean-docker:
-	sudo docker rmi $(_IMAGE) || true
+	sudo docker container prune -f
+	sudo docker rmi -f $(shell docker images --format '{{.Repository}}:{{.Tag}}' | grep -E 'datagrid|eap') || true
 	rm -rf target-docker
 .PHONY: clean-docker
 
@@ -226,7 +227,7 @@ test-remote: clean-docker clean-maven prepare-openshift-project build-image push
 test-remote-with-pull: clean-docker clean-maven prepare-openshift-project pull-image push-image-to-online-openshift test-functional
 .PHONY: test-remote-with-pull
 
-clean-ci: clean-docker stop-openshift #avoid cleaning Maven as we need results to be reported by the job
+clean-ci: stop-openshift clean-docker #avoid cleaning Maven as we need results to be reported by the job
 .PHONY: clean-ci
 
 run-docker: build-image
