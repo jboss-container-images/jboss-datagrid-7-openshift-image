@@ -14,9 +14,9 @@ import java.util.stream.Collectors;
 import org.infinispan.client.hotrod.CacheTopologyInfo;
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
-import org.infinispan.client.hotrod.configuration.Configuration;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 import org.infinispan.client.hotrod.configuration.SaslQop;
+import org.infinispan.client.hotrod.configuration.SslConfigurationBuilder;
 import org.infinispan.client.hotrod.exceptions.TransportException;
 import org.infinispan.commons.api.CacheContainerAdmin;
 import org.infinispan.online.service.utils.TrustStore;
@@ -103,24 +103,27 @@ public class HotRodTester implements EndpointTester {
    }
 
    private RemoteCacheManager getRemoteCacheManager(URL urlToService, boolean authenticate) {
-      Configuration cachingServiceClientConfiguration = new ConfigurationBuilder()
+      SslConfigurationBuilder builder = new ConfigurationBuilder()
             .addServer()
             .host(urlToService.getHost())
             .port(urlToService.getPort())
             .security()
             .ssl().enabled(true)
             .trustStoreFileName(trustStore.getPath())
-            .trustStorePassword(TrustStore.TRUSTSTORE_PASSWORD)
-            .authentication().enabled(authenticate)
-            .username("test")
-            .password("test")
-            .realm("ApplicationRealm")
-            .saslMechanism("DIGEST-MD5")
-            .saslQop(SaslQop.AUTH)
-            .serverName(serviceName)
-            .build();
+            .trustStorePassword(TrustStore.TRUSTSTORE_PASSWORD);
 
-      return new RemoteCacheManager(cachingServiceClientConfiguration);
+      // Necessary as username etc now automatically set enabled = true
+      if (authenticate) {
+         builder.authentication()
+               .username("test")
+               .password("test")
+               .realm("ApplicationRealm")
+               .saslMechanism("DIGEST-MD5")
+               .saslQop(SaslQop.AUTH)
+               .serverName(serviceName);
+      }
+
+      return new RemoteCacheManager(builder.build());
    }
 
    public void putGetTest() {
