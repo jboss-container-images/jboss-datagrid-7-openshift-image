@@ -1,0 +1,230 @@
+{
+    "kind": "Template",
+    "apiVersion": "v1",
+    "metadata": {
+        "annotations": {
+            "iconClass": "icon-datagrid",
+            "tags": "datagrid,jboss",
+            "version": "1.2",
+            "openshift.io/display-name": "Red Hat JBoss Data Grid 7.2 (User Config)",
+            "openshift.io/provider-display-name": "Red Hat, Inc.",
+            "description": "An example Red Hat JBoss Data Grid application. For more information about using this template, see https://github.com/jboss-openshift/application-templates.",
+            "template.openshift.io/long-description": "This template defines resources needed to develop Red Hat JBoss Data Grid 7.2 based applications, including a deployment configuration, using ephemeral (temporary) storage and communication using http.",
+            "template.openshift.io/documentation-url": "https://access.redhat.com/documentation/en/red-hat-jboss-data-grid/",
+            "template.openshift.io/support-url": "https://access.redhat.com"
+        },
+        "name": "user-xml"
+    },
+    "labels": {
+        "template": "user-xml"
+    },
+    "message": "A new data grid service has been created in your project.",
+    "parameters": [
+        {
+            "displayName": "Application Name",
+            "description": "The name for the application.",
+            "name": "APPLICATION_NAME",
+            "value": "datagrid-app",
+            "required": true
+        },
+        {
+            "description": "Infinispan image.",
+            "name": "IMAGE",
+            "required": true,
+            "value": "registry.redhat.io/jboss-datagrid-7/datagrid72-openshift"
+        }
+    ],
+    "objects": [
+        {
+            "apiVersion": "v1",
+            "kind": "Service",
+            "metadata": {
+                "annotations": {
+                    "description": "The web server's HTTP port."
+                },
+                "labels": {
+                    "application": "${APPLICATION_NAME}"
+                },
+                "name": "${APPLICATION_NAME}-http"
+            },
+            "spec": {
+                "ports": [
+                    {
+                        "port": 8080,
+                        "targetPort": 8443
+                    }
+                ],
+                "selector": {
+                    "deploymentConfig": "${APPLICATION_NAME}"
+                }
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Service",
+            "metadata": {
+                "annotations": {
+                    "description": "Hot Rod's port."
+                },
+                "labels": {
+                    "application": "${APPLICATION_NAME}"
+                },
+                "name": "${APPLICATION_NAME}-hotrod"
+            },
+            "spec": {
+                "ports": [
+                    {
+                        "port": 11222,
+                        "targetPort": 11222
+                    }
+                ],
+                "selector": {
+                    "deploymentConfig": "${APPLICATION_NAME}"
+                }
+            }
+        },
+        {
+            "kind": "Service",
+            "apiVersion": "v1",
+            "spec": {
+                "clusterIP": "None",
+                "ports": [
+                    {
+                        "name": "ping",
+                        "port": 8888
+                    }
+                ],
+                "selector": {
+                    "deploymentConfig": "${APPLICATION_NAME}"
+                }
+            },
+            "metadata": {
+                "name": "${APPLICATION_NAME}-ping",
+                "labels": {
+                    "application": "${APPLICATION_NAME}"
+                },
+                "annotations": {
+                    "service.alpha.kubernetes.io/tolerate-unready-endpoints": "true",
+                    "description": "The JGroups ping port for clustering."
+                }
+            }
+        },
+        {
+            "kind": "DeploymentConfig",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "${APPLICATION_NAME}",
+                "labels": {
+                    "application": "${APPLICATION_NAME}"
+                }
+            },
+            "spec": {
+                "strategy": {
+                    "type": "Recreate"
+                },
+                "triggers": [
+                    {
+                        "type": "ConfigChange"
+                    }
+                ],
+                "replicas": 1,
+                "selector": {
+                    "deploymentConfig": "${APPLICATION_NAME}"
+                },
+                "template": {
+                    "metadata": {
+                        "name": "${APPLICATION_NAME}",
+                        "labels": {
+                            "deploymentConfig": "${APPLICATION_NAME}",
+                            "application": "${APPLICATION_NAME}"
+                        }
+                    },
+                    "spec": {
+                        "terminationGracePeriodSeconds": 60,
+                        "containers": [
+                            {
+                                "name": "${APPLICATION_NAME}",
+                                "image": "${IMAGE}",
+                                "imagePullPolicy": "Always",
+                                "resources": {
+                                    "limits": {
+                                        "memory": "1Gi"
+                                    }
+                                },
+                                "volumeMounts": [
+                                    {
+                                        "name": "config-volume",
+                                        "mountPath": "/opt/datagrid/standalone/configuration/user",
+                                        "readOnly": true
+                                    }
+                                ],
+                                "livenessProbe": {
+                                    "exec": {
+                                        "command": [
+                                            "/bin/bash",
+                                            "-c",
+                                            "/opt/datagrid/bin/livenessProbe.sh"
+                                        ]
+                                    },
+                                    "initialDelaySeconds": 60
+                                },
+                                "readinessProbe": {
+                                    "exec": {
+                                        "command": [
+                                            "/bin/bash",
+                                            "-c",
+                                            "/opt/datagrid/bin/readinessProbe.sh"
+                                        ]
+                                    }
+                                },
+                                "ports": [
+                                    {
+                                        "containerPort": 8080,
+                                        "name": "http",
+                                        "protocol": "TCP"
+                                    },
+                                    {
+                                        "containerPort": 8888,
+                                        "name": "ping",
+                                        "protocol": "TCP"
+                                    },
+                                    {
+                                        "containerPort": 11222,
+                                        "name": "hotrod",
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "env": [
+                                    {
+                                        "name": "USER_CONFIG_MAP",
+                                        "value": "true"
+                                    },
+                                    {
+                                        "name": "JGROUPS_PING_PROTOCOL",
+                                        "value": "openshift.DNS_PING"
+                                    },
+                                    {
+                                        "name": "OPENSHIFT_DNS_PING_SERVICE_NAME",
+                                        "value": "${APPLICATION_NAME}-ping"
+                                    },
+                                    {
+                                        "name": "OPENSHIFT_DNS_PING_SERVICE_PORT",
+                                        "value": "8888"
+                                    }
+                                ]
+                            }
+                        ],
+                        "volumes": [
+                            {
+                                "name": "config-volume",
+                                "configMap": {
+                                    "name": "datagrid-config"
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    ]
+}
