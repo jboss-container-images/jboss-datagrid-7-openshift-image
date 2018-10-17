@@ -21,7 +21,6 @@ cp -p ${ADDED_DIR}/launch/backward-compatibility.sh $JBOSS_HOME/bin/launch
 cp -p ${ADDED_DIR}/launch/openshift-common.sh $JBOSS_HOME/bin/launch
 
 cp ${ADDED_DIR}/launch/management-realm.sh $JBOSS_HOME/bin/launch
-cp ${ADDED_DIR}/launch/cache-container.xml $JBOSS_HOME/bin/launch
 
 # Add scripts for dynamically adjusting memory
 cp -p ${ADDED_DIR}/launch/adjust_memory.sh $JBOSS_HOME/bin/launch
