@@ -2,8 +2,6 @@
 
 source $JBOSS_HOME/bin/launch/logging.sh
 
-CACHE_CONTAINER_FILE=$JBOSS_HOME/bin/launch/cache-container.xml
-
 function sanitize_cache_name() {
   local cache_name=$1
   cache_name=${cache_name^^}
@@ -227,11 +225,10 @@ function configure_infinispan_core() {
 
   local containers="<cache-container name=\"clustered\" default-cache=\"$DEFAULT_CACHE\" $cache_container_start $cache_container_statistics>"
   containers="$containers $transport"
-  local cache_container_configuration=$(cat "${CACHE_CONTAINER_FILE}" | sed ':a;N;$!ba;s|\n|\\n|g')
 
   global_state="<global-state><overlay-configuration-storage/></global-state>"
 
-  containers="$containers $global_state ${cache_container_configuration}"
+  containers="$containers $global_state"
   containers="$containers $containersecurity <!-- ##INFINISPAN_CACHE## --></cache-container>"
 
   sed -i "s|<!-- ##INFINISPAN_CORE## -->|$containers|" "$CONFIG_FILE"
