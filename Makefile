@@ -153,8 +153,8 @@ test-functional: deploy-testrunner-route
 .PHONY: test-functional
 
 deploy-testrunner-route:
-	oc create -f ./services/functional-tests/src/test/resources/eap7-testrunner-service.json
-	oc create -f ./services/functional-tests/src/test/resources/eap7-testrunner-route.json
+	oc create -f ./services/functional-tests/src/test/resources/eap7-testrunner-service.yaml
+	oc create -f ./services/functional-tests/src/test/resources/eap7-testrunner-route.yaml
 .PHONY: deploy-testrunner-route
 
 test-unit:
@@ -169,16 +169,16 @@ _relist-template-service-broker:
 .PHONY: _relist-template-service-broker
 
 _install_templates_in_openshift_namespace:
-	oc create -f services/cache-service-template.json -n openshift || true
-	oc create -f services/datagrid-service-template.json -n openshift || true
+	oc create -f services/cache-service-template.yaml -n openshift || true
+	oc create -f services/datagrid-service-template.yaml -n openshift || true
 .PHONY: _install_templates_in_openshift_namespace
 
 install-templates-in-openshift-namespace: _install_templates_in_openshift_namespace _relist-template-service-broker
 .PHONY: install-templates-in-openshift-namespace
 
 install-templates:
-	oc create -f services/cache-service-template.json || true
-	oc create -f services/datagrid-service-template.json || true
+	oc create -f services/cache-service-template.yaml || true
+	oc create -f services/datagrid-service-template.yaml || true
 .PHONY: install-templates
 
 clear-templates:
