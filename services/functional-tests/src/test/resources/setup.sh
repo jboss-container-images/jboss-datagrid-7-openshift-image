@@ -13,7 +13,7 @@ echo "---- Creating Caching Service for test ----"
 echo "Current dir $PWD"
 echo "Using image $IMAGE_NAME"
 
-oc create -f ../cache-service-template.json
+oc create -f ../cache-service-template.yaml
 
 oc new-app cache-service \
   -p IMAGE=${IMAGE_NAME} \
@@ -25,7 +25,7 @@ echo "---- Creating Datagrid Service for test ----"
 echo "Current dir $PWD"
 echo "Using image $IMAGE_NAME"
 
-oc create -f ../datagrid-service-template.json
+oc create -f ../datagrid-service-template.yaml
 
 oc new-app datagrid-service \
   -p IMAGE=${IMAGE_NAME} \

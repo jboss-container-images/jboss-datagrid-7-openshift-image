@@ -23,14 +23,14 @@
         <property name="namespace.destroy.timeout">120</property>
         <!-- For debugging purposes:
            * comment out this line and start the definitions manually before the test via:
-              oc create -f target/classes/eap7-testrunner.json
+              oc create -f target/classes/eap7-testrunner.yaml
            * turn on port forwarding manually in a different console:
               oc port-forward testrunner 9990 8787
            * attach remote debugger to localhost:8787
            * debug the test class
-           Note: The EAP pod has to have DEBUG=true in the json definition so that EAP start in debug mode
+           Note: The EAP pod has to have DEBUG=true in the yaml definition so that EAP start in debug mode
         -->
-        <property name="definitionsFile">target/classes/eap7-testrunner.json</property>
+        <property name="definitionsFile">target/classes/eap7-testrunner.yaml</property>
         <property name="wait.for.service.list">cache-service-hotrod, cache-service-https, datagrid-service-hotrod, datagrid-service-https</property>
         <property name="env.script.env">image=${image}</property>
         <property name="proxiedContainerPorts">testrunner:9990</property>
