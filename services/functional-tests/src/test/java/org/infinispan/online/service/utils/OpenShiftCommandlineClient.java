@@ -8,8 +8,4 @@ public class OpenShiftCommandlineClient {
       commandlineClient.invoke("oc scale statefulset " + statefulSetName + " --replicas=" + replicas);
    }
 
-   public void scaleDeploymentConfig(String dcName, int replicas) {
-      commandlineClient.invoke("oc scale dc/" + dcName + " --replicas=" + replicas);
-   }
-
 }

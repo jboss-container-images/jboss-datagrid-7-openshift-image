@@ -10,8 +10,7 @@ echo "---- Docker PS ----"
 docker ps
 
 echo "---- Caching Service logs ----"
-POD=$(oc get pod -l application=cache-service -o jsonpath="{.items[0].metadata.name}")
-oc logs $POD
+oc logs cache-service-0
 
 echo "---- Test Runner logs ----"
 oc logs testrunner

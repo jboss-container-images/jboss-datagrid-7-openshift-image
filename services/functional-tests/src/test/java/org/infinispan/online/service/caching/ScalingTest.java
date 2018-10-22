@@ -51,7 +51,7 @@ public class ScalingTest {
    @InSequence(1)
    @Test
    public void scale_up() {
-      scalingTester.scaleUpDeploymentConfig(2, SERVICE_NAME, client, commandlineClient, readinessCheck);
+      scalingTester.scaleUpStatefulSet(2, SERVICE_NAME, client, commandlineClient, readinessCheck);
    }
 
    @InSequence(2)
@@ -67,6 +67,6 @@ public class ScalingTest {
    @InSequence(3)
    @Test
    public void scale_down() {
-      scalingTester.scaleDownDeploymentConfig(1, SERVICE_NAME, client, commandlineClient, readinessCheck);
+      scalingTester.scaleDownStatefulSet(1, SERVICE_NAME, client, commandlineClient, readinessCheck);
    }
 }

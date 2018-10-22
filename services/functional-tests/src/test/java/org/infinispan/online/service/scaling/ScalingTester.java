@@ -27,14 +27,4 @@ public class ScalingTester {
       readinessCheck.waitUntilTargetNumberOfReplicasAreReady(statefulSetName, 1, client);
    }
 
-   public void scaleUpDeploymentConfig(int numReplicas, String dcName, OpenShiftClient client, OpenShiftCommandlineClient commandlineClient, ReadinessCheck readinessCheck) {
-      commandlineClient.scaleDeploymentConfig(dcName, numReplicas);
-      readinessCheck.waitUntilTargetNumberOfReplicasAreReady(dcName, numReplicas, client);
-   }
-
-   public void scaleDownDeploymentConfig(int numReplicas, String dcName, OpenShiftClient client, OpenShiftCommandlineClient commandlineClient, ReadinessCheck readinessCheck) {
-      commandlineClient.scaleDeploymentConfig(dcName, numReplicas);
-      readinessCheck.waitUntilTargetNumberOfReplicasAreReady(dcName, numReplicas, client);
-   }
-
 }
