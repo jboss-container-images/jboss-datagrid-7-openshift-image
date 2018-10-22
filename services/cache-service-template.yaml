@@ -170,6 +170,8 @@ objects:
               cpu: "0.5"
               memory: ${TOTAL_CONTAINER_MEM}Mi
           volumeMounts:
+          - mountPath: /opt/datagrid/standalone/data
+            name: srv-data
           - mountPath: /var/run/secrets/java.io/keystores
             name: keystore-volume
           - mountPath: /var/run/secrets/openshift.io/serviceaccount
@@ -183,6 +185,15 @@ objects:
             secretName: service-certs
     triggers:
     - type: ConfigChange
+    volumeClaimTemplates:
+    - metadata:
+        name: srv-data
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
 parameters:
 - description: The name for the application.
   displayName: Application Name
