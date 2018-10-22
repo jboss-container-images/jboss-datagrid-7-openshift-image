@@ -229,11 +229,7 @@ function configure_infinispan_core() {
   containers="$containers $transport"
   local cache_container_configuration=$(cat "${CACHE_CONTAINER_FILE}" | sed ':a;N;$!ba;s|\n|\\n|g')
 
-  if [ "$(find_env "$ENABLE_OVERLAY_CONFIGURATION_STORAGE")" == "true" ]; then
-    global_state="<global-state><overlay-configuration-storage/></global-state>"
-  else
-    global_state="<global-state/>"
-  fi
+  global_state="<global-state><overlay-configuration-storage/></global-state>"
 
   containers="$containers $global_state ${cache_container_configuration}"
   containers="$containers $containersecurity <!-- ##INFINISPAN_CACHE## --></cache-container>"
