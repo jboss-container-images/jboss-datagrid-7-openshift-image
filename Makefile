@@ -153,6 +153,8 @@ test-functional: deploy-testrunner-route
 .PHONY: test-functional
 
 deploy-testrunner-route:
+	oc delete service testrunner-http || true
+	oc delete route testrunner || true
 	oc create -f ./services/functional-tests/src/test/resources/eap7-testrunner-service.yaml
 	oc create -f ./services/functional-tests/src/test/resources/eap7-testrunner-route.yaml
 .PHONY: deploy-testrunner-route
