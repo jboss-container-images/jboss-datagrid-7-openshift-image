@@ -1,4 +1,4 @@
-package org.infinispan.online.service.datagrid;
+package org.infinispan.online.service.caching;
 
 import org.arquillian.cube.openshift.impl.requirement.RequiresOpenshift;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
@@ -10,7 +10,7 @@ import org.junit.runner.RunWith;
 public class PermanentCacheTest extends BasePermanentCacheTest {
 
    public PermanentCacheTest() {
-      super("datagrid-service");
+      super("cache-service");
    }
 
 }
