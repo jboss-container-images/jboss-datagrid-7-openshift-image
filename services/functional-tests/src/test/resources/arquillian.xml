@@ -39,7 +39,7 @@
 
         <!-- Set these two props to false if you don't want the server to be destroyed after the tests finish -->
         <property name="namespace.cleanup.enabled">true</property>
-        <property name="namespace.destroy.enabled">true</property>
+        <property name="namespace.destroy.enabled">false</property>
     </extension>
 
     <container qualifier="testrunner" mode="suite" default="true">
