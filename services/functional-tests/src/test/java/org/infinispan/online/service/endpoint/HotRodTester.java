@@ -19,6 +19,7 @@ import org.infinispan.client.hotrod.configuration.SaslQop;
 import org.infinispan.client.hotrod.configuration.SslConfigurationBuilder;
 import org.infinispan.client.hotrod.exceptions.TransportException;
 import org.infinispan.commons.api.CacheContainerAdmin;
+import org.infinispan.commons.configuration.BasicConfiguration;
 import org.infinispan.online.service.utils.TrustStore;
 
 import io.fabric8.kubernetes.api.model.Pod;
@@ -212,11 +213,24 @@ public class HotRodTester implements EndpointTester {
          .createCache(cacheName, template);
    }
 
+   public void createNamedCache(String cacheName, BasicConfiguration cacheCfg) {
+      cacheManager.administration()
+         .withFlags(CacheContainerAdmin.AdminFlag.PERMANENT)
+         .createCache(cacheName, cacheCfg);
+   }
+
    public void namedCachePutGetTest(String cacheName) {
       //given
       RemoteCache<String, String> stringCache = cacheManager.getCache(cacheName);
       //when
       stringCache.put(hotRodKey, "value");
+      //then
+      assertEquals("value", stringCache.get(hotRodKey));
+   }
+
+   public void namedCacheGetTest(String cacheName) {
+      //given
+      RemoteCache<String, String> stringCache = cacheManager.getCache(cacheName);
       //then
       assertEquals("value", stringCache.get(hotRodKey));
    }
