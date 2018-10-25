@@ -1,12 +1,5 @@
 package org.infinispan.online.service.endpoint;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-
-import java.net.URI;
-import java.net.URL;
-import java.util.concurrent.TimeUnit;
-
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.Authentication;
 import org.eclipse.jetty.client.api.AuthenticationStore;
@@ -19,16 +12,21 @@ import org.eclipse.jetty.http.HttpMethod;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.infinispan.online.service.utils.TrustStore;
 
-import io.fabric8.openshift.client.OpenShiftClient;
+import java.net.URI;
+import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
-public class RESTTester implements EndpointTester {
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
+
+public class RESTTester {
 
    private static String DEFAULT_CACHE = "default";
 
    private TrustStore trustStore;
 
-   public RESTTester(String serviceName, OpenShiftClient client) {
-      trustStore = new TrustStore(client, serviceName);
+   public RESTTester(String serviceName) {
+      trustStore = new TrustStore(serviceName);
    }
 
    public void testBasicEndpointCapabilities(URL urlToService) {

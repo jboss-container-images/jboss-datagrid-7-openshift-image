@@ -10,16 +10,11 @@ import io.fabric8.openshift.client.OpenShiftClient;
 
 public class OpenShiftHandle {
 
+   private static final OpenShiftClient OPENSHIFT_CLIENT = OpenShiftClientCreator.getClient();
    private static final String HTTP_PROTOCOL = "https";
 
-   private OpenShiftClient client;
-
-   public OpenShiftHandle(OpenShiftClient client) {
-      this.client = client;
-   }
-
    public URL getServiceWithName(String resourceName) throws MalformedURLException {
-      ServiceSpec spec = client.services().withName(resourceName).get().getSpec();
+      ServiceSpec spec = OPENSHIFT_CLIENT.services().withName(resourceName).get().getSpec();
 
       if (spec != null) {
          String host;
@@ -35,6 +30,6 @@ public class OpenShiftHandle {
    }
 
    public List<Pod> getPodsWithLabel(String labelKey, String labelValue) throws MalformedURLException {
-      return client.pods().withLabel(labelKey, labelValue).list().getItems();
+      return OPENSHIFT_CLIENT.pods().withLabel(labelKey, labelValue).list().getItems();
    }
 }

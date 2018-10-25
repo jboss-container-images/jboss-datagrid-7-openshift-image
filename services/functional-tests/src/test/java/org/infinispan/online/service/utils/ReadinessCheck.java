@@ -9,17 +9,19 @@ import io.fabric8.openshift.client.OpenShiftClient;
 
 public class ReadinessCheck {
 
+   private static final OpenShiftClient OPENSHIFT_CLIENT = OpenShiftClientCreator.getClient();
+
    private Waiter waiter = new Waiter();
 
-   public void waitUntilTargetNumberOfReplicasAreReady(String podPartialName, int replicas, OpenShiftClient client) {
-      waiter.waitFor(() -> getPodsWithName(podPartialName, client).size() == replicas);
-      waitUntilAllPodsAreReady(client);
+   public void waitUntilTargetNumberOfReplicasAreReady(String podPartialName, int replicas) {
+      waiter.waitFor(() -> getPodsWithName(podPartialName).size() == replicas);
+      waitUntilAllPodsAreReady();
       System.out.println("All Pods are ready and target replicas looks good.");
    }
 
-   public void waitUntilAllPodsAreReady(OpenShiftClient client) {
+   public void waitUntilAllPodsAreReady() {
       waiter.waitFor(() -> {
-         Set<Pod> allPods = getAllPods(client);
+         Set<Pod> allPods = getAllPods();
          Set<Pod> notReadyPods = getNotReadyPods(allPods);
          Set<Pod> readyPods = getReadyPods(allPods);
 
@@ -35,8 +37,8 @@ public class ReadinessCheck {
       }, Waiter.DEFAULT_TIMEOUT, Waiter.DEFAULT_TIMEOUT_UNIT, 2);
    }
 
-   private Set<Pod> getAllPods(OpenShiftClient client) {
-      return new HashSet<>(client.pods().list().getItems());
+   private Set<Pod> getAllPods() {
+      return new HashSet<>(OPENSHIFT_CLIENT.pods().list().getItems());
    }
 
    private Set<Pod> getNotReadyPods(Set<Pod> allPods) {
@@ -59,8 +61,8 @@ public class ReadinessCheck {
             ).collect(Collectors.toSet());
    }
 
-   private Set<Pod> getPodsWithName(String name, OpenShiftClient client) {
-      return client.pods().list().getItems().stream()
+   private Set<Pod> getPodsWithName(String name) {
+      return OPENSHIFT_CLIENT.pods().list().getItems().stream()
             .filter(pod -> pod.getMetadata().getName().contains(name))
             .collect(Collectors.toSet());
    }

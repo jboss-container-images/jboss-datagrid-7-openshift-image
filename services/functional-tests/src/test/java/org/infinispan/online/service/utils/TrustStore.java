@@ -16,12 +16,12 @@ import io.fabric8.openshift.client.OpenShiftClient;
 public class TrustStore {
    public static final char[] TRUSTSTORE_PASSWORD = "test99".toCharArray();
 
-   private OpenShiftClient client;
+   private static final OpenShiftClient OPENSHIFT_CLIENT = OpenShiftClientCreator.getClient();
+
    private String trustStoreDir;
    private String serviceName;
 
-   public TrustStore(OpenShiftClient client, String serviceName) {
-      this.client = client;
+   public TrustStore(String serviceName) {
       this.serviceName = serviceName;
       String jbossDataDir = System.getProperty("jboss.server.data.dir");
       if (jbossDataDir != null) {
@@ -37,7 +37,7 @@ public class TrustStore {
    }
 
    private void create() {
-      Object o = client.secrets().withName("service-certs").get().getData().get("tls.crt");
+      Object o = OPENSHIFT_CLIENT.secrets().withName("service-certs").get().getData().get("tls.crt");
       String certSecret = (String) o;
 
       try (InputStream input = Base64.getDecoder().wrap(new ByteArrayInputStream(certSecret.getBytes(StandardCharsets.UTF_8)));

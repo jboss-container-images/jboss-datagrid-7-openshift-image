@@ -1,20 +1,22 @@
 package org.infinispan.online.service.datagrid;
 
-import io.fabric8.openshift.client.OpenShiftClient;
 import org.arquillian.cube.openshift.impl.requirement.RequiresOpenshift;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
+import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.Search;
+import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
+import org.infinispan.client.hotrod.marshall.ProtoStreamMarshaller;
 import org.infinispan.commons.configuration.XMLStringConfiguration;
 import org.infinispan.commons.logging.Log;
 import org.infinispan.commons.logging.LogFactory;
+import org.infinispan.online.service.endpoint.HotRodConfiguration;
 import org.infinispan.online.service.endpoint.HotRodTester;
+import org.infinispan.online.service.endpoint.HotRodUtil;
+import org.infinispan.online.service.endpoint.HotRodUtil.LazyRemoteCacheManager;
 import org.infinispan.online.service.scaling.ScalingTester;
 import org.infinispan.online.service.testdomain.AnalyzerTestEntity;
 import org.infinispan.online.service.testdomain.AnalyzerTestEntityMarshaller;
 import org.infinispan.online.service.utils.DeploymentHelper;
-import org.infinispan.online.service.utils.OpenShiftClientCreator;
-import org.infinispan.online.service.utils.OpenShiftCommandlineClient;
-import org.infinispan.online.service.utils.OpenShiftHandle;
 import org.infinispan.online.service.utils.ReadinessCheck;
 import org.infinispan.protostream.FileDescriptorSource;
 import org.infinispan.query.dsl.Query;
@@ -29,13 +31,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
-import static org.infinispan.online.service.utils.XmlUtils.prettyXml;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(ArquillianConditionalRunner.class)
@@ -61,13 +61,8 @@ public class PersistedIndexSurvivesTest {
    private static final String INDEX_METADATA_CACHE_NAME = "test-persistent-indexed-metadata";
    private static final String INDEX_DATA_CACHE_NAME = "test-persistent-indexed-data";
 
-   private OpenShiftClient client = OpenShiftClientCreator.getClient();
-
    private ReadinessCheck readinessCheck = new ReadinessCheck();
-   private OpenShiftHandle handle = new OpenShiftHandle(client);
-
    private ScalingTester scalingTester = new ScalingTester();
-   private OpenShiftCommandlineClient commandlineClient = new OpenShiftCommandlineClient();
 
    @Deployment
    public static Archive<?> deploymentApp() {
@@ -82,36 +77,35 @@ public class PersistedIndexSurvivesTest {
 
    @Before
    public void before() {
-      readinessCheck.waitUntilAllPodsAreReady(client);
+      readinessCheck.waitUntilAllPodsAreReady();
    }
 
    @InSequence(1)
    @Test
-   public void put_on_persisted_cache() throws Exception {
-      URL hotRodService = handle.getServiceWithName(SERVICE_NAME + "-hotrod");
-      HotRodTester hotRodTester = new HotRodTester(SERVICE_NAME, hotRodService, client, true);
-
-      hotRodTester.initProtoSchema(
-         FileDescriptorSource.fromString("custom_analyzer.proto", CUSTOM_ANALYZER_PROTO_SCHEMA)
-         , new AnalyzerTestEntityMarshaller()
-      );
-
-      createIndexLockingCache(hotRodTester);
-      createIndexMetadataCache(hotRodTester);
-      createIndexDataCache(hotRodTester);
-      createDataCache(hotRodTester);
-
-      Map<String, AnalyzerTestEntity> entries = new HashMap<>();
-      entries.put("analyzed1", new AnalyzerTestEntity("tested 123", 3));
-      entries.put("analyzed2", new AnalyzerTestEntity("testing 1234", 3));
-      entries.put("analyzed3", new AnalyzerTestEntity("xyz", null));
-
-      hotRodTester.namedCachePutAllTest(entries, CACHE_NAME);
+   public void put_on_persisted_cache() {
+      try (LazyRemoteCacheManager lazyRemote = HotRodUtil.lazyRemoteCacheManager()) {
+         lazyRemote
+            .andThen(initProtoSchema())
+            .andThen(createIndexLockingCache())
+            .andThen(createIndexMetadataCache())
+            .andThen(createIndexDataCache())
+            .andThen(createDataCache())
+            .andThen(remote -> remote.getCache(CACHE_NAME))
+            .andThen(remoteCache -> {
+               Map<String, AnalyzerTestEntity> entries = new HashMap<>();
+               entries.put("analyzed1", new AnalyzerTestEntity("tested 123", 3));
+               entries.put("analyzed2", new AnalyzerTestEntity("testing 1234", 3));
+               entries.put("analyzed3", new AnalyzerTestEntity("xyz", null));
+               remoteCache.putAll(entries);
+               return remoteCache;
+            })
+            .apply(remoteConfiguration());
+      }
    }
 
    @InSequence(2)
    @Test
-   public void query_from_memory() throws Exception {
+   public void query_from_memory() {
       queryData();
    }
 
@@ -119,94 +113,75 @@ public class PersistedIndexSurvivesTest {
    @InSequence(3) //must be run from the client where "oc" is installed
    @Test
    public void scale_down() {
-      scalingTester.scaleDownStatefulSet(0, SERVICE_NAME, client, commandlineClient, readinessCheck);
+      scalingTester.scaleDownStatefulSet(0, SERVICE_NAME);
    }
 
    @RunAsClient
    @InSequence(4) //must be run from the client where "oc" is installed
    @Test
    public void scale_up() {
-      scalingTester.scaleUpStatefulSet(1, SERVICE_NAME, client, commandlineClient, readinessCheck);
+      scalingTester.scaleUpStatefulSet(1, SERVICE_NAME);
    }
 
    @InSequence(5)
    @Test
-   public void query_from_persistence() throws Exception {
+   public void query_from_persistence() {
       queryData();
    }
 
-   private void queryData() throws MalformedURLException {
-      URL hotRodService = handle.getServiceWithName(SERVICE_NAME + "-hotrod");
-      HotRodTester hotRodTester = new HotRodTester(SERVICE_NAME, hotRodService, client, true);
+   private void queryData() {
+      try (LazyRemoteCacheManager lazyRemote = HotRodUtil.lazyRemoteCacheManager()) {
+         lazyRemote
+            .andThen(initProtoSchema())
+            .andThen(remote -> remote.getCache(CACHE_NAME))
+            .andThen(remoteCache -> {
+               final QueryFactory queryFactory = Search.getQueryFactory(remoteCache);
+               final Query query = queryFactory
+                  .create("from sample_bank_account.AnalyzerTestEntity where f1:'test'");
 
-      hotRodTester.initProtoSchema(
-         FileDescriptorSource.fromString("custom_analyzer.proto", CUSTOM_ANALYZER_PROTO_SCHEMA)
-         , new AnalyzerTestEntityMarshaller()
-      );
+               List<AnalyzerTestEntity> list = query.list();
+               log.debugf("Query returned: %s", list);
+               assertEquals(2, list.size());
 
-      final QueryFactory queryFactory =
-         Search.getQueryFactory(hotRodTester.getRemoteCacheManager().getCache(CACHE_NAME));
-      final Query query = queryFactory
-         .create("from sample_bank_account.AnalyzerTestEntity where f1:'test'");
-      List<AnalyzerTestEntity> list = query.list();
-
-      log.debugf("Query returned: %s", list);
-
-      assertEquals(2, list.size());
+               return remoteCache;
+            })
+            .apply(remoteConfiguration());
+      }
    }
 
-   private static void createIndexLockingCache(HotRodTester hotRodTester) {
-      final String cacheName = INDEX_LOCKING_CACHE_NAME;
-
-      String xml = indexCacheXml("replicated", false, cacheName);
-      log.debugf("Index locking cache XML: %n%s", prettyXml(xml));
-
-      hotRodTester.createNamedCache(cacheName, new XMLStringConfiguration(xml));
+   private ConfigurationBuilder remoteConfiguration() {
+      return HotRodConfiguration
+         .secured()
+         .andThen(cfg -> {
+            cfg.marshaller(new ProtoStreamMarshaller());
+            return cfg;
+         })
+         .apply(SERVICE_NAME);
    }
 
-   private static void createIndexMetadataCache(HotRodTester hotRodTester) {
-      final String cacheName = INDEX_METADATA_CACHE_NAME;
-
-      String xml = indexCacheXml("replicated", true, cacheName);
-      log.debugf("Index metadata cache XML: %n%s", prettyXml(xml));
-
-      hotRodTester.createNamedCache(cacheName, new XMLStringConfiguration(xml));
-   }
-
-   private static void createIndexDataCache(HotRodTester hotRodTester) {
-      String cacheName = INDEX_DATA_CACHE_NAME;
-
-      String xml = indexCacheXml("distributed", false, cacheName);
-      log.debugf("Index data cache XML: %n%s", prettyXml(xml));
-
-      hotRodTester.createNamedCache(cacheName, new XMLStringConfiguration(xml));
-   }
-
-   private static String indexCacheXml(String cacheMode, boolean preload, String cacheName) {
-      return String.format(
-         "<infinispan>" +
-            "<cache-container>" +
-               "<%2$s-cache name=\"%1$s\">" +
-                  "<indexing index=\"NONE\"/>" +
-                  "<persistence passivation=\"false\">" +
-                     "<file-store " +
-                        "shared=\"false\" " +
-                        "fetch-state=\"true\" " +
-                        "path=\"${jboss.server.data.dir}/datagrid-infinispan/%4$s\" " +
-                        "preload=\"%3$s\" " +
-                     "/>" +
-                  "</persistence>" +
-               "</%2$s-cache>" +
-            "</cache-container>" +
-         "</infinispan>",
-         cacheName, cacheMode, preload, CACHE_NAME
+   private Function<RemoteCacheManager, RemoteCacheManager> createIndexLockingCache() {
+      return HotRodTester.createCache(
+         indexCacheXml("replicated", false, INDEX_LOCKING_CACHE_NAME)
+         , INDEX_LOCKING_CACHE_NAME
       );
    }
 
-   private static void createDataCache(HotRodTester hotRodTester) {
-      String cacheName = CACHE_NAME;
+   private Function<RemoteCacheManager, RemoteCacheManager> createIndexMetadataCache() {
+      return HotRodTester.createCache(
+         indexCacheXml("replicated", true, INDEX_METADATA_CACHE_NAME)
+         , INDEX_METADATA_CACHE_NAME
+      );
+   }
 
-      String xml = String.format(
+   private Function<RemoteCacheManager, RemoteCacheManager> createIndexDataCache() {
+      return HotRodTester.createCache(
+         indexCacheXml("distributed", false, INDEX_DATA_CACHE_NAME)
+         , INDEX_DATA_CACHE_NAME
+      );
+   }
+
+   private Function<RemoteCacheManager, RemoteCacheManager> createDataCache() {
+      XMLStringConfiguration xml = new XMLStringConfiguration(String.format(
          "<infinispan>" +
             "<cache-container>" +
                "<distributed-cache name=\"%1$s\">" +
@@ -226,11 +201,38 @@ public class PersistedIndexSurvivesTest {
                "</distributed-cache>" +
             "</cache-container>" +
          "</infinispan>",
-         cacheName, INDEX_LOCKING_CACHE_NAME, INDEX_METADATA_CACHE_NAME, INDEX_DATA_CACHE_NAME
-      );
-      log.debugf("Data cache XML: %n%s", prettyXml(xml));
+         CACHE_NAME, INDEX_LOCKING_CACHE_NAME, INDEX_METADATA_CACHE_NAME, INDEX_DATA_CACHE_NAME
+      ));
 
-      hotRodTester.createNamedCache(cacheName, new XMLStringConfiguration(xml));
+      return HotRodTester.createCache(xml, CACHE_NAME);
+   }
+
+   private Function<RemoteCacheManager, RemoteCacheManager> initProtoSchema() {
+      return HotRodUtil.initProtoSchema(
+         FileDescriptorSource.fromString("custom_analyzer.proto", CUSTOM_ANALYZER_PROTO_SCHEMA)
+         , new AnalyzerTestEntityMarshaller()
+      );
+   }
+
+   private static XMLStringConfiguration indexCacheXml(String cacheMode, boolean preload, String cacheName) {
+      return new XMLStringConfiguration(String.format(
+         "<infinispan>" +
+            "<cache-container>" +
+               "<%2$s-cache name=\"%1$s\">" +
+                  "<indexing index=\"NONE\"/>" +
+                  "<persistence passivation=\"false\">" +
+                     "<file-store " +
+                        "shared=\"false\" " +
+                        "fetch-state=\"true\" " +
+                        "path=\"${jboss.server.data.dir}/datagrid-infinispan/%4$s\" " +
+                        "preload=\"%3$s\" " +
+                     "/>" +
+                  "</persistence>" +
+               "</%2$s-cache>" +
+            "</cache-container>" +
+         "</infinispan>",
+         cacheName, cacheMode, preload, CACHE_NAME
+      ));
    }
 
 }

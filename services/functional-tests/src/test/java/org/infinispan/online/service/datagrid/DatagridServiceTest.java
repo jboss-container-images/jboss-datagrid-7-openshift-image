@@ -1,13 +1,15 @@
 package org.infinispan.online.service.datagrid;
 
-import io.fabric8.openshift.client.OpenShiftClient;
 import org.arquillian.cube.openshift.impl.requirement.RequiresOpenshift;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
+import org.infinispan.client.hotrod.RemoteCacheManager;
+import org.infinispan.online.service.endpoint.HotRodConfiguration;
 import org.infinispan.online.service.endpoint.HotRodTester;
+import org.infinispan.online.service.endpoint.HotRodUtil;
+import org.infinispan.online.service.endpoint.HotRodUtil.LazyRemoteCacheManager;
 import org.infinispan.online.service.endpoint.RESTTester;
 import org.infinispan.online.service.scaling.ScalingTester;
 import org.infinispan.online.service.utils.DeploymentHelper;
-import org.infinispan.online.service.utils.OpenShiftClientCreator;
 import org.infinispan.online.service.utils.OpenShiftHandle;
 import org.infinispan.online.service.utils.ReadinessCheck;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -28,12 +30,10 @@ public class DatagridServiceTest {
    private static final String SERVICE_NAME = "datagrid-service";
 
    private URL restService;
-   private HotRodTester hotRodTester;
-   private OpenShiftClient client = OpenShiftClientCreator.getClient();
-   private RESTTester restTester = new RESTTester(SERVICE_NAME, client);
+   private RESTTester restTester = new RESTTester(SERVICE_NAME);
 
    private ReadinessCheck readinessCheck = new ReadinessCheck();
-   private OpenShiftHandle handle = new OpenShiftHandle(client);
+   private OpenShiftHandle handle = new OpenShiftHandle();
 
    @Deployment
    public static Archive<?> deploymentApp() {
@@ -48,15 +48,18 @@ public class DatagridServiceTest {
 
    @Before
    public void before() throws MalformedURLException {
-      readinessCheck.waitUntilAllPodsAreReady(client);
+      readinessCheck.waitUntilAllPodsAreReady();
       restService = handle.getServiceWithName(SERVICE_NAME + "-https");
-      URL hotRodService = handle.getServiceWithName(SERVICE_NAME + "-hotrod");
-      hotRodTester = new HotRodTester(SERVICE_NAME, hotRodService, client);
    }
 
    @Test
    public void should_read_and_write_through_hotrod_endpoint() {
-      hotRodTester.putGetTest();
+      try (LazyRemoteCacheManager lazyRemote = HotRodUtil.lazyRemoteCacheManager()) {
+         lazyRemote
+            .andThen(RemoteCacheManager::<String, Object>getCache)
+            .andThen(HotRodTester.putGetCache())
+            .apply(HotRodConfiguration.secured().apply(SERVICE_NAME));
+      }
    }
 
    @Test
