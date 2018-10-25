@@ -1,30 +1,21 @@
 package org.infinispan.online.service.scaling;
 
-import org.infinispan.online.service.endpoint.HotRodTester;
 import org.infinispan.online.service.utils.OpenShiftCommandlineClient;
 import org.infinispan.online.service.utils.ReadinessCheck;
-import org.infinispan.online.service.utils.Waiter;
-
-import io.fabric8.openshift.client.OpenShiftClient;
 
 public class ScalingTester {
 
-   public void scaleUpStatefulSet(int numReplicas, String statefulSetName, OpenShiftClient client, OpenShiftCommandlineClient commandlineClient, ReadinessCheck readinessCheck) {
-      commandlineClient.scaleStatefulSet(statefulSetName, numReplicas);
-      readinessCheck.waitUntilTargetNumberOfReplicasAreReady(statefulSetName, numReplicas, client);
+   private static final OpenShiftCommandlineClient OPENSHIFT_CMD_LINE_CLIENT = new OpenShiftCommandlineClient();
+   private static final ReadinessCheck READINESS_CHECK = new ReadinessCheck();
+
+   public void scaleUpStatefulSet(int numReplicas, String statefulSetName) {
+      OPENSHIFT_CMD_LINE_CLIENT.scaleStatefulSet(statefulSetName, numReplicas);
+      READINESS_CHECK.waitUntilTargetNumberOfReplicasAreReady(statefulSetName, numReplicas);
    }
 
-   public void waitForClusterToForm(HotRodTester hotRodTester) {
-      Waiter waiter = new Waiter();
-      //Even though the Pods are ready, there might be bad timing in the discovery protocol
-      //and Pods didn't manage to form a cluster yet.
-      //We need to wait in a loop to see it that really happened.
-      waiter.waitFor(() -> hotRodTester.getNumberOfNodesInTheCluster() == 2);
-   }
-
-   public void scaleDownStatefulSet(int numReplicas, String statefulSetName, OpenShiftClient client, OpenShiftCommandlineClient commandlineClient, ReadinessCheck readinessCheck) {
-      commandlineClient.scaleStatefulSet(statefulSetName, numReplicas);
-      readinessCheck.waitUntilTargetNumberOfReplicasAreReady(statefulSetName, 1, client);
+   public void scaleDownStatefulSet(int numReplicas, String statefulSetName) {
+      OPENSHIFT_CMD_LINE_CLIENT.scaleStatefulSet(statefulSetName, numReplicas);
+      READINESS_CHECK.waitUntilTargetNumberOfReplicasAreReady(statefulSetName, 1);
    }
 
 }

@@ -1,16 +1,14 @@
 package org.infinispan.online.service.common;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
+import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.online.service.caching.CachingServiceTest;
 import org.infinispan.online.service.datagrid.DatagridServiceTest;
+import org.infinispan.online.service.endpoint.HotRodConfiguration;
 import org.infinispan.online.service.endpoint.HotRodTester;
+import org.infinispan.online.service.endpoint.HotRodUtil;
+import org.infinispan.online.service.endpoint.HotRodUtil.LazyRemoteCacheManager;
 import org.infinispan.online.service.scaling.ScalingTester;
 import org.infinispan.online.service.utils.DeploymentHelper;
-import org.infinispan.online.service.utils.OpenShiftClientCreator;
-import org.infinispan.online.service.utils.OpenShiftCommandlineClient;
-import org.infinispan.online.service.utils.OpenShiftHandle;
 import org.infinispan.online.service.utils.ReadinessCheck;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
@@ -21,22 +19,20 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Before;
 import org.junit.Test;
 
-import io.fabric8.openshift.client.OpenShiftClient;
+import java.net.MalformedURLException;
+import java.util.function.Function;
 
 public abstract class BasePermanentCacheTest {
 
-   protected final String serviceName;
-   protected final OpenShiftClient client = OpenShiftClientCreator.getClient();
-   protected final ReadinessCheck readinessCheck = new ReadinessCheck();
-   protected final OpenShiftHandle handle = new OpenShiftHandle(client);
-   protected final ScalingTester scalingTester = new ScalingTester();
-   protected final OpenShiftCommandlineClient commandlineClient = new OpenShiftCommandlineClient();
+   private final String serviceName;
+   private final String cacheName;
 
-   URL hotRodService;
-   URL restService;
+   private ReadinessCheck readinessCheck = new ReadinessCheck();
+   private ScalingTester scalingTester = new ScalingTester();
 
    public BasePermanentCacheTest(String serviceName) {
       this.serviceName = serviceName;
+      this.cacheName = getCacheName(serviceName);
    }
 
    @Deployment
@@ -54,47 +50,54 @@ public abstract class BasePermanentCacheTest {
 
    @Before
    public void before() throws MalformedURLException {
-      readinessCheck.waitUntilAllPodsAreReady(client);
-      hotRodService = handle.getServiceWithName(serviceName + "-hotrod");
-      restService = handle.getServiceWithName(serviceName + "-https");
+      readinessCheck.waitUntilAllPodsAreReady();
    }
 
    @InSequence(1)
    @Test
-   public abstract void create_named_cache() throws Exception;
+   public void create_named_cache() throws Exception {
+      String cacheName = getCacheName(serviceName);
+
+      try (LazyRemoteCacheManager lazyRemote = HotRodUtil.lazyRemoteCacheManager()) {
+         lazyRemote
+            .andThen(createDataCache(cacheName))
+            .andThen(remote -> remote.getCache(cacheName))
+            .andThen(HotRodTester.putOnCache())
+            .andThen(HotRodTester.getFromCache())
+            .apply(HotRodConfiguration.secured().apply(serviceName));
+      }
+   }
+
+   protected abstract Function<RemoteCacheManager, RemoteCacheManager> createDataCache(String cacheName);
 
    @RunAsClient
    @InSequence(2) //must be run from the client where "oc" is installed
    @Test
    public void scale_down() {
-      System.out.printf("scale_down('%s')%n", serviceName);
-
-      scalingTester.scaleDownStatefulSet(0, serviceName, client, commandlineClient, readinessCheck);
+      scalingTester.scaleDownStatefulSet(0, serviceName);
    }
 
    @RunAsClient
    @InSequence(3) //must be run from the client where "oc" is installed
    @Test
    public void scale_up() {
-      System.out.printf("scale_up('%s')%n", serviceName);
-
-      scalingTester.scaleUpStatefulSet(1, serviceName, client, commandlineClient, readinessCheck);
+      scalingTester.scaleUpStatefulSet(1, serviceName);
    }
 
    @InSequence(4)
    @Test
    public void use_named_cache() throws Exception {
-      System.out.printf("use_named_cache('%s')%n", serviceName);
-
-      URL hotRodService = handle.getServiceWithName(serviceName + "-hotrod");
-      HotRodTester hotRodTester = new HotRodTester(serviceName, hotRodService, client);
-
-      String cacheName = getCacheName();
-
-      hotRodTester.namedCachePutGetTest(cacheName);
+      try (LazyRemoteCacheManager lazyRemote = HotRodUtil.lazyRemoteCacheManager()) {
+         lazyRemote
+            .andThen(remote -> remote.getCache(cacheName))
+            .andThen(HotRodTester.putOnCache())
+            .andThen(HotRodTester.getFromCache())
+            .apply(HotRodConfiguration.secured().apply(serviceName));
+      }
    }
 
-   protected String getCacheName() {
+   private static String getCacheName(String serviceName) {
       return "custom-" + serviceName;
    }
+
 }
