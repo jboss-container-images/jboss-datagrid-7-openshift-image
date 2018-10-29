@@ -63,6 +63,20 @@ public class DatagridServiceTest {
    }
 
    @Test
+   public void should_read_and_write_created_caches_from_default_cache() {
+      String cacheName = "sample-datagrid-service-cache";
+
+      try (LazyRemoteCacheManager lazyRemote = HotRodUtil.lazyRemoteCacheManager()) {
+         lazyRemote
+            .andThen(HotRodTester.createCache("default", cacheName))
+            .andThen(remote -> remote.getCache(cacheName))
+            .andThen(HotRodTester.putOnCache())
+            .andThen(HotRodTester.getFromCache())
+            .apply(HotRodConfiguration.secured().apply(SERVICE_NAME));
+      }
+   }
+
+   @Test
    public void should_read_and_write_through_rest_endpoint() {
       restTester.putGetRemoveTest(restService);
    }
