@@ -133,6 +133,8 @@ objects:
               secretKeyRef:
                 key: application-password
                 name: ${APPLICATION_NAME}
+          - name: REPLICATION_FACTOR
+            value: ${REPLICATION_FACTOR}
           image: ${IMAGE}
           livenessProbe:
             exec:
@@ -207,6 +209,11 @@ parameters:
 - description: Number of instances in the cluster.
   displayName: Number of Instances
   name: NUMBER_OF_INSTANCES
+  required: true
+  value: "1"
+- description: Number of copies per data entry.
+  displayName: Replication Factor
+  name: REPLICATION_FACTOR
   required: true
   value: "1"
 - description: Total container memory in MiB.

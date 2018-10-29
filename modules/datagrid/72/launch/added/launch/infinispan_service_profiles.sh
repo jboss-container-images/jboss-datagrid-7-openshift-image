@@ -44,7 +44,7 @@ function configure() {
          export REST_SECURITY_DOMAIN="ApplicationRealm"
 
          # Infinispan
-         export DEFAULT_CACHE_OWNERS="1"
+         export DEFAULT_CACHE_OWNERS=${REPLICATION_FACTOR}
          export DEFAULT_CACHE_PARTITION_HANDLING_WHEN_SPLIT="DENY_READ_WRITES"
          export DEFAULT_CACHE_PARTITION_HANDLING_MERGE_POLICY="REMOVE_ALL"
          export DEFAULT_CACHE_MEMORY_STORAGE_TYPE="off-heap"
