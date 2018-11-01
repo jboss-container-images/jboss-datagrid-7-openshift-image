@@ -9,23 +9,32 @@ oc delete all,secrets,sa,templates,configmaps,daemonsets,clusterroles,rolebindin
 oc delete template cache-service || true
 oc delete template datagrid-service || true
 
-echo "---- Creating Caching Service for test ----"
+echo "---- Install templates ----"
 echo "Current dir $PWD"
 echo "Using image $IMAGE_NAME"
 
 oc create -f ../cache-service-template.yaml
+oc create -f ../datagrid-service-template.yaml
+
+echo "---- Creating Caching Service for test ----"
 
 oc new-app cache-service \
   -p IMAGE=${IMAGE_NAME} \
   -p APPLICATION_USER=test \
-  -p APPLICATION_USER_PASSWORD=test
+  -p APPLICATION_USER_PASSWORD=test \
+  -e SCRIPT_DEBUG=true
+
+echo "---- Creating Custom Caching Service for test ----"
+
+oc new-app cache-service \
+  -p APPLICATION_NAME=custom-cache \
+  -p IMAGE=${IMAGE_NAME} \
+  -p APPLICATION_USER=test \
+  -p APPLICATION_USER_PASSWORD=test \
+  -p REPLICATION_FACTOR=3 \
   -e SCRIPT_DEBUG=true
 
 echo "---- Creating Datagrid Service for test ----"
-echo "Current dir $PWD"
-echo "Using image $IMAGE_NAME"
-
-oc create -f ../datagrid-service-template.yaml
 
 oc new-app datagrid-service \
   -p IMAGE=${IMAGE_NAME} \
