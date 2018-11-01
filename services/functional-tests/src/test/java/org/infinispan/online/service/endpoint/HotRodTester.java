@@ -36,7 +36,7 @@ public class HotRodTester {
       XMLStringConfiguration xmlCfg, String cacheName
    ) {
       return remote -> {
-         log.debugf("Create cache XML with: %n%s", prettyXml(xmlCfg.toXMLString()));
+         log.infof("Create cache XML with: %n%s", prettyXml(xmlCfg.toXMLString()));
 
          remote.administration().removeCache(cacheName);
          remote.administration()

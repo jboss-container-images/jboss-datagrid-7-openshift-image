@@ -9,10 +9,12 @@ import org.infinispan.online.service.endpoint.HotRodUtil;
 import org.infinispan.online.service.endpoint.HotRodUtil.LazyRemoteCacheManager;
 import org.infinispan.online.service.endpoint.RESTTester;
 import org.infinispan.online.service.scaling.ScalingTester;
+import org.infinispan.online.service.utils.CommandLines;
 import org.infinispan.online.service.utils.DeploymentHelper;
 import org.infinispan.online.service.utils.OpenShiftHandle;
 import org.infinispan.online.service.utils.ReadinessCheck;
 import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
@@ -22,6 +24,8 @@ import org.junit.runner.RunWith;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import static org.junit.Assert.assertEquals;
 
 @RunWith(ArquillianConditionalRunner.class)
 @RequiresOpenshift
@@ -79,6 +83,13 @@ public class DatagridServiceTest {
    @Test
    public void should_read_and_write_through_rest_endpoint() {
       restTester.putGetRemoveTest(restService);
+   }
+
+   @RunAsClient
+   @Test
+   public void should_have_2_num_owners() {
+      String podName = SERVICE_NAME + "-0";
+      assertEquals(2, CommandLines.numOwners(podName));
    }
 
 }

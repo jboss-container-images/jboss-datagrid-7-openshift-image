@@ -13,10 +13,12 @@ import org.infinispan.online.service.endpoint.HotRodUtil;
 import org.infinispan.online.service.endpoint.HotRodUtil.LazyRemoteCacheManager;
 import org.infinispan.online.service.endpoint.RESTTester;
 import org.infinispan.online.service.scaling.ScalingTester;
+import org.infinispan.online.service.utils.CommandLines;
 import org.infinispan.online.service.utils.DeploymentHelper;
 import org.infinispan.online.service.utils.OpenShiftHandle;
 import org.infinispan.online.service.utils.ReadinessCheck;
 import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
@@ -32,6 +34,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 
@@ -144,6 +147,13 @@ public class CachingServiceTest {
             })
             .apply(HotRodConfiguration.secured().apply(SERVICE_NAME));
       }
+   }
+
+   @RunAsClient
+   @Test
+   public void should_have_1_num_owners() {
+      String podName = SERVICE_NAME + "-0";
+      assertEquals(1, CommandLines.numOwners(podName));
    }
 
 }

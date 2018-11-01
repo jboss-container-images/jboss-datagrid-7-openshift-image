@@ -14,7 +14,11 @@ public class ReadinessCheck {
    private Waiter waiter = new Waiter();
 
    public void waitUntilTargetNumberOfReplicasAreReady(String podPartialName, int replicas) {
-      waiter.waitFor(() -> getPodsWithName(podPartialName).size() == replicas);
+      waiter.waitFor(() -> {
+         final int numPodsWithName = getPodsWithName(podPartialName).size();
+         System.out.printf("Found %d pods with name '%s', required %d pods%n", numPodsWithName, podPartialName, replicas);
+         return numPodsWithName == replicas;
+      });
       waitUntilAllPodsAreReady();
       System.out.println("All Pods are ready and target replicas looks good.");
    }
@@ -25,7 +29,11 @@ public class ReadinessCheck {
          Set<Pod> notReadyPods = getNotReadyPods(allPods);
          Set<Pod> readyPods = getReadyPods(allPods);
 
-         if (readyPods.size() + notReadyPods.size() == allPods.size()) {
+         final int numNotReady = notReadyPods.size();
+         final int numReady = readyPods.size();
+         final int numAll = allPods.size();
+         if (numReady + numNotReady == numAll) {
+            System.out.printf("Expected %d pods to be ready, but %d are not ready (all pods are %d)", numReady, numNotReady, numAll);
             return notReadyPods.isEmpty();
          }
 

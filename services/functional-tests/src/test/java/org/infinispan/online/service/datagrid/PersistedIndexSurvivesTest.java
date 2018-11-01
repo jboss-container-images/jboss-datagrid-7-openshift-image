@@ -140,7 +140,7 @@ public class PersistedIndexSurvivesTest {
                   .create("from sample_bank_account.AnalyzerTestEntity where f1:'test'");
 
                List<AnalyzerTestEntity> list = query.list();
-               log.debugf("Query returned: %s", list);
+               log.infof("Query returned: %s", list);
                assertEquals(2, list.size());
 
                return remoteCache;
