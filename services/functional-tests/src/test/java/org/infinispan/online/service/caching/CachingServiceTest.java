@@ -13,7 +13,7 @@ import org.infinispan.online.service.endpoint.HotRodUtil;
 import org.infinispan.online.service.endpoint.HotRodUtil.LazyRemoteCacheManager;
 import org.infinispan.online.service.endpoint.RESTTester;
 import org.infinispan.online.service.scaling.ScalingTester;
-import org.infinispan.online.service.utils.CommandLines;
+import org.infinispan.online.service.utils.CommandLine;
 import org.infinispan.online.service.utils.DeploymentHelper;
 import org.infinispan.online.service.utils.OpenShiftHandle;
 import org.infinispan.online.service.utils.ReadinessCheck;
@@ -153,7 +153,7 @@ public class CachingServiceTest {
    @Test
    public void should_have_1_num_owners() {
       String podName = SERVICE_NAME + "-0";
-      assertEquals(1, CommandLines.numOwners(podName));
+      assertEquals(1, CommandLine.numOwners(podName));
    }
 
 }

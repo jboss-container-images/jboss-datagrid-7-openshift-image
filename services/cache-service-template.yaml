@@ -22,6 +22,8 @@ objects:
   kind: Secret
   metadata:
     name: ${APPLICATION_NAME}
+    labels:
+      application: ${APPLICATION_NAME}
   stringData:
     application-password: ${APPLICATION_USER_PASSWORD}
     application-user: ${APPLICATION_USER}

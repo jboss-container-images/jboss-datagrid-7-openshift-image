@@ -1,6 +1,10 @@
 package org.infinispan.online.service.utils;
 
+import org.infinispan.commons.logging.Log;
+import org.infinispan.commons.logging.LogFactory;
 import org.infinispan.commons.util.Either;
+import org.jboss.dmr.ModelNode;
+import org.wildfly.extras.creaper.core.online.ModelNodeResult;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,7 +14,10 @@ import java.util.function.Function;
 
 public final class CommandLine {
 
+   private static final Log log = LogFactory.getLog(CommandLine.class);
+
    private CommandLine() {
+      // Avoid instantiation
    }
 
    public static final class Ok {
@@ -38,6 +45,8 @@ public final class CommandLine {
    public static Function<String, Either<Err, Ok>> invoke() {
       return cmd -> {
          try {
+            log.infof("Invoking on command line: '%s'", cmd);
+
             ProcessBuilder pb = new ProcessBuilder(cmd.split(" "));
             Process p = pb.start();
             int resultCode = p.waitFor();
@@ -51,6 +60,78 @@ public final class CommandLine {
             return Either.newLeft(new Err(-1, new RuntimeException(e)));
          }
       };
+   }
+
+   public static Function<Either<Err, Ok>, Ok> throwIfError() {
+      return result -> {
+         switch (result.type()) {
+            case LEFT:
+               throw result.left().error;
+            case RIGHT:
+               return result.right();
+            default:
+               throw new IllegalStateException("No other possible type: " + result.type());
+         }
+      };
+   }
+
+   public static void scaleStatefulSet(String statefulSetName, int replicas) {
+      CommandLine.invoke()
+         .andThen(CommandLine.throwIfError())
+         .apply(
+            String.format(
+               "oc scale statefulset %s --replicas=%s"
+               , statefulSetName, replicas
+            )
+         );
+   }
+
+   public static int numOwners(String svcName) {
+      return CommandLine.invoke()
+         .andThen(CommandLine.throwIfError())
+         .andThen(ok -> {
+            final ModelNodeResult numOwners = new ModelNodeResult(ModelNode.fromString(ok.output));
+            numOwners.assertDefinedValue();
+            return Integer.parseInt(numOwners.stringValue());
+         })
+         .apply(
+            String.format(
+               "oc exec " +
+                  "-it %s " +
+                  "-- /opt/datagrid/bin/cli.sh " +
+                  "--connect " +
+                  "--commands=/subsystem=datagrid-infinispan/cache-container=clustered/configurations=CONFIGURATIONS/distributed-cache-configuration=default:read-attribute(name=owners)"
+               , svcName
+            )
+         );
+   }
+
+   public static void newApp(String appName, String params, String templateName, String imageName) {
+      CommandLine.invoke()
+         .andThen(CommandLine.throwIfError())
+         .apply(
+            String.format(
+               "oc new-app %s " +
+                  "-p APPLICATION_NAME=%s " +
+                  "-p APPLICATION_USER=test " +
+                  "-p APPLICATION_USER_PASSWORD=test " +
+                  "-p IMAGE=%s " +
+                  "%s"
+               , templateName, appName, imageName, params
+            )
+         );
+   }
+
+   public static void deleteApp(String appName) {
+      CommandLine.invoke()
+         .andThen(CommandLine.throwIfError())
+         .apply(
+            String.format(
+               "oc delete all,secrets,sa,templates,configmaps,daemonsets,clusterroles,rolebindings,serviceaccounts " +
+                  "--selector=application=%s"
+               , appName
+            )
+         );
    }
 
    private static String getStream(InputStream stream) throws IOException {
