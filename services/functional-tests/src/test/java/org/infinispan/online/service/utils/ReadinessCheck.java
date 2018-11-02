@@ -6,8 +6,12 @@ import java.util.stream.Collectors;
 
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.openshift.client.OpenShiftClient;
+import org.infinispan.commons.logging.Log;
+import org.infinispan.commons.logging.LogFactory;
 
 public class ReadinessCheck {
+
+   private static final Log log = LogFactory.getLog(ReadinessCheck.class);
 
    private static final OpenShiftClient OPENSHIFT_CLIENT = OpenShiftClientCreator.getClient();
 
@@ -16,11 +20,11 @@ public class ReadinessCheck {
    public void waitUntilTargetNumberOfReplicasAreReady(String podPartialName, int replicas) {
       waiter.waitFor(() -> {
          final int numPodsWithName = getPodsWithName(podPartialName).size();
-         System.out.printf("Found %d pods with name '%s', required %d pods%n", numPodsWithName, podPartialName, replicas);
+         log.infof("Found %d pods with name '%s', required %d pods", numPodsWithName, podPartialName, replicas);
          return numPodsWithName == replicas;
       });
       waitUntilAllPodsAreReady();
-      System.out.println("All Pods are ready and target replicas looks good.");
+      log.info("All Pods are ready and target replicas looks good.");
    }
 
    public void waitUntilAllPodsAreReady() {
@@ -33,16 +37,17 @@ public class ReadinessCheck {
          final int numReady = readyPods.size();
          final int numAll = allPods.size();
          if (numReady + numNotReady == numAll) {
-            System.out.printf("Expected %d pods to be ready, but %d are not ready (all pods are %d)", numReady, numNotReady, numAll);
+            log.infof("Expected %d pods to be ready, but %d are not ready (all pods are %d)", numReady, numNotReady, numAll);
+            log.infof("Not ready: %s", notReadyPods);
             return notReadyPods.isEmpty();
          }
 
-         System.out.println("There is a mismatch between ready and not ready Pods. Skipping ready check.");
-         System.out.println("All Pods: " + allPods);
-         System.out.println("Not ready Pods: " + notReadyPods);
-         System.out.println("Ready Pods: " + readyPods);
+         log.infof("There is a mismatch between ready and not ready Pods. numberReadyPods=%d, numberNotReadyPods=%d, numberAllPods=%d", numReady, numNotReady, numAll);
+         log.infof("All Pods: %s", allPods);
+         log.infof("Not ready Pods: %s", notReadyPods);
+         log.infof("Ready Pods: %s", readyPods);
          return false;
-      }, Waiter.DEFAULT_TIMEOUT, Waiter.DEFAULT_TIMEOUT_UNIT, 2);
+      }, Waiter.DEFAULT_TIMEOUT, Waiter.DEFAULT_TIMEOUT_UNIT, 1);
    }
 
    private Set<Pod> getAllPods() {

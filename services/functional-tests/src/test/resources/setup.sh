@@ -24,16 +24,6 @@ oc new-app cache-service \
   -p APPLICATION_USER_PASSWORD=test \
   -e SCRIPT_DEBUG=true
 
-echo "---- Creating Custom Caching Service for test ----"
-
-oc new-app cache-service \
-  -p APPLICATION_NAME=custom-cache \
-  -p IMAGE=${IMAGE_NAME} \
-  -p APPLICATION_USER=test \
-  -p APPLICATION_USER_PASSWORD=test \
-  -p REPLICATION_FACTOR=3 \
-  -e SCRIPT_DEBUG=true
-
 echo "---- Creating Datagrid Service for test ----"
 
 oc new-app datagrid-service \

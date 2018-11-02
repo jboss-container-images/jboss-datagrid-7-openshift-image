@@ -9,7 +9,7 @@ import org.infinispan.online.service.endpoint.HotRodUtil;
 import org.infinispan.online.service.endpoint.HotRodUtil.LazyRemoteCacheManager;
 import org.infinispan.online.service.endpoint.RESTTester;
 import org.infinispan.online.service.scaling.ScalingTester;
-import org.infinispan.online.service.utils.CommandLines;
+import org.infinispan.online.service.utils.CommandLine;
 import org.infinispan.online.service.utils.DeploymentHelper;
 import org.infinispan.online.service.utils.OpenShiftHandle;
 import org.infinispan.online.service.utils.ReadinessCheck;
@@ -89,7 +89,7 @@ public class DatagridServiceTest {
    @Test
    public void should_have_2_num_owners() {
       String podName = SERVICE_NAME + "-0";
-      assertEquals(2, CommandLines.numOwners(podName));
+      assertEquals(2, CommandLine.numOwners(podName));
    }
 
 }
