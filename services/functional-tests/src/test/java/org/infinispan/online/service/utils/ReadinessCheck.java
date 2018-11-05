@@ -50,6 +50,30 @@ public class ReadinessCheck {
       }, Waiter.DEFAULT_TIMEOUT, Waiter.DEFAULT_TIMEOUT_UNIT, 1);
    }
 
+   public void waitUntilAllPodsAreReady(int expectedNumPods) {
+      waiter.waitFor(() -> {
+         Set<Pod> allPods = getAllPods();
+         Set<Pod> notReadyPods = getNotReadyPods(allPods);
+         Set<Pod> readyPods = getReadyPods(allPods);
+
+         final int numNotReady = notReadyPods.size();
+         final int numReady = readyPods.size();
+         final int numAll = allPods.size();
+
+         if (numReady != expectedNumPods) {
+            log.infof("Expected %d pods to be ready: ready=%d,notReady=%d,all=%d", expectedNumPods, numReady, numNotReady, numAll);
+            log.infof("Not ready: %s", notReadyPods);
+            return false;
+         }
+
+         return true;
+      }, Waiter.DEFAULT_TIMEOUT, Waiter.DEFAULT_TIMEOUT_UNIT, 1);
+   }
+
+   public int getAllPodsSize() {
+      return getAllPods().size();
+   }
+
    private Set<Pod> getAllPods() {
       return new HashSet<>(OPENSHIFT_CLIENT.pods().list().getItems());
    }
