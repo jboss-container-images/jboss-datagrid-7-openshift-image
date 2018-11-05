@@ -2,24 +2,27 @@ apiVersion: template.openshift.io/v1
 kind: Template
 labels:
   template: user-config
-message: A new data grid service has been created in your project.
+message: A custom Data Grid service has been created in your project.
 metadata:
   annotations:
-    description: An example Red Hat JBoss Data Grid application. For more information
-      about using this template, see https://github.com/jboss-openshift/application-templates.
+    description: An example Red Hat JBoss Data Grid application using custom configuration.
     iconClass: icon-datagrid
-    openshift.io/display-name: Red Hat JBoss Data Grid 7.2 (User Config)
+    openshift.io/display-name: Custom Red Hat JBoss Data Grid 7.2
     openshift.io/provider-display-name: Red Hat, Inc.
     tags: datagrid,jboss
     template.openshift.io/documentation-url: https://access.redhat.com/documentation/en/red-hat-jboss-data-grid/
-    template.openshift.io/long-description: This template defines resources needed
-      to develop Red Hat JBoss Data Grid 7.2 based applications, including a deployment
-      configuration, using ephemeral (temporary) storage and communication using http.
+    template.openshift.io/long-description: This template defines resources that you need to create Data Grid applications with custom configuration.
     template.openshift.io/support-url: https://access.redhat.com
     version: "1.2"
   creationTimestamp: null
+  #
+  # Specify a name for the application. Use this with the "oc new-app" command.
+  #
   name: user-config
 objects:
+  #
+  # Create a service for the REST endpoint.
+  #
 - apiVersion: v1
   kind: Service
   metadata:
@@ -34,6 +37,9 @@ objects:
       targetPort: 8443
     selector:
       deploymentConfig: ${APPLICATION_NAME}
+  #
+  # Create a service for the Hot Rod endpoint.
+  #
 - apiVersion: v1
   kind: Service
   metadata:
@@ -48,6 +54,9 @@ objects:
       targetPort: 11222
     selector:
       deploymentConfig: ${APPLICATION_NAME}
+  #
+  # Create a JGroups ping service to enable cluster discovery.
+  #
 - apiVersion: v1
   kind: Service
   metadata:
@@ -64,6 +73,9 @@ objects:
       port: 8888
     selector:
       deploymentConfig: ${APPLICATION_NAME}
+  #
+  # Create a deployment configuration for your custom Data Grid application.
+  #
 - apiVersion: v1
   kind: DeploymentConfig
   metadata:
@@ -84,13 +96,30 @@ objects:
         name: ${APPLICATION_NAME}
       spec:
         containers:
+          #
+          # Set environment variables to configure the application.
+          #
         - env:
+            #
+            # Configure OpenShift to create the deployment with custom
+            # configuration settings.
+            #
           - name: USER_CONFIG_MAP
             value: "true"
+            #
+            # Configure the deployment to use the DNS_PING protocol for cluster
+            # discovery. This is the recommended configuration.
+            #
           - name: JGROUPS_PING_PROTOCOL
             value: openshift.DNS_PING
+            #
+            # Configure the name of the ping service.
+            #
           - name: OPENSHIFT_DNS_PING_SERVICE_NAME
             value: ${APPLICATION_NAME}-ping
+            #
+            # Configure the ping port.
+            #
           - name: OPENSHIFT_DNS_PING_SERVICE_PORT
             value: "8888"
           image: ${IMAGE}
@@ -123,11 +152,20 @@ objects:
             limits:
               memory: 1Gi
           volumeMounts:
+            #
+            # Mount the directory that contains your custom configuration
+            # files. When you deploy the application this volume is mounted and
+            # the files are copied to the server's configuration directory.
+            #
           - mountPath: /opt/datagrid/standalone/configuration/user
             name: config-volume
             readOnly: true
         terminationGracePeriodSeconds: 60
         volumes:
+          #
+          # Specify a name for the ConfigMap object and link to the volume
+          # mount that contains the target configuration files.
+          #
         - configMap:
             name: datagrid-config
           name: config-volume

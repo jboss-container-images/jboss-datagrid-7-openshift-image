@@ -190,10 +190,12 @@
                     <protocol type="FD_SOCK" socket-binding="jgroups-udp-fd"/>
                     <protocol type="FD_ALL"/>
                     <protocol type="VERIFY_SUSPECT"/>
+                    <!-- Keep the following comment to configure your deployment with JGroups encryption using environment variables. -->
                     <!-- ##JGROUPS_ENCRYPT## -->
                     <protocol type="pbcast.NAKACK2"/>
                     <protocol type="UNICAST3"/>
                     <protocol type="pbcast.STABLE"/>
+                    <!-- Keep the following comment to configure your deployment with the JGroups AUTH protocol using environment variables. -->
                     <!-- ##JGROUPS_AUTH## -->
                     <protocol type="pbcast.GMS"/>
                     <protocol type="UFC"/>
@@ -207,12 +209,14 @@
                     <protocol type="FD_SOCK" socket-binding="jgroups-tcp-fd"/>
                     <protocol type="FD_ALL"/>
                     <protocol type="VERIFY_SUSPECT"/>
+                    <!-- Keep the following comment to configure your deployment with JGroups encryption using environment variables. -->
                     <!-- ##JGROUPS_ENCRYPT## -->
                     <protocol type="pbcast.NAKACK2">
                         <property name="use_mcast_xmit">false</property>
                     </protocol>
                     <protocol type="UNICAST3"/>
                     <protocol type="pbcast.STABLE"/>
+                    <!-- Keep the following comment to configure your deployment with the JGroups AUTH protocol using environment variables. -->
                     <!-- ##JGROUPS_AUTH## -->
                     <protocol type="pbcast.GMS"/>
                     <protocol type="MFC"/>
