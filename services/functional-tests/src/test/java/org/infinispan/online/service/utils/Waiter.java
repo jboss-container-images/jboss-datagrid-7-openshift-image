@@ -25,7 +25,7 @@ public class Waiter {
       long endTime = TimeUnit.MILLISECONDS.convert(timeout, unit) + System.currentTimeMillis();
       long backoffCounter = 0;
       int successfulChecks = 0;
-      while (notExpired(endTime)) {
+      while (System.currentTimeMillis() - endTime < 0) {
          if (condition.getAsBoolean()) {
             if (++successfulChecks >= numberOfSuccessfulChecks) {
                break;
@@ -37,17 +37,6 @@ public class Waiter {
          LockSupport.parkNanos(++backoffCounter * 100_000_000);
       }
       assertTrue("Timed out waiting for a condition!", condition.getAsBoolean());
-   }
-
-   private boolean notExpired(long endTime) {
-      final long currentTimeMillis = System.currentTimeMillis();
-      final boolean notExpired = currentTimeMillis - endTime < 0;
-
-      log.infof("Current time: %d", currentTimeMillis);
-      log.infof("End time: %d", endTime);
-      log.infof("Not expired? %b", notExpired);
-
-      return notExpired;
    }
 
 }
