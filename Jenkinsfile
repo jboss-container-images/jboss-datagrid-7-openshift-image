@@ -28,10 +28,10 @@ pipeline {
          steps {
             script {
                 try {
-                    sh 'make test-ci MVN_COMMAND="$MAVEN_HOME/bin/mvn -s services/functional-tests/maven-settings.xml" DEV_IMAGE_TAG="$BRANCH_NAME"'
+                    sh 'make test-ci MVN_COMMAND="$MAVEN_HOME/bin/mvn -s services/functional-tests/maven-settings.xml"'
                 } finally {
                     sh 'tail -n +1 -- services/functional-tests/target/surefire-reports/*.txt'
-                    sh 'make clean-ci MVN_COMMAND="$MAVEN_HOME/bin/mvn -s services/functional-tests/maven-settings.xml" DEV_IMAGE_TAG="$BRANCH_NAME"'
+                    sh 'make clean-ci MVN_COMMAND="$MAVEN_HOME/bin/mvn -s services/functional-tests/maven-settings.xml"'
                 }
             }
          }
