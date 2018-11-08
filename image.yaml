@@ -3,10 +3,26 @@ schema_version: 1
 name: "jboss-datagrid-7/datagrid72-openshift"
 description: "Red Hat JBoss Data Grid 7.2 for OpenShift container image"
 version: "1.3"
-from: "jboss-datagrid-7/datagrid72:latest"
+from: "jboss/openjdk18-rhel7:1.1"
 labels:
     - name: "com.redhat.component"
       value: "jboss-datagrid-7-datagrid72-openshift-container"
+    - name: "org.jboss.product"
+      value: "datagrid"
+    - name: "org.jboss.product.version"
+      value: "7.2.3.GA"
+    - name: "org.jboss.product.datagrid.version"
+      value: "7.2.3.GA"
+    - name: "org.jboss.deployments-dir"
+      value: "/opt/datagrid/standalone/deployments"
+    - name: "com.redhat.deployments-dir"
+      value: "/opt/datagrid/standalone/deployments"
+    - name: "com.redhat.dev-mode"
+      value: "DEBUG:true"
+      description: "Environment variable used to enable development mode (debugging).  A value of true will enable development mode."
+    - name: "com.redhat.dev-mode.port"
+      value: "DEBUG_PORT:8787"
+      description: "Environment variable used to specify the debug port.  If not set, the default EAP debug port will be used (8787).  Only applicable when development mode is enabled."
     - name: "io.k8s.description"
       value: "Provides a scalable in-memory distributed database designed for fast access to large volumes of data."
     - name: "io.k8s.display-name"
@@ -18,6 +34,16 @@ labels:
     - name: "io.openshift.s2i.scripts-url"
       value: "image:///usr/local/s2i"
 envs:
+    - name: "LAUNCH_JBOSS_IN_BACKGROUND"
+      value: "true"
+    - name: "JBOSS_PRODUCT"
+      value: "datagrid"
+    - name: "JBOSS_DATAGRID_VERSION"
+      value: "7.2.3.GA"
+    - name: "PRODUCT_VERSION"
+      value: "7.2.3.GA"
+    - name: "JBOSS_HOME"
+      value: "/opt/datagrid"
     - name: "JBOSS_MODULES_SYSTEM_PKGS"
       value: "org.jboss.logmanager,jdk.nashorn.api"
     - name: "DEFAULT_ADMIN_USERNAME"
@@ -134,7 +160,10 @@ envs:
       example: "true"
       description: Disable the boot errors check in the probes.
 ports:
+    - value: 8080
     - value: 8443
+    - value: 8787
+      expose: false
     - value: 11211
     - value: 11222
     - value: 11333
@@ -147,6 +176,7 @@ modules:
           - name: datagrid.72.modules
             path: modules/datagrid/72
       install:
+          - name: distribution
           - name: dynamic-resources
           - name: s2i-common
           - name: java-alternatives
@@ -185,6 +215,13 @@ packages:
           - coreutils
           - PyYAML
           - openssl
+artifacts:
+    - path: jboss-datagrid-7.2.0-server.zip
+      description: "Artifact is available on Customer Portal: https://access.redhat.com/jbossnetwork/restricted/softwareDetail.html?softwareId=58411&product=data.grid&version=7.2&downloadType=distributions"
+      md5: 797b98378c9481151298dd5498c6d55a
+    - path: jboss-datagrid-7.2.3-server-patch.zip
+      description: "Artifact is available on Customer Portal: https://access.redhat.com/jbossnetwork/restricted/softwareDownload.html?softwareId=61711&product=data.grid"
+      md5: 5e3992a6dfe51b3eaf976fcfcbb82be4
 run:
       user: 185
       cmd:
