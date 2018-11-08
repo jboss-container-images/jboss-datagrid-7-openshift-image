@@ -137,6 +137,8 @@ objects:
                 name: ${APPLICATION_NAME}
           - name: REPLICATION_FACTOR
             value: ${REPLICATION_FACTOR}
+          - name: EVICTION_POLICY
+            value: ${EVICTION_POLICY}
           image: ${IMAGE}
           livenessProbe:
             exec:
@@ -218,6 +220,11 @@ parameters:
   name: REPLICATION_FACTOR
   required: true
   value: "1"
+- description: Controls how the cache reacts when it's full.
+  displayName: Eviction Policy
+  name: EVICTION_POLICY
+  required: true
+  value: "evict"
 - description: Total container memory in MiB.
   displayName: Total Memory
   name: TOTAL_CONTAINER_MEM

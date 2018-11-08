@@ -43,12 +43,19 @@ function configure() {
          export HOTROD_ENCRYPTION="TRUE"
          export REST_SECURITY_DOMAIN="ApplicationRealm"
 
+         local evictionStrategyType="REMOVE"
+         if [ "${EVICTION_POLICY}" == "reject" ]; then
+           evictionStrategyType="EXCEPTION";
+           export DEFAULT_TRANSACTION_MODE="NON_DURABLE_XA";
+         fi
+
          # Infinispan
          export DEFAULT_CACHE_OWNERS=${REPLICATION_FACTOR}
          export DEFAULT_CACHE_PARTITION_HANDLING_WHEN_SPLIT="DENY_READ_WRITES"
          export DEFAULT_CACHE_PARTITION_HANDLING_MERGE_POLICY="REMOVE_ALL"
          export DEFAULT_CACHE_MEMORY_STORAGE_TYPE="off-heap"
          export DEFAULT_CACHE_MEMORY_EVICTION_TYPE="MEMORY"
+         export DEFAULT_CACHE_MEMORY_EVICTION_STRATEGY=${evictionStrategyType}
 
          # EVICTION_TOTAL_MEMORY_B exported by adjust_memory.sh
          source ${JBOSS_HOME}/bin/launch/adjust_memory.sh

@@ -45,7 +45,7 @@ public class CustomCachingServiceTest {
    @Before
    public void before() {
       final int numPodsBefore = readinessCheck.getAllPodsSize();
-      CommandLine.newApp(SERVICE_NAME, "-p REPLICATION_FACTOR=3", TEMPLATE_NAME, IMAGE);
+      CommandLine.newApp(SERVICE_NAME, "-p REPLICATION_FACTOR=3 -p EVICTION_POLICY=reject -e SCRIPT_DEBUG=true", TEMPLATE_NAME, IMAGE);
       readinessCheck.waitUntilAllPodsAreReady(numPodsBefore + 1);
    }
 
@@ -59,6 +59,13 @@ public class CustomCachingServiceTest {
    public void should_have_3_num_owners() {
       String podName = SERVICE_NAME + "-0";
       assertEquals(3, CommandLine.numOwners(podName));
+   }
+
+   @RunAsClient
+   @Test
+   public void should_have_reject_eviction_policy() {
+      String podName = SERVICE_NAME + "-0";
+      assertEquals("EXCEPTION", CommandLine.evictionStrategy(podName));
    }
 
 }
