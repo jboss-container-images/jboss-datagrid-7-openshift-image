@@ -32,4 +32,8 @@ public class OpenShiftHandle {
    public List<Pod> getPodsWithLabel(String labelKey, String labelValue) throws MalformedURLException {
       return OPENSHIFT_CLIENT.pods().withLabel(labelKey, labelValue).list().getItems();
    }
+
+   public String getVolumeTemplateSize(String claimName) {
+      return OPENSHIFT_CLIENT.persistentVolumeClaims().withName(claimName).get().getSpec().getResources().getRequests().get("storage").getAmount();
+   }
 }

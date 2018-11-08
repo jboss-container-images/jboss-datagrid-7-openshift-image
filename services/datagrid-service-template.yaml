@@ -194,7 +194,7 @@ objects:
         - ReadWriteOnce
         resources:
           requests:
-            storage: 1Gi
+            storage: ${TOTAL_CONTAINER_STORAGE}Gi
 parameters:
 - description: Specifies a name for the application.
   displayName: Application Name
@@ -214,6 +214,10 @@ parameters:
   displayName: Total Memory
   name: TOTAL_CONTAINER_MEM
   value: "512"
+- description: Sets the persistence volume's storage capacity, in GiB, available to the application.
+  displayName: Storage Capacity
+  name: TOTAL_CONTAINER_STORAGE
+  value: "1"
 - description: Specifies a username to authenticate client applications
   displayName: Client User
   name: APPLICATION_USER

@@ -30,4 +30,5 @@ oc new-app datagrid-service \
   -p IMAGE=${IMAGE_NAME} \
   -p APPLICATION_USER=test \
   -p APPLICATION_USER_PASSWORD=test \
+  -p TOTAL_CONTAINER_STORAGE=2 \
   -e SCRIPT_DEBUG=true
