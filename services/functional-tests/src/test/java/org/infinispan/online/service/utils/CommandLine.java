@@ -75,6 +75,17 @@ public final class CommandLine {
       };
    }
 
+   public static Function<Ok, ModelNode> toMgmtResult() {
+      return ok -> {
+         log.infof("Received result:%n%s", ok.output);
+
+         final ModelNodeResult result =
+            new ModelNodeResult(ModelNode.fromString(ok.output));
+         result.assertDefinedValue();
+         return result.value();
+      };
+   }
+
    public static void scaleStatefulSet(String statefulSetName, int replicas) {
       CommandLine.invoke()
          .andThen(CommandLine.throwIfError())
@@ -89,11 +100,8 @@ public final class CommandLine {
    public static int numOwners(String svcName) {
       return CommandLine.invoke()
          .andThen(CommandLine.throwIfError())
-         .andThen(ok -> {
-            final ModelNodeResult numOwners = new ModelNodeResult(ModelNode.fromString(ok.output));
-            numOwners.assertDefinedValue();
-            return Integer.parseInt(numOwners.stringValue());
-         })
+         .andThen(CommandLine.toMgmtResult())
+         .andThen(ModelNode::asInt)
          .apply(
             String.format(
                "oc exec " +
@@ -101,6 +109,23 @@ public final class CommandLine {
                   "-- /opt/datagrid/bin/cli.sh " +
                   "--connect " +
                   "--commands=/subsystem=datagrid-infinispan/cache-container=clustered/configurations=CONFIGURATIONS/distributed-cache-configuration=default:read-attribute(name=owners)"
+               , svcName
+            )
+         );
+   }
+
+   public static String evictionStrategy(String svcName) {
+      return CommandLine.invoke()
+         .andThen(CommandLine.throwIfError())
+         .andThen(CommandLine.toMgmtResult())
+         .andThen(ModelNode::asString)
+         .apply(
+            String.format(
+               "oc exec " +
+                  "-it %s " +
+                  "-- /opt/datagrid/bin/cli.sh " +
+                  "--connect " +
+                  "--commands=/subsystem=datagrid-infinispan/cache-container=clustered/configurations=CONFIGURATIONS/distributed-cache-configuration=default/memory=OFF-HEAP/:read-attribute(name=strategy)"
                , svcName
             )
          );
