@@ -1,5 +1,10 @@
 package org.infinispan.online.service.datagrid;
 
+import static org.junit.Assert.assertEquals;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import org.arquillian.cube.openshift.impl.requirement.RequiresOpenshift;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.infinispan.client.hotrod.RemoteCacheManager;
@@ -21,11 +26,6 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import static org.junit.Assert.assertEquals;
 
 @RunWith(ArquillianConditionalRunner.class)
 @RequiresOpenshift
@@ -92,4 +92,9 @@ public class DatagridServiceTest {
       assertEquals(2, CommandLine.numOwners(podName));
    }
 
+   @Test
+   public void should_have_non_default_storage_size() {
+      String voulmeTemplateName = String.format("srv-data-%s-0", SERVICE_NAME);
+      assertEquals("2Gi", handle.getVolumeTemplateSize(voulmeTemplateName));
+   }
 }
