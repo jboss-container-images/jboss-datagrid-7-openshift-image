@@ -10,7 +10,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import static org.junit.Assert.assertEquals;
 
 public final class CommandLine {
 
@@ -86,6 +90,13 @@ public final class CommandLine {
       };
    }
 
+   private static Function<ModelNode, List<String>> toStringList() {
+      return result ->
+         result.asList().stream()
+            .map(ModelNode::asString)
+            .collect(Collectors.toList());
+   }
+
    public static void scaleStatefulSet(String statefulSetName, int replicas) {
       CommandLine.invoke()
          .andThen(CommandLine.throwIfError())
@@ -126,6 +137,27 @@ public final class CommandLine {
                   "-- /opt/datagrid/bin/cli.sh " +
                   "--connect " +
                   "--commands=/subsystem=datagrid-infinispan/cache-container=clustered/configurations=CONFIGURATIONS/distributed-cache-configuration=default/memory=OFF-HEAP/:read-attribute(name=strategy)"
+               , svcName
+            )
+         );
+   }
+
+   public static String memory(String svcName) {
+      return CommandLine.invoke()
+         .andThen(CommandLine.throwIfError())
+         .andThen(CommandLine.toMgmtResult())
+         .andThen(CommandLine.toStringList())
+         .andThen(results -> {
+            assertEquals(1, results.size());
+            return results.get(0);
+         })
+         .apply(
+            String.format(
+               "oc exec " +
+                  "-it %s " +
+                  "-- /opt/datagrid/bin/cli.sh " +
+                  "--connect " +
+                  "--commands=/subsystem=datagrid-infinispan/cache-container=clustered/configurations=CONFIGURATIONS/distributed-cache-configuration=default:read-children-names(child-type=memory)"
                , svcName
             )
          );

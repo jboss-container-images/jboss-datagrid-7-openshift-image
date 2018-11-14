@@ -321,8 +321,19 @@ function configure_cache() {
                <off-heap size=\"$evictionSize\" eviction=\"$evictionType\" strategy=\"$evictionStrategyType\" address-count=\"$addressCount\"/>"
     fi
 
-    local eviction="\
+    local memory="\
                     <memory> $CACHE_MEMORY_STORAGE_TYPE </memory>"
+  else
+    local storageType=""
+    if [ "$(find_env "${prefix}_CACHE_MEMORY_STORAGE_TYPE")" == "binary" ]; then
+      storageType="<binary/>"
+    elif [ "$(find_env "${prefix}_CACHE_MEMORY_STORAGE_TYPE")" == "off-heap" ]; then
+      storageType="<off-heap/>"
+    else
+      storageType="<object/>"
+    fi
+
+    local memory="<memory>$storageType</memory>"
   fi
   if [ -n "$(find_env "${prefix}_CACHE_EXPIRATION_LIFESPAN")$(find_env "${prefix}_CACHE_EXPIRATION_MAX_IDLE")$(find_env "${prefix}_CACHE_EXPIRATION_INTERVAL")" ]; then
     if [ -n "$(find_env "${prefix}_CACHE_EXPIRATION_LIFESPAN")" ]; then
@@ -442,7 +453,7 @@ function configure_cache() {
     fi
   fi
 
-  cache="$cache $CACHE_START $CACHE_BATCHING $CACHE_STATISTICS  $CACHE_OWNERS $CACHE_SEGMENTS $CACHE_L1_LIFESPAN>$encoding $eviction $expiration $jdbcstore $indexing $cachesecurity $partitionhandling $locking $transaction $state_transfer $compatibility\
+  cache="$cache $CACHE_START $CACHE_BATCHING $CACHE_STATISTICS  $CACHE_OWNERS $CACHE_SEGMENTS $CACHE_L1_LIFESPAN>$encoding $memory $expiration $jdbcstore $indexing $cachesecurity $partitionhandling $locking $transaction $state_transfer $compatibility\
                 </$CACHE_TYPE-cache><!-- ##INFINISPAN_CACHE## -->"
 
   sed -i "s|<!-- ##INFINISPAN_CACHE## -->|$cache|" "$CONFIG_FILE"
