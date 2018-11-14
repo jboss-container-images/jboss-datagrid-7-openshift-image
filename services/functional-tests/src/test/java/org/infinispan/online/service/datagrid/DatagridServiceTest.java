@@ -97,4 +97,12 @@ public class DatagridServiceTest {
       String voulmeTemplateName = String.format("srv-data-%s-0", SERVICE_NAME);
       assertEquals("2Gi", handle.getVolumeTemplateSize(voulmeTemplateName));
    }
+
+   @RunAsClient
+   @Test
+   public void should_store_data_off_heap() {
+      String podName = SERVICE_NAME + "-0";
+      assertEquals("OFF-HEAP", CommandLine.memory(podName));
+   }
+
 }
