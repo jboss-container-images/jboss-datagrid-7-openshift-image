@@ -156,4 +156,11 @@ public class CachingServiceTest {
       assertEquals(1, CommandLine.numOwners(podName));
    }
 
+   @RunAsClient
+   @Test
+   public void should_store_data_off_heap() {
+      String podName = SERVICE_NAME + "-0";
+      assertEquals("OFF-HEAP", CommandLine.memory(podName));
+   }
+
 }
