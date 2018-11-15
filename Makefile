@@ -192,7 +192,7 @@ test-cache-service-manually:
 	oc set image-lookup $(DEV_IMAGE_NAME)
 	oc new-app cache-service \
 	-p APPLICATION_USER=test \
-	-p APPLICATION_USER_PASSWORD=test \
+	-p APPLICATION_PASSWORD=test \
 	-p IMAGE=$(_DEV_IMAGE_STREAM) \
 	-e SCRIPT_DEBUG=true
 	oc expose svc/cache-service-https || true
@@ -204,7 +204,7 @@ test-datagrid-service-manually:
 	oc set image-lookup $(DEV_IMAGE_NAME)
 	oc new-app datagrid-service \
 	-p APPLICATION_USER=test \
-	-p APPLICATION_USER_PASSWORD=test \
+	-p APPLICATION_PASSWORD=test \
 	-p IMAGE=$(_DEV_IMAGE_STREAM) \
 	-e SCRIPT_DEBUG=true
 	oc expose svc/datagrid-service-https || true
@@ -241,7 +241,7 @@ clean-ci: stop-openshift clean-docker #avoid cleaning Maven as we need results t
 run-docker: build-image
 	$(shell mkdir -p ./services/capacity-tests/target/heapdumps)
 	$(shell chmod 777 ./services/capacity-tests/target/heapdumps)
-	docker run --privileged=true -m $(DOCKER_MEMORY) --memory-swappiness=0 --memory-swap $(DOCKER_MEMORY) -e APPLICATION_USER=test -e APPLICATION_USER_PASSWORD=test -e KEYSTORE_FILE=/tmp/keystores/keystore_server.jks -e DEBUG=true -e KEYSTORE_PASSWORD=secret -v $(shell pwd)/services/capacity-tests/src/test/resources:/tmp/keystores -v $(shell pwd)/services/capacity-tests/target/heapdumps:/tmp/heapdumps $(ADDITIONAL_ARGUMENTS) $(DEV_IMAGE_FULL_NAME)
+	docker run --privileged=true -m $(DOCKER_MEMORY) --memory-swappiness=0 --memory-swap $(DOCKER_MEMORY) -e APPLICATION_USER=test -e APPLICATION_PASSWORD=test -e KEYSTORE_FILE=/tmp/keystores/keystore_server.jks -e DEBUG=true -e KEYSTORE_PASSWORD=secret -v $(shell pwd)/services/capacity-tests/src/test/resources:/tmp/keystores -v $(shell pwd)/services/capacity-tests/target/heapdumps:/tmp/heapdumps $(ADDITIONAL_ARGUMENTS) $(DEV_IMAGE_FULL_NAME)
 .PHONY: run-docker
 
 test-capacity:

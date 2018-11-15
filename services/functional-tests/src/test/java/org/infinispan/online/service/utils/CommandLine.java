@@ -139,7 +139,7 @@ public final class CommandLine {
                "oc new-app %s " +
                   "-p APPLICATION_NAME=%s " +
                   "-p APPLICATION_USER=test " +
-                  "-p APPLICATION_USER_PASSWORD=test " +
+                  "-p APPLICATION_PASSWORD=test " +
                   "-p IMAGE=%s " +
                   "%s"
                , templateName, appName, imageName, params
