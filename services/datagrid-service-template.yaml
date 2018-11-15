@@ -23,7 +23,7 @@ objects:
     labels:
       application: ${APPLICATION_NAME}
   stringData:
-    application-password: ${APPLICATION_USER_PASSWORD}
+    application-password: ${APPLICATION_PASSWORD}
     application-user: ${APPLICATION_USER}
 - apiVersion: v1
   kind: Service
@@ -226,4 +226,4 @@ parameters:
   displayName: Client Password
   from: '[a-zA-Z0-9]{16}'
   generate: expression
-  name: APPLICATION_USER_PASSWORD
+  name: APPLICATION_PASSWORD

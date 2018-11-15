@@ -45,7 +45,7 @@ The list of parameters is explained below:
 |NUMBER_OF_INSTANCES       |Required           |Number of instances                                                                       |1
 |TOTAL_CONTAINER_MEM       |Optional           |Total container size (both limits and requests)                                           |512
 |APPLICATION_USER          |Required           |Username used for authentication                                                          |<none>
-|APPLICATION_USER_PASSWORD |Optional           |Password used for authentication                                                          |<generated>
+|APPLICATION_PASSWORD      |Optional           |Password used for authentication                                                          |<generated>
 |======================
 
 NOTE: The `IMAGE` parameter will be removed in the GA.

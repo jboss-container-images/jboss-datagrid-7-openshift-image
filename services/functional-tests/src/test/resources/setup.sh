@@ -21,7 +21,7 @@ echo "---- Creating Caching Service for test ----"
 oc new-app cache-service \
   -p IMAGE=${IMAGE_NAME} \
   -p APPLICATION_USER=test \
-  -p APPLICATION_USER_PASSWORD=test \
+  -p APPLICATION_PASSWORD=test \
   -e SCRIPT_DEBUG=true
 
 echo "---- Creating Datagrid Service for test ----"
@@ -29,6 +29,6 @@ echo "---- Creating Datagrid Service for test ----"
 oc new-app datagrid-service \
   -p IMAGE=${IMAGE_NAME} \
   -p APPLICATION_USER=test \
-  -p APPLICATION_USER_PASSWORD=test \
+  -p APPLICATION_PASSWORD=test \
   -p TOTAL_CONTAINER_STORAGE=2 \
   -e SCRIPT_DEBUG=true
