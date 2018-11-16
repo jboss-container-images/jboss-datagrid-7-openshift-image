@@ -2,6 +2,7 @@ package org.infinispan.online.service.utils;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import io.fabric8.kubernetes.api.model.Pod;
@@ -32,20 +33,21 @@ public class ReadinessCheck {
          Set<Pod> allPods = getAllPods();
          Set<Pod> notReadyPods = getNotReadyPods(allPods);
          Set<Pod> readyPods = getReadyPods(allPods);
+         Set<Pod> unknownPods = getUnknownPods(allPods);
 
          final int numNotReady = notReadyPods.size();
          final int numReady = readyPods.size();
          final int numAll = allPods.size();
+         final int numUnknown = unknownPods.size();
+
          if (numReady + numNotReady == numAll) {
             log.infof("Expected %d pods to be ready, but %d are not ready (all pods are %d)", numReady, numNotReady, numAll);
             log.infof("Not ready: %s", notReadyPods);
             return notReadyPods.isEmpty();
          }
 
-         log.infof("There is a mismatch between ready and not ready Pods. numberReadyPods=%d, numberNotReadyPods=%d, numberAllPods=%d", numReady, numNotReady, numAll);
-         log.infof("All Pods: %s", allPods);
-         log.infof("Not ready Pods: %s", notReadyPods);
-         log.infof("Ready Pods: %s", readyPods);
+         log.infof("There is a mismatch between ready and not ready Pods. numberReadyPods=%d, numberNotReadyPods=%d, numUnknown=%d, numberAllPods=%d", numReady, numNotReady, numUnknown, numAll);
+         log.infof("Unknown Pods: %s", unknownPods);
          return false;
       }, Waiter.DEFAULT_TIMEOUT, Waiter.DEFAULT_TIMEOUT_UNIT, 1);
    }
@@ -55,14 +57,21 @@ public class ReadinessCheck {
          Set<Pod> allPods = getAllPods();
          Set<Pod> notReadyPods = getNotReadyPods(allPods);
          Set<Pod> readyPods = getReadyPods(allPods);
+         Set<Pod> unknownPods = getUnknownPods(allPods);
 
          final int numNotReady = notReadyPods.size();
          final int numReady = readyPods.size();
          final int numAll = allPods.size();
+         final int numUnknown = unknownPods.size();
 
          if (numReady != expectedNumPods) {
             log.infof("Expected %d pods to be ready: ready=%d,notReady=%d,all=%d", expectedNumPods, numReady, numNotReady, numAll);
             log.infof("Not ready: %s", notReadyPods);
+
+            if (numReady + numNotReady != expectedNumPods) {
+               log.infof("There is a mismatch between ready and not ready Pods. numberReadyPods=%d, numberNotReadyPods=%d, numUnknown=%d, numberAllPods=%d", numReady, numNotReady, numUnknown, numAll);
+               log.infof("Unknown Pods: %s", unknownPods);
+            }
             return false;
          }
 
@@ -98,9 +107,21 @@ public class ReadinessCheck {
             ).collect(Collectors.toSet());
    }
 
+   private Set<Pod> getUnknownPods(Set<Pod> allPods) {
+      return allPods.stream().filter(not(
+         pod -> pod.getStatus().getConditions().stream().anyMatch(
+            condition -> "Ready".equals(condition.getType())
+         ))).collect(Collectors.toSet());
+   }
+
    private Set<Pod> getPodsWithName(String name) {
       return OPENSHIFT_CLIENT.pods().list().getItems().stream()
             .filter(pod -> pod.getMetadata().getName().contains(name))
             .collect(Collectors.toSet());
    }
+
+   public static <T> Predicate<T> not(Predicate<T> t) {
+    return t.negate();
+   }
+
 }
