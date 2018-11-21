@@ -15,6 +15,8 @@ metadata:
     openshift.io/provider-display-name: Red Hat, Inc.
     openshift.io/support-url: https://www.redhat.com/en/services/support
     tags: database,datagrid
+  labels:
+    template: cache-service
   creationTimestamp: null
   name: cache-service
 objects:
