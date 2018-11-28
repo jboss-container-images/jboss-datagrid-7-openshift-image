@@ -1,0 +1,8 @@
+schema_version: 1
+name: datagrid.module-overrides
+version: 1.0
+description: Override module.xml definitions
+
+execute:
+  - script: configure.sh
+    user: '185'
