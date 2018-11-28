@@ -226,4 +226,4 @@ osbs:
             container_file: container.yaml
       repository:
             name: containers/jboss-datagrid-7
-            branch: jb-datagrid-7.2-openshift-rhel-7
+            branch: jb-datagrid-7.3-openshift-rhel-7
