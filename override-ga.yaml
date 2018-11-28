@@ -1,11 +1,4 @@
-modules:
-      repositories:
-          - name: cct_module
-            git:
-                  url: https://github.com/jboss-openshift/cct_module.git
-                  ref: sprint-23
-
 osbs:
-    repository:
-        name: containers/jboss-datagrid-7
-        branch: jb-datagrid-7.2-openshift-rhel-7
+  repository:
+    name: containers/jboss-datagrid-7
+    branch: jb-datagrid-7.3-openshift-rhel-7

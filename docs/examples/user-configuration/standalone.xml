@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 
-<server xmlns="urn:jboss:domain:4.0">
+<server xmlns="urn:jboss:domain:8.0">
     <extensions>
         <extension module="org.infinispan.extension"/>
         <extension module="org.infinispan.server.endpoint"/>
@@ -147,7 +147,7 @@
             <deployment-scanner path="deployments" relative-to="jboss.server.base.dir" scan-interval="5000"
                                 runtime-failure-causes-rollback="${jboss.deployment.scanner.rollback.on.failure:false}"/>
         </subsystem>
-        <subsystem xmlns="urn:jboss:domain:datasources:4.0">
+        <subsystem xmlns="urn:jboss:domain:datasources:5.0">
             <datasources>
                 <!-- ##DATASOURCES## -->
                 <drivers>
@@ -165,12 +165,12 @@
             </datasources>
         </subsystem>
         <!-- Configure Infinispan Endpoints -->
-        <subsystem xmlns="urn:infinispan:server:endpoint:8.1">
+        <subsystem xmlns="urn:infinispan:server:endpoint:9.4">
             <hotrod-connector cache-container="clustered" socket-binding="hotrod" name="hotrod"/>
             <rest-connector name="rest" socket-binding="rest" cache-container="clustered"/>
         </subsystem>
         <!-- Configure Infinispan Caches -->
-        <subsystem xmlns="urn:infinispan:server:core:8.5" default-cache-container="clustered">
+        <subsystem xmlns="urn:infinispan:server:core:9.4" default-cache-container="clustered">
             <cache-container name="clustered" default-cache="default">
                 <transport channel="cluster"/>
                 <global-state/>
@@ -178,7 +178,7 @@
             </cache-container>
         </subsystem>
         <!-- Configure Infinispan's JGroups Stack -->
-        <subsystem xmlns="urn:infinispan:server:jgroups:8.0">
+        <subsystem xmlns="urn:infinispan:server:jgroups:9.4">
             <channels default="cluster">
                 <channel name="cluster" stack="tcp"/>
             </channels>
@@ -220,11 +220,11 @@
                 </stack>
             </stacks>
         </subsystem>
-        <subsystem xmlns="urn:jboss:domain:io:1.1">
+        <subsystem xmlns="urn:jboss:domain:io:3.0">
             <worker name="default"/>
             <buffer-pool name="default"/>
         </subsystem>
-        <subsystem xmlns="urn:jboss:domain:jca:4.0">
+        <subsystem xmlns="urn:jboss:domain:jca:5.0">
             <archive-validation enabled="true" fail-on-error="true" fail-on-warn="false"/>
             <bean-validation enabled="true"/>
             <default-workmanager>
@@ -252,11 +252,11 @@
         <subsystem xmlns="urn:jboss:domain:naming:2.0">
             <remote-naming/>
         </subsystem>
-        <subsystem xmlns="urn:jboss:domain:remoting:3.0">
+        <subsystem xmlns="urn:jboss:domain:remoting:4.0">
             <endpoint/>
             <http-connector name="http-remoting-connector" connector-ref="default" security-realm="ApplicationRealm"/>
         </subsystem>
-        <subsystem xmlns="urn:jboss:domain:security:1.2">
+        <subsystem xmlns="urn:jboss:domain:security:2.0">
             <security-domains>
                 <security-domain name="other" cache-type="default">
                     <authentication>
@@ -288,7 +288,7 @@
                 </security-domain>
             </security-domains>
         </subsystem>
-        <subsystem xmlns="urn:jboss:domain:transactions:3.0">
+        <subsystem xmlns="urn:jboss:domain:transactions:5.0">
             <core-environment node-identifier="${jboss.node.name}">
                 <process-id>
                     <uuid/>

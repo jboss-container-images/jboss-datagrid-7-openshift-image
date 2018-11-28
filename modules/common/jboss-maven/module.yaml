@@ -1,0 +1,8 @@
+schema_version: 1
+name: jboss-maven
+version: 1.0
+description: Legacy Maven module
+
+modules:
+  install:
+    - name: jboss.container.maven.default.bash

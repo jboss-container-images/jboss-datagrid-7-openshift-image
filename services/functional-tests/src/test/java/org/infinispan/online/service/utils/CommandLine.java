@@ -19,6 +19,7 @@ import static org.junit.Assert.assertEquals;
 public final class CommandLine {
 
    private static final Log log = LogFactory.getLog(CommandLine.class);
+   private static final String cliCommand = "/opt/datagrid/bin/ispn-cli.sh";
 
    private CommandLine() {
       // Avoid instantiation
@@ -117,7 +118,7 @@ public final class CommandLine {
             String.format(
                "oc exec " +
                   "-it %s " +
-                  "-- /opt/datagrid/bin/cli.sh " +
+                  "-- " + cliCommand + " " +
                   "--connect " +
                   "--commands=/subsystem=datagrid-infinispan/cache-container=clustered/configurations=CONFIGURATIONS/distributed-cache-configuration=default:read-attribute(name=owners)"
                , svcName
@@ -134,7 +135,7 @@ public final class CommandLine {
             String.format(
                "oc exec " +
                   "-it %s " +
-                  "-- /opt/datagrid/bin/cli.sh " +
+                  "-- " + cliCommand + " " +
                   "--connect " +
                   "--commands=/subsystem=datagrid-infinispan/cache-container=clustered/configurations=CONFIGURATIONS/distributed-cache-configuration=default/memory=OFF-HEAP/:read-attribute(name=strategy)"
                , svcName
@@ -155,7 +156,7 @@ public final class CommandLine {
             String.format(
                "oc exec " +
                   "-it %s " +
-                  "-- /opt/datagrid/bin/cli.sh " +
+                  "-- " + cliCommand + " " +
                   "--connect " +
                   "--commands=/subsystem=datagrid-infinispan/cache-container=clustered/configurations=CONFIGURATIONS/distributed-cache-configuration=default:read-children-names(child-type=memory)"
                , svcName

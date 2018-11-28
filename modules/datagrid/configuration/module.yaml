@@ -1,0 +1,8 @@
+schema_version: 1
+name: datagrid.configuration
+version: 1.0
+description: Red Hat Data Grid 7.3 script package
+
+execute:
+  - script: configure.sh
+    user: '185'
