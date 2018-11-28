@@ -214,12 +214,9 @@ packages:
           - PyYAML
           - openssl
 artifacts:
-    - path: jboss-datagrid-7.2.0-server.zip
-      description: "Artifact is available on Customer Portal: https://access.redhat.com/jbossnetwork/restricted/softwareDetail.html?softwareId=58411&product=data.grid&version=7.2&downloadType=distributions"
-      md5: 797b98378c9481151298dd5498c6d55a
-    - path: jboss-datagrid-7.2.3-server-patch.zip
-      description: "Artifact is available on Customer Portal: https://access.redhat.com/jbossnetwork/restricted/softwareDownload.html?softwareId=61711&product=data.grid"
-      md5: 5e3992a6dfe51b3eaf976fcfcbb82be4
+    - path: jboss-datagrid-7.3.0-server.zip
+      description: "Pre-release artifact (DR3), not yet available on Customer Portal"
+      md5: 55881187160cac47ed3d069eb16bb833
 run:
       user: 185
       cmd:
