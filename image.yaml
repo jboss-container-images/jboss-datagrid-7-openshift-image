@@ -169,14 +169,12 @@ ports:
     - value: 11333
 modules:
       repositories:
-          - name: cct_module
-            git:
-                  url: https://github.com/jboss-openshift/cct_module.git
-                  ref: master
-          - name: datagrid.72.modules
-            path: modules/datagrid/72
+          - name: datagrid.73.modules
+            path: modules/datagrid/73
+          - name: datagrid.common.modules
+            path: modules/datagrid/common
       install:
-          - name: distribution
+          - name: datagrid.distribution
           - name: dynamic-resources
           - name: s2i-common
           - name: java-alternatives
@@ -184,7 +182,6 @@ modules:
           - name: os-eap-s2i
           - name: os-java-jolokia
           - name: jolokia
-          - name: os-eap7-openshift
           - name: os-eap7-modules
           - name: os-eap7-ping
           - name: os-eap-launch
