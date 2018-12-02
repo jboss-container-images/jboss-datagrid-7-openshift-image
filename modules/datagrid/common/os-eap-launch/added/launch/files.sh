@@ -1,4 +1,3 @@
-
 function listjars {
   FILES=$(ls $1*.jar)
   echo ${FILES}
@@ -6,7 +5,11 @@ function listjars {
 
 function getfiles {
   OVERLAYS_PATH="$JBOSS_HOME/modules/system/layers/base/.overlays"
-  MODULES_SOURCE_PATHS=("$JBOSS_HOME/modules/system/layers/base" "$JBOSS_HOME")
+  MODULES_SOURCE_PATHS=(
+    "$JBOSS_HOME/modules/system/add-ons/jdg"
+    "$JBOSS_HOME/modules/system/layers/base"
+    "$JBOSS_HOME"
+)
 
   # Did we apply any patches?
   if [ -f "$OVERLAYS_PATH/.overlays" ]; then
