@@ -11,9 +11,9 @@ labels:
   - name: "org.jboss.product"
     value: "datagrid"
   - name: "org.jboss.product.version"
-    value: "7.3.0.DR3"
+    value: "7.3.0.DR4"
   - name: "org.jboss.product.datagrid.version"
-    value: "7.3.0.DR3"
+    value: "7.3.0.DR4"
   - name: "org.jboss.deployments-dir"
     value: "/opt/datagrid/standalone/deployments"
   - name: "com.redhat.deployments-dir"
@@ -41,9 +41,9 @@ envs:
   - name: "JBOSS_PRODUCT"
     value: "datagrid"
   - name: "JBOSS_DATAGRID_VERSION"
-    value: "7.3.0.DR3"
+    value: "7.3.0.DR4"
   - name: "PRODUCT_VERSION"
-    value: "7.3.0.DR3"
+    value: "7.3.0.DR4"
   - name: "JBOSS_HOME"
     value: "/opt/datagrid"
   - name: "JBOSS_MODULES_SYSTEM_PKGS"
@@ -217,8 +217,8 @@ packages:
           - openssl
 artifacts:
   - path: jboss-datagrid-7.3.0-server.zip
-    description: "Pre-release artifact (DR3), not yet available on Customer Portal"
-    md5: 55881187160cac47ed3d069eb16bb833
+    description: "Pre-release artifact (DR4), not yet available on Customer Portal"
+    md5: cdd085cd3217b90546cc5420c4cb599a
 
 run:
   user: 185
