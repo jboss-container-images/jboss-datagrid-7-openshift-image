@@ -202,9 +202,7 @@ modules:
           - name: os-logging
           - name: datagrid.launch
 packages:
-      repositories:
-          - jboss-os
-          - jboss-rhscl
+      content_sets_file: content_sets.yml
       install:
           - rh-mongodb32-mongo-java-driver
           - postgresql-jdbc
@@ -227,6 +225,8 @@ run:
       cmd:
           - "/opt/datagrid/bin/openshift-launch.sh"
 osbs:
+      configuration:
+            container_file: container.yaml
       repository:
             name: containers/jboss-datagrid-7
             branch: jb-datagrid-7.2-openshift-rhel-7
