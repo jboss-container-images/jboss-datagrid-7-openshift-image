@@ -20,6 +20,13 @@ pipeline {
                sh 'sudo rm -rf /usr/share/rhel/secrets'
             }
 
+            withCredentials([
+                    string(credentialsId: 'krb5.user', variable: 'USER'),
+                    file(credentialsId: 'krb5.keytab', variable: 'FILE')
+            ]) {
+               sh "kinit $USER -k -t $FILE"
+            }
+
             checkout scm
          }
       }
