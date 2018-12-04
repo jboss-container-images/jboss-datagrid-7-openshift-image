@@ -175,8 +175,8 @@ modules:
   repositories:
     - name: datagrid.73.modules
       path: modules/datagrid/73
-    - name: datagrid.common.modules
-      path: modules/datagrid/common
+    - name: common.modules
+      path: modules/common
   install:
     - name: datagrid.distribution
     - name: dynamic-resources
