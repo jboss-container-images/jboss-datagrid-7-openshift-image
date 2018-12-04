@@ -173,8 +173,8 @@ ports:
 
 modules:
   repositories:
-    - name: datagrid.73.modules
-      path: modules/datagrid/73
+    - name: datagrid.modules
+      path: modules/datagrid
     - name: common.modules
       path: modules/common
   install:
