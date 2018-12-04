@@ -738,7 +738,7 @@ function configure_infinispan_endpoint() {
   fi
 
   subsystem="\
-        <subsystem xmlns=\"urn:infinispan:server:endpoint:8.1\">$hotrod $memcached $rest\
+        <subsystem xmlns=\"urn:infinispan:server:endpoint:9.4\">$hotrod $memcached $rest\
         </subsystem>"
 
   sed -i "s|<!-- ##INFINISPAN_ENDPOINT## -->|$subsystem|" "$CONFIG_FILE"
