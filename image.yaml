@@ -204,17 +204,17 @@ modules:
     - name: datagrid.launch
 
 packages:
-      content_sets_file: content_sets.yml
-      install:
-          - rh-mongodb32-mongo-java-driver
-          - postgresql-jdbc
-          - mysql-connector-java
-          - hostname
-          - python-requests
-          - python-enum34
-          - coreutils
-          - PyYAML
-          - openssl
+  content_sets_file: content_sets.yml
+  install:
+    - rh-mongodb32-mongo-java-driver
+    - postgresql-jdbc
+    - mysql-connector-java
+    - hostname
+    - python-requests
+    - python-enum34
+    - coreutils
+    - PyYAML
+    - openssl
 artifacts:
   - path: jboss-datagrid-7.3.0-server.zip
     description: "Pre-release artifact (DR4), not yet available on Customer Portal"
@@ -226,8 +226,8 @@ run:
     - "/opt/datagrid/bin/openshift-launch.sh"
 
 osbs:
-      configuration:
-            container_file: container.yaml
-      repository:
-            name: containers/jboss-datagrid-7
-            branch: jb-datagrid-7.3-openshift-rhel-7
+  configuration:
+    container_file: container.yaml
+  repository:
+    name: containers/jboss-datagrid-7
+    branch: jb-datagrid-7.3-openshift-rhel-7
