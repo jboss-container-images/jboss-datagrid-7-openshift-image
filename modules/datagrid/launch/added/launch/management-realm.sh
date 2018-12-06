@@ -14,6 +14,6 @@ function add_management_interface_realm() {
 
     sed -i "s|><!-- ##MGMT_IFACE_REALM## -->| ${mgmt_iface_replace_str}>|" "$CONFIG_FILE"
 
-    sed -i "s|<http-interface http-upgrade-enabled=\"true\" console-enabled=\"false\" security-realm=\"ManagementRealm\">|<http-interface http-upgrade-enabled=\"true\" console-enabled=\"false\" ${mgmt_iface_replace_str}>|" "$CONFIG_FILE"
+    sed -i "s|<http-interface console-enabled=\"false\" security-realm=\"ManagementRealm\">|<http-interface console-enabled=\"false\" ${mgmt_iface_replace_str}>|" "$CONFIG_FILE"
   fi    
 }
