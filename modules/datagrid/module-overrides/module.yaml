@@ -1,7 +1,7 @@
 schema_version: 1
-name: os-eap7-modules
+name: datagrid.module-overrides
 version: 1.0
-description: Legacy os-eap7-modules script package
+description: Override module.xml definitions
 
 execute:
 - script: configure.sh

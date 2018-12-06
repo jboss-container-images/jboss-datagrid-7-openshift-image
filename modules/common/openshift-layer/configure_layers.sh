@@ -8,7 +8,10 @@ MODULES=()
 OPENSHIFT_LAYER_PATH="$JBOSS_HOME/modules/system/layers/openshift"
 OVERLAYS_PATH="$JBOSS_HOME/modules/system/layers/base/.overlays"
 
-MODULES_SOURCE_PATHS=("$JBOSS_HOME/modules/system/add-ons/jdg")
+MODULES_SOURCE_PATHS=(
+  $JBOSS_HOME/modules/system/layers/base
+  $JBOSS_HOME/modules/system/add-ons/jdg
+)
 
 # Did we apply any patches?
 if [ -f "$OVERLAYS_PATH/.overlays" ]; then
@@ -26,18 +29,15 @@ for module in $(find $OPENSHIFT_LAYER_PATH -name module.xml); do
 done
 
 for module in "${MODULES[@]}"; do
-
-  source_module=$(echo $module | sed 's|/main|/jdg-7.3|g')
-
   for source_dir in "${MODULES_SOURCE_PATHS[@]}"; do
-    if [ -d "$source_dir/$source_module" ]; then
+    if [ -d "$source_dir/$module" ]; then
       if compgen -G "$OPENSHIFT_LAYER_PATH/$module/*.jar"; then
         # We found that there is already linked jar
         # We assume here that we will link only to a single file
         continue
       fi
 
-      for jar_file in $source_dir/$source_module/*.jar; do
+      for jar_file in $source_dir/$module/*.jar; do
 
         jar_name=$(basename "$jar_file")
 
