@@ -14,6 +14,7 @@
         <extension module="org.jboss.as.security"/>
         <extension module="org.jboss.as.transactions"/>
         <extension module="org.jgroups.extension"/>
+        <extension module="org.wildfly.extension.elytron"/>
         <extension module="org.wildfly.extension.io"/>
     </extensions>
     <management>
@@ -239,7 +240,6 @@
             <remote-naming/>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:remoting:4.0">
-            <endpoint/>
             <http-connector name="http-remoting-connector" connector-ref="default" security-realm="ApplicationRealm"/>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:security:2.0">
@@ -255,11 +255,6 @@
                     </authentication>
                 </security-domain>
                 <security-domain name="jboss-web-policy" cache-type="default">
-                    <authorization>
-                        <policy-module code="Delegating" flag="required"/>
-                    </authorization>
-                </security-domain>
-                <security-domain name="jboss-ejb-policy" cache-type="default">
                     <authorization>
                         <policy-module code="Delegating" flag="required"/>
                     </authorization>
