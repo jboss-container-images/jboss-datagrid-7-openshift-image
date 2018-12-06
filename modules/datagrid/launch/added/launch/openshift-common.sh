@@ -11,7 +11,6 @@ if [ "${USER_CONFIG_MAP^^}" != "TRUE" ]; then
 
   CONFIGURE_SCRIPTS=(
   $JBOSS_HOME/bin/launch/backward-compatibility.sh
-  $JBOSS_HOME/bin/launch/configure_extensions.sh
   $JBOSS_HOME/bin/launch/passwd.sh
   $JBOSS_HOME/bin/launch/authentication-config.sh
   $JBOSS_HOME/bin/launch/datasource.sh
@@ -33,7 +32,6 @@ else
 
   CONFIGURE_SCRIPTS=(
   $JBOSS_HOME/bin/launch/backward-compatibility.sh
-  $JBOSS_HOME/bin/launch/configure_extensions.sh
   $JBOSS_HOME/bin/launch/passwd.sh
   $JBOSS_HOME/bin/launch/authentication-config.sh
   $JBOSS_HOME/bin/launch/datasource.sh

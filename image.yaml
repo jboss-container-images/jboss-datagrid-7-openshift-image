@@ -197,7 +197,6 @@ modules:
     - name: datagrid7-openshift
     - name: os-java-run
     - name: os-partition
-    - name: os-eap-extensions
     - name: openshift-layer
     - name: openshift-passwd
     - name: os-logging
