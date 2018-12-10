@@ -50,6 +50,12 @@ envs:
     value: "org.jboss.logmanager,jdk.nashorn.api"
   - name: "DEFAULT_ADMIN_USERNAME"
     value: "jdgadmin"
+  - name: "AB_PROMETHEUS_ENABLE"
+    value: "true"
+    description: "Enable the use of the Prometheus agent"
+  - name: "AB_PROMETHEUS_JMX_EXPORTER_PORT"
+    value: "9779"
+    description: "Port to use for the Prometheus agent" 
   - name: "JAVA_OPTS_APPEND"
     example: "-Dfoo=bar"
     description: "Server startup options."
@@ -166,6 +172,7 @@ ports:
   - value: 8080
   - value: 8443
   - value: 8787
+  - value: 9779 
     expose: false
   - value: 11211
   - value: 11222

@@ -26,3 +26,6 @@ cp ${ADDED_DIR}/launch/management-realm.sh $JBOSS_HOME/bin/launch
 cp -p ${ADDED_DIR}/launch/adjust_memory.sh $JBOSS_HOME/bin/launch
 cp -p ${ADDED_DIR}/launch/infinispan_service_profiles.sh $JBOSS_HOME/bin/launch
 cp -p ${ADDED_DIR}/launch/service-memory.conf $JBOSS_HOME/bin/launch
+
+# Append Prometheus agent to standalone.conf
+cat ${ADDED_DIR}/launch/prometheus.conf >> $JBOSS_HOME/bin/standalone.conf
