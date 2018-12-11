@@ -4,21 +4,21 @@
     "metadata": {
         "annotations": {
             "iconClass": "icon-datagrid",
-            "tags": "datagrid,jboss,hidden",
-            "version": "1.2",
-            "openshift.io/display-name": "Red Hat JBoss Data Grid 7.2 + MySQL (Ephemeral with https)",
+            "tags": "datagrid,jboss",
+            "version": "1.0",
+            "openshift.io/display-name": "Red Hat JBoss Data Grid 7.3 + MySQL (with https)",
             "openshift.io/provider-display-name": "Red Hat, Inc.",
             "description": "An example Red Hat JBoss Data Grid application with a MySQL database. For more information about using this template, see https://github.com/jboss-openshift/application-templates.",
-            "template.openshift.io/long-description": "This template defines resources needed to develop Red Hat JBoss Data Grid 7.2 based applications, including a deployment configuration, using MySQL database with ephemeral (temporary) storage and secure communication using https.",
+            "template.openshift.io/long-description": "This template defines resources needed to develop Red Hat JBoss Data Grid 7.3 based applications, including a deployment configuration, using MySQL database for persistence and secure communication using https.",
             "template.openshift.io/documentation-url": "https://access.redhat.com/documentation/en/red-hat-jboss-data-grid/",
             "template.openshift.io/support-url": "https://access.redhat.com"
         },
-        "name": "datagrid72-mysql"
+        "name": "datagrid73-mysql-persistent"
     },
     "labels": {
-        "template": "datagrid72-mysql"
+        "template": "datagrid73-mysql-persistent"
     },
-    "message": "A new data grid service (using MySQL) has been created in your project. It supports connector type(s) \"${INFINISPAN_CONNECTORS}\". The username/password for accessing the MySQL database \"${DB_DATABASE}\" is ${DB_USERNAME}/${DB_PASSWORD}. Please be sure to create the following secrets: \"${HTTPS_SECRET}\" containing the ${HTTPS_KEYSTORE} file used for serving secure content; \"${JGROUPS_ENCRYPT_SECRET}\" containing the ${JGROUPS_ENCRYPT_KEYSTORE} file used for securing JGroups communications.",
+    "message": "A new data grid service (using MySQL with persistent storage) has been created in your project. It supports connector type(s) \"${INFINISPAN_CONNECTORS}\". The username/password for accessing the MySQL database \"${DB_DATABASE}\" is ${DB_USERNAME}/${DB_PASSWORD}. Please be sure to create the following secrets: \"${HTTPS_SECRET}\" containing the ${HTTPS_KEYSTORE} file used for serving secure content; \"${JGROUPS_ENCRYPT_SECRET}\" containing the ${JGROUPS_ENCRYPT_KEYSTORE} file used for securing JGroups communications.",
     "parameters": [
         {
             "displayName": "Application Name",
@@ -188,6 +188,13 @@
             "description": "Controls the innodb_use_native_aio setting value if the native AIO is broken.",
             "name": "MYSQL_AIO",
             "required": false
+        },
+        {
+            "displayName": "Database Volume Capacity",
+            "description": "Size of persistent storage for database volume.",
+            "name": "VOLUME_CAPACITY",
+            "value": "1Gi",
+            "required": true
         },
         {
             "displayName": "ImageStream Namespace",
@@ -513,7 +520,7 @@
                             "from": {
                                 "kind": "ImageStreamTag",
                                 "namespace": "${IMAGE_STREAM_NAMESPACE}",
-                                "name": "jboss-datagrid72-openshift:1.2"
+                                "name": "jboss-datagrid73-openshift:1.0"
                             }
                         }
                     },
@@ -538,7 +545,7 @@
                         "containers": [
                             {
                                 "name": "${APPLICATION_NAME}",
-                                "image": "jboss-datagrid72-openshift",
+                                "image": "jboss-datagrid73-openshift",
                                 "imagePullPolicy": "Always",
                                 "resources": {
                                     "limits": {
@@ -870,6 +877,12 @@
                                         "port": 3306
                                     }
                                 },
+                                "volumeMounts": [
+                                    {
+                                        "mountPath": "/var/lib/mysql/data",
+                                        "name": "${APPLICATION_NAME}-mysql-pvol"
+                                    }
+                                ],
                                 "env": [
                                     {
                                         "name": "MYSQL_USER",
@@ -903,23 +916,37 @@
                                         "name": "MYSQL_AIO",
                                         "value": "${MYSQL_AIO}"
                                     }
-                                ],
-                                "volumeMounts": [
-                                    {
-                                        "mountPath": "/var/lib/mysql/data",
-                                        "name": "${APPLICATION_NAME}-data"
-                                    }
                                 ]
                             }
                         ],
                         "volumes": [
                             {
-                                "emptyDir": {
-                                    "medium": ""
-                                },
-                                "name": "${APPLICATION_NAME}-data"
+                                "name": "${APPLICATION_NAME}-mysql-pvol",
+                                "persistentVolumeClaim": {
+                                    "claimName": "${APPLICATION_NAME}-mysql-claim"
+                                }
                             }
                         ]
+                    }
+                }
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "PersistentVolumeClaim",
+            "metadata": {
+                "name": "${APPLICATION_NAME}-mysql-claim",
+                "labels": {
+                    "application": "${APPLICATION_NAME}"
+                }
+            },
+            "spec": {
+                "accessModes": [
+                    "ReadWriteOnce"
+                ],
+                "resources": {
+                    "requests": {
+                        "storage": "${VOLUME_CAPACITY}"
                     }
                 }
             }
