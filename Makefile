@@ -1,5 +1,5 @@
 DEV_IMAGE_ORG = jboss-datagrid-7
-DEV_IMAGE_NAME = datagrid72-openshift
+DEV_IMAGE_NAME = datagrid73-openshift
 DEV_IMAGE_TAG = latest
 DOCKER_REGISTRY_ENGINEERING =
 DOCKER_REGISTRY_REDHAT =
