@@ -117,7 +117,7 @@ public final class CommandLine {
          .apply(
             String.format(
                "oc exec " +
-                  "-it %s " +
+                  "%s " +
                   "-- " + cliCommand + " " +
                   "--connect " +
                   "--commands=/subsystem=datagrid-infinispan/cache-container=clustered/configurations=CONFIGURATIONS/distributed-cache-configuration=default:read-attribute(name=owners)"
@@ -134,7 +134,7 @@ public final class CommandLine {
          .apply(
             String.format(
                "oc exec " +
-                  "-it %s " +
+                  "%s " +
                   "-- " + cliCommand + " " +
                   "--connect " +
                   "--commands=/subsystem=datagrid-infinispan/cache-container=clustered/configurations=CONFIGURATIONS/distributed-cache-configuration=default/memory=OFF-HEAP/:read-attribute(name=strategy)"
@@ -155,7 +155,7 @@ public final class CommandLine {
          .apply(
             String.format(
                "oc exec " +
-                  "-it %s " +
+                  "%s " +
                   "-- " + cliCommand + " " +
                   "--connect " +
                   "--commands=/subsystem=datagrid-infinispan/cache-container=clustered/configurations=CONFIGURATIONS/distributed-cache-configuration=default:read-children-names(child-type=memory)"
