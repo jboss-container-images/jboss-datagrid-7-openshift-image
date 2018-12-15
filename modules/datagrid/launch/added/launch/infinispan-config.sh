@@ -444,12 +444,13 @@ function configure_cache() {
     cache="$cache mode=\"$CACHE_MODE\" $CACHE_QUEUE_SIZE $CACHE_QUEUE_FLUSH_INTERVAL $CACHE_REMOTE_TIMEOUT"
   fi
 
-  if [ "$(find_env "${prefix}_CACHE_PROTOCOL_COMPATIBILITY")" == "true" ]; then
+  local compatibility=''
+  if [ "$(find_env "${prefix}_CACHE_PROTOCOL_COMPATIBILITY")" == 'true' ]; then
     local cache_compatibility_marshaller="$(find_env "${prefix}_CACHE_COMPATIBILITY_MARSHALLER")"
-    if [ -n "$cache_compatibility_marshaller" ]; then
-      compatibility="<compatibility enabled=\"true\" marshaller=\"$cache_compatibility_marshaller\"/>"
+    if [ -n "${cache_compatibility_marshaller}" ]; then
+      compatibility="<compatibility enabled=\"true\" marshaller=\"${cache_compatibility_marshaller}\"/>"
     else
-      compatibility="<compatibility enabled=\"true\"/>"
+      compatibility='<compatibility enabled="true"/>'
     fi
   fi
 

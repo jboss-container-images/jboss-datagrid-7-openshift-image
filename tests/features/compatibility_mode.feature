@@ -9,6 +9,7 @@ Feature: OpenShift JDG Compatibility Mode tests
     Then XML file /opt/datagrid/standalone/configuration/clustered-openshift.xml should contain value MYAPPCACHE on XPath //*[local-name()='distributed-cache']/@name
     And XML file /opt/datagrid/standalone/configuration/clustered-openshift.xml should contain value true on XPath //*[local-name()='distributed-cache'][@name='MYAPPCACHE']/*[local-name()='compatibility']/@enabled
     And container log should contain DGISPN0001: Started MYAPPCACHE cache from clustered container
+    And container log should contain ISPN000536: Cache 'MYAPPCACHE' uses the deprecated compatibility mode configuration. See 'Embedded/Remote Interoperability' in the user guide for a replacement
 
   Scenario: Enabling Compatibility Mode with Marshaller test
     When container is started with env
@@ -20,6 +21,7 @@ Feature: OpenShift JDG Compatibility Mode tests
     And XML file /opt/datagrid/standalone/configuration/clustered-openshift.xml should contain value true on XPath //*[local-name()='distributed-cache'][@name='MYAPPCACHE']/*[local-name()='compatibility']/@enabled
     And XML file /opt/datagrid/standalone/configuration/clustered-openshift.xml should contain value org.infinispan.commons.marshall.JavaSerializationMarshaller on XPath //*[local-name()='distributed-cache'][@name='MYAPPCACHE']/*[local-name()='compatibility']/@marshaller
     And container log should contain DGISPN0001: Started MYAPPCACHE cache from clustered container
+    And container log should contain ISPN000536: Cache 'MYAPPCACHE' uses the deprecated compatibility mode configuration. See 'Embedded/Remote Interoperability' in the user guide for a replacement
 
   Scenario: Enabling Compatibility Mode in Selected Cache test
     When container is started with env
@@ -32,6 +34,7 @@ Feature: OpenShift JDG Compatibility Mode tests
     And XML file /opt/datagrid/standalone/configuration/clustered-openshift.xml should contain value true on XPath //*[local-name()='distributed-cache'][@name='MYAPPCACHE2']/*[local-name()='compatibility']/@enabled
     And container log should contain DGISPN0001: Started MYAPPCACHE1 cache from clustered container
     And container log should contain DGISPN0001: Started MYAPPCACHE2 cache from clustered container
+    And container log should contain ISPN000536: Cache 'MYAPPCACHE2' uses the deprecated compatibility mode configuration. See 'Embedded/Remote Interoperability' in the user guide for a replacement
 
   Scenario: Enabling Compatibility Mode in Selected Cache with Marshaller test
     When container is started with env
@@ -46,6 +49,7 @@ Feature: OpenShift JDG Compatibility Mode tests
     And XML file /opt/datagrid/standalone/configuration/clustered-openshift.xml should contain value org.infinispan.commons.marshall.jboss.GenericJBossMarshaller on XPath //*[local-name()='distributed-cache'][@name='MYAPPCACHE1']/*[local-name()='compatibility']/@marshaller
     And container log should contain DGISPN0001: Started MYAPPCACHE1 cache from clustered container
     And container log should contain DGISPN0001: Started MYAPPCACHE2 cache from clustered container
+    And container log should contain ISPN000536: Cache 'MYAPPCACHE1' uses the deprecated compatibility mode configuration. See 'Embedded/Remote Interoperability' in the user guide for a replacement
 
   Scenario: Enabling Compatibility Mode in Selected Caches with Marshaller in Selected Cache test
     When container is started with env
@@ -58,10 +62,13 @@ Feature: OpenShift JDG Compatibility Mode tests
     And XML file /opt/datagrid/standalone/configuration/clustered-openshift.xml should contain value MYAPPCACHE2 on XPath //*[local-name()='distributed-cache']/@name
     And XML file /opt/datagrid/standalone/configuration/clustered-openshift.xml should contain value MYAPPCACHE3 on XPath //*[local-name()='distributed-cache']/@name
     And XML file /opt/datagrid/standalone/configuration/clustered-openshift.xml should contain value true on XPath //*[local-name()='distributed-cache'][@name='MYAPPCACHE1']/*[local-name()='compatibility']/@enabled
+    And XML file /opt/datagrid/standalone/configuration/clustered-openshift.xml should have 0 elements on XPath //*[local-name()='distributed-cache'][@name='MYAPPCACHE1']/*[local-name()='compatibility']/@marshaller
     And XML file /opt/datagrid/standalone/configuration/clustered-openshift.xml should have 0 elements on XPath //*[local-name()='distributed-cache'][@name='MYAPPCACHE2']/*[local-name()='compatibility']
     And XML file /opt/datagrid/standalone/configuration/clustered-openshift.xml should contain value true on XPath //*[local-name()='distributed-cache'][@name='MYAPPCACHE3']/*[local-name()='compatibility']/@enabled
     And XML file /opt/datagrid/standalone/configuration/clustered-openshift.xml should contain value org.infinispan.commons.marshall.jboss.GenericJBossMarshaller on XPath //*[local-name()='distributed-cache'][@name='MYAPPCACHE3']/*[local-name()='compatibility']/@marshaller
     And container log should contain DGISPN0001: Started MYAPPCACHE1 cache from clustered container
     And container log should contain DGISPN0001: Started MYAPPCACHE2 cache from clustered container
     And container log should contain DGISPN0001: Started MYAPPCACHE3 cache from clustered container
+    And container log should contain ISPN000536: Cache 'MYAPPCACHE1' uses the deprecated compatibility mode configuration. See 'Embedded/Remote Interoperability' in the user guide for a replacement
+    And container log should contain ISPN000536: Cache 'MYAPPCACHE3' uses the deprecated compatibility mode configuration. See 'Embedded/Remote Interoperability' in the user guide for a replacement
 
