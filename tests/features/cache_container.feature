@@ -30,4 +30,5 @@
        | variable                                          | value                            |
        | CACHE_NAMES                                       | MYAPPCACHE                       |
        | MYAPPCACHE_CACHE_PARTITION_HANDLING_ENABLED       | true                            |
-    Then XML file /opt/datagrid/standalone/configuration/clustered-openshift.xml should contain value true on XPath //*[local-name()='partition-handling']/@enabled
+    Then XML file /opt/datagrid/standalone/configuration/clustered-openshift.xml should contain value DENY_READ_WRITES on XPath //*[local-name()='partition-handling']/@when-split
+    And container log should contain WARN Deprecated paramater 'MYAPPCACHE_CACHE_PARTITION_HANDLING_ENABLED' since 7.2, please use 'MYAPPCACHE_CACHE_PARTITION_HANDLING_WHEN_SPLIT' and 'MYAPPCACHE_CACHE_PARTITION_MERGE_POLICY' instead
