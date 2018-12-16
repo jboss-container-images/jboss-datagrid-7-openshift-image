@@ -35,7 +35,7 @@ Feature: Openshift JDG jgroups secure
        | JGROUPS_ENCRYPT_KEYSTORE_DIR                 | /etc/jgroups-encrypt-secret-volume     |
        | JGROUPS_ENCRYPT_KEYSTORE                     | keystore.jks                           |
        | JGROUPS_ENCRYPT_PASSWORD                     | mykeystorepass                         |
-    Then available container log should contain WARN Partial JGroups encryption configuration, the communication within the cluster WILL NOT be encrypted.
+    Then container log should contain WARN Detected partial JGroups encryption configuration, the communication within the cluster WILL NOT be encrypted.
 
   @jboss-datagrid-7
   Scenario: Check jgroups encryption does not create invalid configuration with missing password
@@ -45,4 +45,4 @@ Feature: Openshift JDG jgroups secure
        | JGROUPS_ENCRYPT_KEYSTORE_DIR                 | /etc/jgroups-encrypt-secret-volume     |
        | JGROUPS_ENCRYPT_KEYSTORE                     | keystore.jks                           |
        | JGROUPS_ENCRYPT_NAME                         | jboss                                  |
-    Then available container log should contain WARN Partial JGroups encryption configuration, the communication within the cluster WILL NOT be encrypted.
+    Then container log should contain WARN Detected partial JGroups encryption configuration, the communication within the cluster WILL NOT be encrypted.
