@@ -8,7 +8,7 @@ metadata:
       data grid solution. It provides many features to serve a variety of use cases.
     iconClass: icon-datagrid
     openshift.io/display-name: Red Hat Cache Service
-    openshift.io/documentation-url: https://github.com/jboss-container-images/jboss-datagrid-7-openshift-image/blob/datagrid72-dev/docs/cache-service.asciidoc
+    openshift.io/documentation-url: https://github.com/jboss-container-images/jboss-datagrid-7-openshift-image/blob/datagrid73-dev/docs/cache-service.asciidoc
     openshift.io/long-description: |-
       In this service, Red Hat Data Grid is configured as an in-memory caching service without persistence. Data in the cache will be lost if the service is stopped or restarted, and therefore, it should not be used as a permanent store for data.
       It can be used to improve your application’s response time, by keeping frequently and recently accessed data in a high speed in-memory store.
@@ -211,7 +211,7 @@ parameters:
 - description: Infinispan image.
   name: IMAGE
   required: true
-  value: registry.redhat.io/jboss-datagrid-7/datagrid72-openshift
+  value: registry.redhat.io/jboss-datagrid-7/datagrid73-openshift
 - description: Number of instances in the cluster.
   displayName: Number of Instances
   name: NUMBER_OF_INSTANCES

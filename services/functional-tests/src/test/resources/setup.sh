@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # This name is hardcoded in Makefile. We need a fixed name to push it to local OpenShift registry
-IMAGE_NAME=${image:-jboss-datagrid-7/datagrid72-openshift}
+IMAGE_NAME=${image:-jboss-datagrid-7/datagrid73-openshift}
 
 echo "---- Clearing up (any potential) leftovers ----"
 oc delete all,secrets,sa,templates,configmaps,daemonsets,clusterroles,rolebindings,serviceaccounts --selector=template=cache-service || true
