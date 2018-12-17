@@ -145,6 +145,7 @@
                         <sun.net.spi.nameservice.provider.2>default</sun.net.spi.nameservice.provider.2>
                         <org.apache.maven.user-settings>${org.apache.maven.user-settings}
                         </org.apache.maven.user-settings>
+                        <image>${image}</image>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
