@@ -13,8 +13,8 @@ import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -27,9 +27,9 @@ public class CustomCachingServiceTest {
 
    private static final String SERVICE_NAME = "custom-cache";
    private static final String TEMPLATE_NAME = "cache-service";
-   private static final String IMAGE = "jboss-datagrid-7/datagrid73-openshift";
+   private static final String IMAGE = "172.30.1.1:5000/myproject/datagrid73-openshift";
 
-   private ReadinessCheck readinessCheck = new ReadinessCheck();
+   private static ReadinessCheck READINESS_CHECK = new ReadinessCheck();
 
    @Deployment
    public static Archive<?> deploymentApp() {
@@ -42,15 +42,15 @@ public class CustomCachingServiceTest {
             .addPackage(HotRodTester.class.getPackage());
    }
 
-   @Before
-   public void before() {
-      final int numPodsBefore = readinessCheck.getAllPodsSize();
+   @BeforeClass
+   public static void before() {
+      final int numPodsBefore = READINESS_CHECK.getAllPodsSize();
       CommandLine.newApp(SERVICE_NAME, "-p REPLICATION_FACTOR=3 -p EVICTION_POLICY=reject -e SCRIPT_DEBUG=true", TEMPLATE_NAME, IMAGE);
-      readinessCheck.waitUntilAllPodsAreReady(numPodsBefore + 1);
+      READINESS_CHECK.waitUntilAllPodsAreReady(numPodsBefore + 1);
    }
 
-   @After
-   public void after() {
+   @AfterClass
+   public static void after() {
       CommandLine.deleteApp(SERVICE_NAME);
    }
 
