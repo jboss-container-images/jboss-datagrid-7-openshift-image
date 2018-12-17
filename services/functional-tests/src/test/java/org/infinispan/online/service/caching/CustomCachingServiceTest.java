@@ -27,7 +27,7 @@ public class CustomCachingServiceTest {
 
    private static final String SERVICE_NAME = "custom-cache";
    private static final String TEMPLATE_NAME = "cache-service";
-   private static final String IMAGE = "jboss-datagrid-7/datagrid72-openshift";
+   private static final String IMAGE = "jboss-datagrid-7/datagrid73-openshift";
 
    private ReadinessCheck readinessCheck = new ReadinessCheck();
 
