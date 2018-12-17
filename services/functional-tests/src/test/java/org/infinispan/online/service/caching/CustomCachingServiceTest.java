@@ -27,7 +27,7 @@ public class CustomCachingServiceTest {
 
    private static final String SERVICE_NAME = "custom-cache";
    private static final String TEMPLATE_NAME = "cache-service";
-   private static final String IMAGE = "172.30.1.1:5000/myproject/datagrid73-openshift";
+   private static final String IMAGE = System.getProperty("image");
 
    private static ReadinessCheck READINESS_CHECK = new ReadinessCheck();
 
