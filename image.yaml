@@ -172,8 +172,8 @@ ports:
   - value: 8080
   - value: 8443
   - value: 8787
-  - value: 9779 
     expose: false
+  - value: 9779
   - value: 11211
   - value: 11222
   - value: 11333
