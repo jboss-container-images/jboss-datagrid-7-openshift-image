@@ -8,7 +8,7 @@ execute:
     user: '185'
 
 artifacts:
-  - path: javax.json-1.0.4.jar
-    md5: 569870f975deeeb6691fcb9bc02a9555
-  - path: jboss-logmanager-ext-1.0.0.Alpha5-redhat-1.jar
+  - url: https://maven.repository.redhat.com/ga/org/glassfish/javax.json/1.0.4.redhat-1/javax.json-1.0.4.redhat-1.jar
+    md5: 2bfa4e10093a30d7132c220de8419d75
+  - name: jboss-logmanager-ext-1.0.0.Alpha5-redhat-1.jar
     md5: 3c84f54725ea5657913cf6d1610798b0
