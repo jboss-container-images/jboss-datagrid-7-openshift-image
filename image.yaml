@@ -1,9 +1,9 @@
 schema_version: 1
 name: jboss-datagrid-7/datagrid73-openshift
 version: 1.0
-description: Red Hat JBoss Data Grid 7.3 for OpenShift container image
+description: "Red Hat JBoss Data Grid 7.3 for OpenShift container image"
 
-from: jboss/openjdk18-rhel7:1.1
+from: rhel7:7-released
 
 labels:
   - name: "com.redhat.component"
@@ -11,9 +11,9 @@ labels:
   - name: "org.jboss.product"
     value: "datagrid"
   - name: "org.jboss.product.version"
-    value: "7.3.0.DR4"
+    value: "7.3.0.ER1"
   - name: "org.jboss.product.datagrid.version"
-    value: "7.3.0.DR4"
+    value: "7.3.0.ER1"
   - name: "org.jboss.deployments-dir"
     value: "/opt/datagrid/standalone/deployments"
   - name: "com.redhat.deployments-dir"
@@ -41,9 +41,9 @@ envs:
   - name: "JBOSS_PRODUCT"
     value: "datagrid"
   - name: "JBOSS_DATAGRID_VERSION"
-    value: "7.3.0.DR4"
+    value: "7.3.0.ER1"
   - name: "PRODUCT_VERSION"
-    value: "7.3.0.DR4"
+    value: "7.3.0.ER1"
   - name: "JBOSS_HOME"
     value: "/opt/datagrid"
   - name: "JBOSS_MODULES_SYSTEM_PKGS"
@@ -185,6 +185,8 @@ modules:
     - name: common.modules
       path: modules/common
   install:
+    - name: jboss.container.openjdk.jdk
+      version: "8"
     - name: datagrid.distribution
     - name: dynamic-resources
     - name: s2i-common
@@ -222,9 +224,9 @@ packages:
     - PyYAML
     - openssl
 artifacts:
-  - path: jboss-datagrid-7.3.0-server.zip
-    description: "Pre-release artifact (DR4), not yet available on Customer Portal"
-    md5: cdd085cd3217b90546cc5420c4cb599a
+  - name: jboss-datagrid-7.3.0-server.zip
+    description: "Pre-release artifact (ER1), not yet available on Customer Portal"
+    md5: 9aeb544f273340dff0b8539ff0cb402c
 
 run:
   user: 185
