@@ -51,7 +51,7 @@ envs:
   - name: "DEFAULT_ADMIN_USERNAME"
     value: "jdgadmin"
   - name: "AB_PROMETHEUS_ENABLE"
-    value: "true"
+    value: "false"
     description: "Enable the use of the Prometheus agent"
   - name: "AB_PROMETHEUS_JMX_EXPORTER_PORT"
     value: "9779"
