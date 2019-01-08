@@ -4,14 +4,11 @@ labels:
   template: cache-service
 metadata:
   annotations:
-    description: Red Hat Data Grid is a high performance, linearly scalable, key/value
-      data grid solution. It provides many features to serve a variety of use cases.
+    description: Red Hat Data Grid is an in-memory, distributed key/value store.
     iconClass: icon-datagrid
     openshift.io/display-name: Red Hat Cache Service
     openshift.io/documentation-url: https://github.com/jboss-container-images/jboss-datagrid-7-openshift-image/blob/datagrid73-dev/docs/cache-service.asciidoc
-    openshift.io/long-description: |-
-      In this service, Red Hat Data Grid is configured as an in-memory caching service without persistence. Data in the cache will be lost if the service is stopped or restarted, and therefore, it should not be used as a permanent store for data.
-      It can be used to improve your application’s response time, by keeping frequently and recently accessed data in a high speed in-memory store.
+    openshift.io/long-description: Red Hat Data Grid Cache Service is an implementation of Data Grid for OpenShift that improves application speed and performance with minimal configuration required.
     openshift.io/provider-display-name: Red Hat, Inc.
     openshift.io/support-url: https://www.redhat.com/en/services/support
     tags: database,datagrid
@@ -33,7 +30,7 @@ objects:
   kind: Service
   metadata:
     annotations:
-      description: Headless service for StatefulSets
+      description: Provides a headless service for the StatefulSet.
       service.alpha.openshift.io/serving-cert-secret-name: service-certs
     labels:
       application: ${APPLICATION_NAME}
@@ -53,7 +50,7 @@ objects:
   kind: Service
   metadata:
     annotations:
-      description: The JGroups ping port for clustering.
+      description: Provides a ping service for clustered applications.
       service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
     labels:
       application: ${APPLICATION_NAME}
@@ -69,7 +66,7 @@ objects:
   kind: Service
   metadata:
     annotations:
-      description: The web server's HTTPS port.
+      description: Provides a service for accessing the application over HTTPS.
     labels:
       application: ${APPLICATION_NAME}
     name: ${APPLICATION_NAME}-https
@@ -83,7 +80,7 @@ objects:
   kind: Service
   metadata:
     annotations:
-      description: Hot Rod's port.
+      description: Provides a service for accessing the application through the Hot Rod protocol.
     labels:
       application: ${APPLICATION_NAME}
     name: ${APPLICATION_NAME}-hotrod
@@ -203,39 +200,39 @@ objects:
           requests:
             storage: 1Gi
 parameters:
-- description: The name for the application.
+- description: Specifies a name for the application.
   displayName: Application Name
   name: APPLICATION_NAME
   required: true
   value: cache-service
-- description: Infinispan image.
+- description: Sets an image to bootstrap the service.
   name: IMAGE
   required: true
   value: registry.redhat.io/jboss-datagrid-7/datagrid73-openshift
-- description: Number of instances in the cluster.
+- description: Specifies how many instances of the application to create in the cluster.
   displayName: Number of Instances
   name: NUMBER_OF_INSTANCES
   required: true
   value: "1"
-- description: Number of copies per data entry.
+- description: Specifies the number of copies for each data entry.
   displayName: Replication Factor
   name: REPLICATION_FACTOR
   required: true
   value: "1"
-- description: Controls how the cache reacts when it's full.
+- description: Defines the action to take when the cache size reaches the available memory.
   displayName: Eviction Policy
   name: EVICTION_POLICY
   required: true
   value: "evict"
-- description: Total container memory in MiB.
+- description: Sets the total memory, in MiB, available to the application.
   displayName: Total Memory
   name: TOTAL_CONTAINER_MEM
   value: "512"
-- description: Username for client applications
+- description: Specifies a username to authenticate client applications.
   displayName: Client User
   name: APPLICATION_USER
   required: true
-- description: Password for client applications
+- description: Sets a password to authenticate client applications.
   displayName: Client Password
   from: '[a-zA-Z0-9]{16}'
   generate: expression
