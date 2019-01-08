@@ -8,8 +8,7 @@ metadata:
     iconClass: icon-datagrid
     openshift.io/display-name: Red Hat Data Grid Service
     openshift.io/documentation-url: https://github.com/jboss-container-images/datagrid-7-image/blob/datagrid-services-dev/documentation/datagrid-service.asciidoc
-    openshift.io/long-description: This service provides a stable, persistent, and
-      linearly scalable implementation of Red Hat Data Grid.
+    openshift.io/long-description: Red Hat Data Grid Service provides a fully customizable implementation of Data Grid for OpenShift that is stable, persistent, and elastically scalable.
     openshift.io/provider-display-name: Red Hat, Inc.
     openshift.io/support-url: https://www.redhat.com/en/services/support
     tags: database,datagrid
@@ -81,8 +80,7 @@ objects:
   kind: Service
   metadata:
     annotations:
-      description: Provides a service for accessing the application through the Hot
-        Rod protocol.
+      description: Provides a service for accessing the application through the Hot Rod protocol.
     labels:
       application: ${APPLICATION_NAME}
     name: ${APPLICATION_NAME}-hotrod
@@ -203,7 +201,7 @@ parameters:
   name: APPLICATION_NAME
   required: true
   value: datagrid-service
-- description: Defines the image to bootstrap the service.
+- description: Sets an image to bootstrap the service.
   name: IMAGE
   required: true
   value: registry.redhat.io/jboss-datagrid-7/datagrid73-openshift
@@ -216,15 +214,15 @@ parameters:
   displayName: Total Memory
   name: TOTAL_CONTAINER_MEM
   value: "512"
-- description: Sets the persistence volume's storage capacity, in GiB, available to the application.
+- description: Sets the storage capacity, in GiB, of the persistence volume.
   displayName: Storage Capacity
   name: TOTAL_CONTAINER_STORAGE
   value: "1"
-- description: Specifies a username to authenticate client applications
+- description: Specifies a username to authenticate client applications.
   displayName: Client User
   name: APPLICATION_USER
   required: true
-- description: Sets a password to authenticate client applications
+- description: Sets a password to authenticate client applications.
   displayName: Client Password
   from: '[a-zA-Z0-9]{16}'
   generate: expression
