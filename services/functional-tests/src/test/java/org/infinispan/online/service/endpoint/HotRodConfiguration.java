@@ -30,7 +30,7 @@ public class HotRodConfiguration {
       return svcName -> {
          final ConfigurationBuilder config = new ConfigurationBuilder();
 
-         final URL url = getServiceWithName(svcName + "-hotrod");
+         final URL url = getServiceWithName(svcName);
          TrustStore trustStore = new TrustStore(svcName);
 
          config

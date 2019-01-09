@@ -23,7 +23,6 @@ The command output shows the resources that the template creates, as follows:
 secret "datagrid-service" created
 service "datagrid-service-headless" created
 service "datagrid-service-ping" created
-service "datagrid-service-https" created
-service "datagrid-service-hotrod" created
+service "datagrid-service" created
 statefulset "datagrid-service" created
 ----
