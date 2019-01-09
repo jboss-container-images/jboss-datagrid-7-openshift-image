@@ -36,13 +36,6 @@ objects:
     name: ${APPLICATION_NAME}-headless
   spec:
     clusterIP: None
-    ports:
-    - name: https
-      port: 8443
-      targetPort: 8443
-    - name: hotrod
-      port: 11222
-      targetPort: 11222
     selector:
       deploymentConfig: ${APPLICATION_NAME}
 - apiVersion: v1
