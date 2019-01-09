@@ -38,9 +38,9 @@ objects:
   spec:
     clusterIP: None
     ports:
-    - name: http
-      port: 8080
-      targetPort: 8080
+    - name: https
+      port: 8443
+      targetPort: 8443
     - name: hotrod
       port: 11222
       targetPort: 11222
@@ -72,7 +72,7 @@ objects:
     name: ${APPLICATION_NAME}-https
   spec:
     ports:
-    - port: 8080
+    - port: 8443
       targetPort: 8443
     selector:
       deploymentConfig: ${APPLICATION_NAME}
@@ -146,8 +146,8 @@ objects:
             timeoutSeconds: 10
           name: ${APPLICATION_NAME}
           ports:
-          - containerPort: 8080
-            name: http
+          - containerPort: 8443
+            name: https
             protocol: TCP
           - containerPort: 8888
             name: ping
