@@ -197,8 +197,7 @@ test-cache-service-manually:
 	-p APPLICATION_PASSWORD=test \
 	-p IMAGE=$(_DEV_IMAGE_STREAM) \
 	-e SCRIPT_DEBUG=true
-	oc expose svc/cache-service-https || true
-	oc expose svc/cache-service-hotrod || true
+	oc expose svc/cache-service || true
 	oc get routes
 .PHONY: test-cache-service-manually
 
@@ -209,8 +208,7 @@ test-datagrid-service-manually:
 	-p APPLICATION_PASSWORD=test \
 	-p IMAGE=$(_DEV_IMAGE_STREAM) \
 	-e SCRIPT_DEBUG=true
-	oc expose svc/datagrid-service-https || true
-	oc expose svc/datagrid-service-hotrod || true
+	oc expose svc/datagrid-service || true
 	oc get routes
 .PHONY: test-datagrid-service-manually
 

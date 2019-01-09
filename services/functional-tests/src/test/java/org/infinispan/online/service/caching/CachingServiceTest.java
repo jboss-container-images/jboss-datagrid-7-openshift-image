@@ -66,7 +66,7 @@ public class CachingServiceTest {
    @Before
    public void before() throws MalformedURLException {
       readinessCheck.waitUntilAllPodsAreReady();
-      restService = handle.getServiceWithName(SERVICE_NAME + "-https");
+      restService = handle.getServiceWithName(SERVICE_NAME);
    }
 
    @Test
