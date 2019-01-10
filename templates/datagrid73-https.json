@@ -204,6 +204,13 @@
             "required": true
         },
         {
+            "displayName": "Enable Prometheus",
+            "description": "Enables Prometheus agent for monitoring",
+            "name": "AB_PROMETHEUS_ENABLE",
+            "value": "true",
+            "required": false
+        },
+        {
             "description": "Container memory limit",
             "name": "MEMORY_LIMIT",
             "value": "1Gi",
@@ -470,6 +477,11 @@
                                         "protocol": "TCP"
                                     },
                                     {
+                                        "name": "prometheus",
+                                        "containerPort": 9779,
+                                        "protocol": "TCP"
+                                    },
+                                    {
                                         "name": "http",
                                         "containerPort": 8080,
                                         "protocol": "TCP"
@@ -612,6 +624,10 @@
                                     {
                                         "name": "JGROUPS_CLUSTER_PASSWORD",
                                         "value": "${JGROUPS_CLUSTER_PASSWORD}"
+                                    },
+                                    {
+                                        "name": "AB_ENABLE_PROMETHEUS",
+                                        "value": "${AB_ENABLE_PROMETHEUS}"
                                     }
                                 ]
                             }

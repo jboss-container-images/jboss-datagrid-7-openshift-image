@@ -134,6 +134,13 @@
             "required": true
         },
         {
+            "displayName": "Enable Prometheus",
+            "description": "Enables Prometheus agent for monitoring",
+            "name": "AB_PROMETHEUS_ENABLE",
+            "value": "true",
+            "required": false
+        },
+        {
             "displayName": "Datagrid Volume Size",
             "description": "Size of the volume used by Datagrid for persisting metadata.",
             "name": "VOLUME_CAPACITY",
@@ -385,6 +392,11 @@
                                         "protocol": "TCP"
                                     },
                                     {
+                                        "name": "prometheus",
+                                        "containerPort": 9779,
+                                        "protocol": "TCP"
+                                    },
+                                    {
                                         "name": "http",
                                         "containerPort": 8080,
                                         "protocol": "TCP"
@@ -487,6 +499,10 @@
                                     {
                                         "name": "DATAGRID_SPLIT",
                                         "value": "${DATAGRID_SPLIT}"
+                                    },
+                                    {
+                                        "name": "AB_ENABLE_PROMETHEUS",
+                                        "value": "${AB_ENABLE_PROMETHEUS}"
                                     }
                                 ]
                             }
