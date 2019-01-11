@@ -30,18 +30,6 @@ objects:
   kind: Service
   metadata:
     annotations:
-      description: Provides a headless service for the StatefulSet.
-    labels:
-      application: ${APPLICATION_NAME}
-    name: ${APPLICATION_NAME}-headless
-  spec:
-    clusterIP: None
-    selector:
-      deploymentConfig: ${APPLICATION_NAME}
-- apiVersion: v1
-  kind: Service
-  metadata:
-    annotations:
       description: Provides a ping service for clustered applications.
       service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
     labels:
@@ -81,7 +69,7 @@ objects:
     name: ${APPLICATION_NAME}
   spec:
     replicas: ${{NUMBER_OF_INSTANCES}}
-    serviceName: ${APPLICATION_NAME}-headless
+    serviceName: ${APPLICATION_NAME}-ping
     strategy:
       type: Rolling
       rollingParams:
