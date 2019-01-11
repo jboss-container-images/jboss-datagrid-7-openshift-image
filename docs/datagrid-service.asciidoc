@@ -21,7 +21,6 @@ The command output shows the resources that the template creates, as follows:
 [source,bash,options=nowrap]
 ----
 secret "datagrid-service" created
-service "datagrid-service-headless" created
 service "datagrid-service-ping" created
 service "datagrid-service" created
 statefulset "datagrid-service" created
