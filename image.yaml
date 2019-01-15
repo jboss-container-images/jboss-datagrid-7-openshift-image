@@ -1,9 +1,9 @@
 schema_version: 1
 name: jboss-datagrid-7/datagrid73-openshift
 version: 1.0
-description: Red Hat JBoss Data Grid 7.3 for OpenShift container image
+description: "Red Hat JBoss Data Grid 7.3 for OpenShift container image"
 
-from: jboss/openjdk18-rhel7:1.1
+from: rhel7:7-released
 
 labels:
   - name: "com.redhat.component"
@@ -185,6 +185,8 @@ modules:
     - name: common.modules
       path: modules/common
   install:
+    - name: jboss.container.openjdk.jdk
+      version: "8"
     - name: datagrid.distribution
     - name: dynamic-resources
     - name: s2i-common
