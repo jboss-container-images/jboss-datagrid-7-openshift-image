@@ -100,7 +100,7 @@ install-ansible-service-broker:
 .PHONY: install-ansible-service-broker
 
 stop-openshift:
-	oc cluster down
+	oc cluster down || true
 	# Hack to remove leftover mounts https://github.com/openshift/origin/issues/19141
 	for i in $(shell mount | grep openshift | awk '{ print $$3}'); do sudo umount "$$i"; done
 	sudo rm -rf ./openshift.local.clusterup
@@ -119,10 +119,12 @@ _login_to_docker:
 
 _wait_for_local_docker_registry:
 	( \
-		until oc get pod -n default | grep docker-registry | grep "1/1" > /dev/null; do \
-			sleep 10; \
-			echo "Waiting for Docker Registry..."; \
-		done; \
+      for i in `seq 1 20`; do \
+         if ! oc get pod -n default | grep docker-registry | grep "1/1" > /dev/null; then \
+            echo "Waiting for Docker Registry..."; \
+            sleep 10; \
+         fi; \
+      done; \
 	)
 .PHONY: _wait_for_local_docker_registry
 
