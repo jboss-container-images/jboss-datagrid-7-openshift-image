@@ -129,9 +129,9 @@ _wait_for_local_docker_registry:
 .PHONY: _wait_for_local_docker_registry
 
 _add_openshift_push_permissions:
-	oc adm policy add-role-to-user system:registry $(_OPENSHIFT_USERNAME) || true
-	oc adm policy add-role-to-user admin $(_OPENSHIFT_USERNAME) -n $(_TEST_PROJECT) || true
-	oc adm policy add-role-to-user system:image-builder $(_OPENSHIFT_USERNAME) || true
+	oc adm policy add-role-to-user system:registry $(_OPENSHIFT_USERNAME)
+	oc adm policy add-role-to-user admin $(_OPENSHIFT_USERNAME) -n $(_TEST_PROJECT)
+	oc adm policy add-role-to-user system:image-builder $(_OPENSHIFT_USERNAME)
 .PHONY: _add_openshift_push_permissions
 
 push-image-to-local-openshift: _add_openshift_push_permissions _wait_for_local_docker_registry _login_to_docker push-image-common
