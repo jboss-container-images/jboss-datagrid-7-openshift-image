@@ -55,9 +55,17 @@ pipeline {
 
    post {
       always {
-         sh 'make stop-openshift'
          archiveArtifacts artifacts: '**/target/surefire-reports/*.txt, **/target/surefire-reports/*.log', fingerprint: true
          junit '**/target/surefire-reports/*.xml'
+      }
+
+      failure {
+         sh 'oc cluster status'
+         sh 'oc describe pods -n default'
+      }
+
+      cleanup {
+         sh 'make stop-openshift'
       }
    }
 }
