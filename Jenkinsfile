@@ -55,9 +55,9 @@ pipeline {
 
    post {
       always {
+         sh 'make stop-openshift'
          archiveArtifacts artifacts: '**/target/surefire-reports/*.txt, **/target/surefire-reports/*.log', fingerprint: true
          junit '**/target/surefire-reports/*.xml'
-         sh 'make stop-openshift'
       }
    }
 }
