@@ -12,14 +12,6 @@ pipeline {
    stages {
       stage('Prepare') {
          steps {
-            // Workaround for JENKINS-47230
-            script {
-               env.MAVEN_HOME = tool('Maven')
-
-               // See https://github.com/openshift/origin/issues/15038#issuecomment-345252400
-               sh 'sudo rm -rf /usr/share/rhel/secrets'
-            }
-
             withCredentials([
                     string(credentialsId: 'krb5.user', variable: 'USER'),
                     file(credentialsId: 'krb5.keytab', variable: 'FILE')
@@ -27,18 +19,29 @@ pipeline {
                sh "kinit $USER -k -t $FILE"
             }
 
+            // Workaround for JENKINS-47230
+            script {
+               env.MAVEN_HOME = tool('Maven')
+
+               // See https://github.com/openshift/origin/issues/15038#issuecomment-345252400
+               sh 'sudo rm -rf /usr/share/rhel/secrets'
+
+               sh 'make clean-docker clean-maven MVN_COMMAND="$MAVEN_HOME/bin/mvn -s services/functional-tests/maven-settings.xml"'
+               sh 'make build-image'
+               sh 'make start-openshift-with-catalog login-to-openshift prepare-openshift-project push-image-to-local-openshift'
+            }
+
             checkout scm
          }
       }
 
-      stage('Unit and Functional tests') {
+      stage('Functional tests') {
          steps {
             script {
                 try {
-                    sh 'make test-ci MVN_COMMAND="$MAVEN_HOME/bin/mvn -s services/functional-tests/maven-settings.xml"'
+                    sh 'make test-functional MVN_COMMAND="$MAVEN_HOME/bin/mvn -s services/functional-tests/maven-settings.xml"'
                 } finally {
                     sh 'tail -n +1 -- services/functional-tests/target/surefire-reports/*.txt'
-                    sh 'make clean-ci MVN_COMMAND="$MAVEN_HOME/bin/mvn -s services/functional-tests/maven-settings.xml"'
                 }
             }
          }
@@ -55,17 +58,21 @@ pipeline {
 
    post {
       always {
-         archiveArtifacts artifacts: '**/target/surefire-reports/*.txt, **/target/surefire-reports/*.log', fingerprint: true
+         archiveArtifacts allowEmptyArchive: true, artifacts: '**/target/surefire-reports/*.txt, **/target/surefire-reports/*.log', fingerprint: true
          junit '**/target/surefire-reports/*.xml'
       }
 
       failure {
-         sh 'oc cluster status'
-         sh 'oc describe pods -n default'
+         sh 'oc cluster status || true'
+         sh 'oc describe pods -n default || true'
+         sh 'mkdir logs'
+         sh "sudo docker ps -a --format '{{.ID}} {{.Image}}' | grep openshift | awk '{print \$1}' | xargs -r docker inspect --format='{{.Name}} {{.LogPath}}' |  xargs -l bash -c 'sudo cp \$1 logs\$0.log'"
+         archiveArtifacts allowEmptyArchive: true, artifacts: 'logs/*.log', fingerprint: true
       }
 
       cleanup {
-         sh 'make stop-openshift'
+         sh 'make stop-openshift clean-docker'
+         sh 'git clean -qfdx || echo "git clean failed, exit code $?"'
       }
    }
 }
