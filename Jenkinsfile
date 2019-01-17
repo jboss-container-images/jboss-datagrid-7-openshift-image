@@ -23,11 +23,14 @@ pipeline {
             script {
                env.MAVEN_HOME = tool('Maven')
 
+               sh 'make stop-openshift'
                // See https://github.com/openshift/origin/issues/15038#issuecomment-345252400
                sh 'sudo rm -rf /usr/share/rhel/secrets'
 
                sh 'make clean-docker clean-maven MVN_COMMAND="$MAVEN_HOME/bin/mvn -s services/functional-tests/maven-settings.xml"'
                sh 'make build-image'
+               // Make sure openshift is definitely still not running
+               sh 'oc cluster status'
                sh 'make start-openshift-with-catalog login-to-openshift prepare-openshift-project push-image-to-local-openshift'
             }
 
