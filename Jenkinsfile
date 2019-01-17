@@ -30,7 +30,7 @@ pipeline {
                sh 'make clean-docker clean-maven MVN_COMMAND="$MAVEN_HOME/bin/mvn -s services/functional-tests/maven-settings.xml"'
                sh 'make build-image'
                // Make sure openshift is definitely still not running
-               sh 'oc cluster status'
+               sh 'oc cluster status || true'
                sh 'make start-openshift-with-catalog login-to-openshift prepare-openshift-project push-image-to-local-openshift'
             }
 
