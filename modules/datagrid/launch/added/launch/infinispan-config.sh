@@ -599,13 +599,15 @@ function get_db_type() {
 function configure_container_security() {
   if [ -n "$CONTAINER_SECURITY_ROLE_MAPPER$CONTAINER_SECURITY_CUSTOM_ROLE_MAPPER_CLASS$CONTAINER_SECURITY_ROLES" ]; then
     if [ -n "$CONTAINER_SECURITY_ROLE_MAPPER" ]; then
+      local rolemapper="\
+                        <$CONTAINER_SECURITY_ROLE_MAPPER />"
+
       if [ -n "$CONTAINER_SECURITY_CUSTOM_ROLE_MAPPER_CLASS" ] && [ "$CONTAINER_SECURITY_ROLE_MAPPER" == "custom-role-mapper" ]; then
         local CONTAINER_SECURITY_CUSTOM_ROLE_MAPPER_CLASS="class=\"$CONTAINER_SECURITY_CUSTOM_ROLE_MAPPER_CLASS\""
+        rolemapper="\
+                    <$CONTAINER_SECURITY_ROLE_MAPPER $CONTAINER_SECURITY_CUSTOM_ROLE_MAPPER_CLASS/>"
       fi
-      local rolemapper="\
-                        <$CONTAINER_SECURITY_ROLE_MAPPER $CONTAINER_SECURITY_CUSTOM_ROLE_MAPPER_CLASS/>"
     fi
-
     if [ -z "$rolemapper" ]; then
       rolemapper="<identity-role-mapper />"
     fi
