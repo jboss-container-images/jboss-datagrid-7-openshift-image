@@ -69,7 +69,7 @@ pipeline {
          sh 'oc cluster status || true'
          sh 'oc describe pods -n default || true'
          sh 'mkdir logs'
-         sh 'sudo docker ps -a --format \'{{.ID}} {{.Image}}\' | grep openshift | awk \'{print $1}\' | xargs -r docker inspect --format=\'{{.Name}} {{.LogPath}}\' |  xargs -l bash -c \'sudo cp $1 logs$0.log\''
+         sh 'sudo docker ps -a --format \'{{.ID}} {{.Image}}\' | grep openshift | awk \'{print $1}\' | xargs -r docker inspect --format=\'{{.Name}} {{.LogPath}}\' |  xargs -l bash -c \'sudo install -C -m 755 -o infinispan -g users $1 logs$0.log\''
          archiveArtifacts allowEmptyArchive: true, artifacts: 'logs/*.log', fingerprint: true
       }
 
