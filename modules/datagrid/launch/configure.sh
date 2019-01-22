@@ -29,3 +29,7 @@ cp -p ${ADDED_DIR}/launch/service-memory.conf $JBOSS_HOME/bin/launch
 
 # Append Prometheus agent to standalone.conf
 cat ${ADDED_DIR}/launch/prometheus.conf >> $JBOSS_HOME/bin/standalone.conf
+
+# Add logging config script
+cp -p ${ADDED_DIR}/launch/logging.sh $JBOSS_HOME/bin/launch
+
