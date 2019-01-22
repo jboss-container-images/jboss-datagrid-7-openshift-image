@@ -102,15 +102,6 @@
                 <rotate-size value="10M"/>
                 <max-backup-index value="10"/>
             </size-rotating-file-handler>
-            <logger category="com.arjuna">
-                <level name="WARN"/>
-            </logger>
-            <logger category="org.jboss.as.config">
-                <level name="DEBUG"/>
-            </logger>
-            <logger category="sun.rmi">
-                <level name="WARN"/>
-            </logger>
             <logger category="org.infinispan.HOTROD_ACCESS_LOG" use-parent-handlers="false">
                 <!-- Set to TRACE to enable access logging for hot rod or use DMR -->
                 <level name="INFO"/>
@@ -118,6 +109,7 @@
                     <handler name="HR-ACCESS-FILE"/>
                 </handlers>
             </logger>
+            <!-- ##LOGGER_CONFIGURATION## -->
             <!-- ##ACCESS_LOG_HANDLER## -->
             <root-logger>
                 <level name="INFO"/>

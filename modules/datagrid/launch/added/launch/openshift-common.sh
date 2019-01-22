@@ -25,6 +25,7 @@ if [ "${USER_CONFIG_MAP^^}" != "TRUE" ]; then
   $JBOSS_HOME/bin/launch/infinispan-config.sh
   $JBOSS_HOME/bin/launch/management-realm.sh
   $JBOSS_HOME/bin/launch/access_log_valve.sh
+  $JBOSS_HOME/bin/launch/logging.sh
   /opt/run-java/proxy-options
   )
 else
