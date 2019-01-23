@@ -12,7 +12,6 @@ LOG=/tmp/liveness-log
 # liveness failure before management interface is up will cause the probe to fail
 COUNT=30
 SLEEP=1
-DEBUG_SCRIPT=false
 PROBE_IMPL="probe.eap.dmr.EapProbe probe.jdg.jolokia.JdgProbe"
 
 if [ $# -gt 0 ] ; then
