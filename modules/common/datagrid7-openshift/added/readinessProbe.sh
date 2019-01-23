@@ -6,7 +6,7 @@ LOG=/tmp/readiness-log
 
 COUNT=30
 SLEEP=1
-DEBUG=false
+DEBUG="$DEBUG_SCRIPT"
 PROBE_IMPL="probe.eap.dmr.EapProbe probe.jdg.jolokia.JdgProbe"
 
 if [ $# -gt 0 ] ; then
