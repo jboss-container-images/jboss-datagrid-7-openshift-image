@@ -109,6 +109,8 @@ objects:
             value: ${REPLICATION_FACTOR}
           - name: EVICTION_POLICY
             value: ${EVICTION_POLICY}
+          - name: AB_PROMETHEUS_ENABLE
+            value: true
           image: ${IMAGE}
           livenessProbe:
             exec:

@@ -95,6 +95,8 @@ objects:
             value: openshift.DNS_PING
           - name: OPENSHIFT_DNS_PING_SERVICE_NAME
             value: ${APPLICATION_NAME}-ping
+          - name: AB_PROMETHEUS_ENABLE
+            value: true
           - name: USERNAME
             valueFrom:
               secretKeyRef:
