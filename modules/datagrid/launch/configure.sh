@@ -31,5 +31,5 @@ cp -p ${ADDED_DIR}/launch/service-memory.conf $JBOSS_HOME/bin/launch
 cat ${ADDED_DIR}/launch/prometheus.conf >> $JBOSS_HOME/bin/standalone.conf
 
 # Add logging config script
-cp -p ${ADDED_DIR}/launch/logging.sh $JBOSS_HOME/bin/launch
+cp -p ${ADDED_DIR}/launch/infinispan-logging.sh $JBOSS_HOME/bin/launch
 
