@@ -6,7 +6,7 @@ function prepareEnv() {
 
 function configure() {
   if [ -n "$LOGGING_CATEGORIES" ]; then
-      IFS=',' read -a loggerlist <<< "$(find_env "CUSTOM_LOGGERS")"
+      IFS=',' read -a loggerlist <<< "$(find_env "LOGGING_CATEGORIES")"
       if [ "${#loggerlist[@]}" -ne "0" ]; then
         loggercount=0
         while [ $loggercount -lt ${#loggerlist[@]} ]; do
