@@ -11,9 +11,9 @@ labels:
   - name: "org.jboss.product"
     value: "datagrid"
   - name: "org.jboss.product.version"
-    value: "7.3.0.ER2"
+    value: "7.3.0.GA"
   - name: "org.jboss.product.datagrid.version"
-    value: "7.3.0.ER2"
+    value: "7.3.0.GA"
   - name: "org.jboss.deployments-dir"
     value: "/opt/datagrid/standalone/deployments"
   - name: "com.redhat.deployments-dir"
@@ -41,9 +41,9 @@ envs:
   - name: "JBOSS_PRODUCT"
     value: "datagrid"
   - name: "JBOSS_DATAGRID_VERSION"
-    value: "7.3.0.ER2"
+    value: "7.3.0.GA"
   - name: "PRODUCT_VERSION"
-    value: "7.3.0.ER2"
+    value: "7.3.0.GA"
   - name: "JBOSS_HOME"
     value: "/opt/datagrid"
   - name: "JBOSS_MODULES_SYSTEM_PKGS"
@@ -224,9 +224,9 @@ packages:
     - PyYAML
     - openssl
 artifacts:
-  - path: jboss-datagrid-7.3.0.CR1-server.zip
-    description: "Pre-release artifact (ER2), not yet available on Customer Portal"
-    md5: b8fa026ab03451f48b0bc98a0d41e3f0
+  - path: jboss-datagrid-7.3.0-server.zip
+    description: "Artifact is available on Customer Portal: https://access.redhat.com/jbossnetwork/restricted/softwareDownload.html?softwareId=64771&product=data.grid"
+    md5: 12d3986ce3724c01f003a825657f4cb0
 
 run:
   user: 185
