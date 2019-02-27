@@ -1,21 +1,11 @@
-# Red Hat JBoss Data Grid 7.2 for OpenShift container image
+# Red Hat Data Grid 7.3 for OpenShift Container Image
 
-NOTE: Extends link:https://github.com/jboss-container-images/jboss-datagrid-7-image[Red Hat JBoss Data Grid 7.2 container image]
-
-# License
-
-See link:LICENSE[LICENSE] file.
+This repository contains various artifacts to create the Red Hat Data Grid 7.3 for OpenShift container image and associated templates.
 
 # Documentation
 
-First install python script requirements:
+See the link:https://access.redhat.com/documentation/en-us/red_hat_data_grid/7.3/html/red_hat_data_grid_for_openshift/[Red Hat Data Grid for OpenShift] documentation for information about deploying and running Data Grid 7.3 for OpenShift.
 
-    $ pip install -r requirements.txt
+# License
 
-To create and/or update the documents associated with the templates, run the gen_template_docs.py python script:
-
-    $ ./gen_template_docs.py
-
-# Development
-* link:docs/cache-service.asciidoc[Red Hat Cache Service]
-* link:docs/development-guide.asciidoc[Development Guide]
+See the link:LICENSE[License].

@@ -4,12 +4,14 @@
     generator or the input template (./*.in)
 ////
 
-= datagrid72-postgresql
+= datagrid73-postgresql-persistent
 :toc:
 :toc-placement!:
 :toclevels: 5
 
-An exampleRed Hat JBoss Data Grid application with a PostgreSQL database. For more information about using this template, see https://github.com/jboss-openshift/application-templates.
+An example Red Hat JBoss Data Grid application with a PostgreSQL database. For more information, see link:https://access.redhat.com/documentation/en-us/red_hat_data_grid/7.3/html-single/red_hat_data_grid_for_openshift/index#os_templates[Data Grid 7.3 Deployment Configuration Templates] in the _Red Hat Data Grid for OpenShift_ documentation.
+
+**NOTE:** As of Data Grid 7.3, this template is deprecated. Use the `cache-service` or `datagrid-service` template.
 
 For simple authentication, set
 
@@ -61,9 +63,10 @@ https://docs.openshift.org/latest/architecture/core_concepts/templates.html#para
 |`DB_TX_ISOLATION` | `DB_TX_ISOLATION` | Sets transaction-isolation for the configured datasource. | `${DB_TX_ISOLATION}` | False
 |`POSTGRESQL_MAX_CONNECTIONS` | `POSTGRESQL_MAX_CONNECTIONS` | The maximum number of client connections allowed. This also sets the maximum number of prepared transactions. | `${POSTGRESQL_MAX_CONNECTIONS}` | False
 |`POSTGRESQL_SHARED_BUFFERS` | `POSTGRESQL_SHARED_BUFFERS` | Configures how much memory is dedicated to PostgreSQL for caching data. | `${POSTGRESQL_SHARED_BUFFERS}` | False
+|`VOLUME_CAPACITY` | -- | Size of persistent storage for database volume. | 1Gi | True
 |`IMAGE_STREAM_NAMESPACE` | -- | Namespace in which the ImageStreams for Red Hat Middleware images are installed. These ImageStreams are normally installed in the openshift namespace. You should only need to modify this if you've installed the ImageStreams in a different namespace/project. | openshift | True
 |`INFINISPAN_CONNECTORS` | `INFINISPAN_CONNECTORS` | Comma-separated list of connector types that should be configured (defaults to 'memcached,hotrod,rest') | hotrod,memcached,rest | False
-|`CACHE_NAMES` | `CACHE_NAMES` | Comma-separated list of caches to configure.  By default, a distributed-cache, with a mode of SYNC will be configurd for each entry. | `${CACHE_NAMES}` | False
+|`CACHE_NAMES` | `CACHE_NAMES` | Comma-separated list of caches to configure.  By default, a distributed-cache, with a mode of SYNC will be configured for each entry. | `${CACHE_NAMES}` | False
 |`DATAVIRT_CACHE_NAMES` | `CACHE_NAMES` | Comma-separated list of caches to configure for use by Red Hat JBoss Data Virtualization for materialization of views.  Three caches will be created for each named cache: <name>, <name>_staging and <name>_alias. | `${CACHE_NAMES}` | False
 |`CACHE_TYPE_DEFAULT` | `CACHE_TYPE_DEFAULT` | Default cache type for all caches. If empty then distributed will be the default | `${CACHE_TYPE_DEFAULT}` | False
 |`ENCRYPTION_REQUIRE_SSL_CLIENT_AUTH` | `ENCRYPTION_REQUIRE_SSL_CLIENT_AUTH` |  | `${ENCRYPTION_REQUIRE_SSL_CLIENT_AUTH}` | False
@@ -178,7 +181,7 @@ for more information.
 |============
 |Deployment | Image
 
-|`${APPLICATION_NAME}` | jboss-datagrid72-openshift
+|`${APPLICATION_NAME}` | jboss-datagrid73-openshift
 |`${APPLICATION_NAME}-postgresql` | postgresql
 |============
 
@@ -252,8 +255,8 @@ for more information.
 |`OPENSHIFT_DNS_PING_SERVICE_NAME` | -- | `${APPLICATION_NAME}-ping`
 |`OPENSHIFT_DNS_PING_SERVICE_PORT` | -- | 8888
 |`INFINISPAN_CONNECTORS` | Comma-separated list of connector types that should be configured (defaults to 'memcached,hotrod,rest') | `${INFINISPAN_CONNECTORS}`
-|`CACHE_NAMES` | Comma-separated list of caches to configure.  By default, a distributed-cache, with a mode of SYNC will be configurd for each entry. | `${CACHE_NAMES}`
-|`DATAVIRT_CACHE_NAMES` | Comma-separated list of caches to configure.  By default, a distributed-cache, with a mode of SYNC will be configurd for each entry. | `${DATAVIRT_CACHE_NAMES}`
+|`CACHE_NAMES` | Comma-separated list of caches to configure.  By default, a distributed-cache, with a mode of SYNC will be configured for each entry. | `${CACHE_NAMES}`
+|`DATAVIRT_CACHE_NAMES` | Comma-separated list of caches to configure.  By default, a distributed-cache, with a mode of SYNC will be configured for each entry. | `${DATAVIRT_CACHE_NAMES}`
 |`CACHE_TYPE_DEFAULT` | Default cache type for all caches. If empty then distributed will be the default | `${CACHE_TYPE_DEFAULT}`
 |`ENCRYPTION_REQUIRE_SSL_CLIENT_AUTH` |  | `${ENCRYPTION_REQUIRE_SSL_CLIENT_AUTH}`
 |`HOTROD_SERVICE_NAME` | -- | `${APPLICATION_NAME}-hotrod`
@@ -280,18 +283,25 @@ for more information.
 =====  Volumes
 
 |=============
-|Deployment |Name  | mountPath | Purpose | readOnly 
+|Deployment |Name  | mountPath | Purpose | readOnly
 
 |`${APPLICATION_NAME}` | datagrid-keystore-volume | `/etc/datagrid-secret-volume` | ssl certs | True
-|`${APPLICATION_NAME}-postgresql` | `${APPLICATION_NAME}-data` | `/var/lib/pgsql/data` | -- | false
+|`${APPLICATION_NAME}-postgresql` | `${APPLICATION_NAME}-postgresql-pvol` | `/var/lib/pgsql/data` | postgresql | false
 |=============
 
 
 === External Dependencies
 
 
+==== Volume Claims
 
+A `PersistentVolume` object is a storage resource in an OpenShift cluster. Storage is provisioned by an administrator
+by creating `PersistentVolume` objects from sources such as GCE Persistent Disks, AWS Elastic Block Stores (EBS), and NFS mounts.
+Refer to the https://docs.openshift.com/enterprise/3.0/dev_guide/persistent_volumes.html#overview[Openshift documentation] for
+more information.
 
+|=============
+|Name | Access Mode
 
-
-
+|`${APPLICATION_NAME}-postgresql-claim` | ReadWriteOnce
+|=============

@@ -4,12 +4,14 @@
     generator or the input template (./*.in)
 ////
 
-= datagrid72-partition
+= datagrid73-partition
 :toc:
 :toc-placement!:
 :toclevels: 5
 
-An exampleRed Hat JBoss Data Grid application. For more information about using this template, see https://github.com/jboss-openshift/application-templates.
+An example Red Hat JBoss Data Grid application. For more information, see link:https://access.redhat.com/documentation/en-us/red_hat_data_grid/7.3/html-single/red_hat_data_grid_for_openshift/index#os_templates[Data Grid 7.3 Deployment Configuration Templates] in the _Red Hat Data Grid for OpenShift_ documentation.
+
+**NOTE:** As of Data Grid 7.3, this template is deprecated. Use the `cache-service` or `datagrid-service` template.
 
 For simple authentication, set
 
@@ -155,7 +157,7 @@ for more information.
 |============
 |Deployment | Image
 
-|`${APPLICATION_NAME}` | jboss-datagrid72-openshift
+|`${APPLICATION_NAME}` | jboss-datagrid73-openshift
 |============
 
 
@@ -220,7 +222,7 @@ for more information.
 =====  Volumes
 
 |=============
-|Deployment |Name  | mountPath | Purpose | readOnly 
+|Deployment |Name  | mountPath | Purpose | readOnly
 
 |`${APPLICATION_NAME}` | `${APPLICATION_NAME}-datagrid-pvol` | `/opt/datagrid/standalone/partitioned_data` | datagrid | false
 |=============
@@ -241,10 +243,3 @@ more information.
 
 |`${APPLICATION_NAME}-datagrid-claim` | ReadWriteMany
 |=============
-
-
-
-
-
-
-

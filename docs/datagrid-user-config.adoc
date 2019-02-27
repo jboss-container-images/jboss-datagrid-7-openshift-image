@@ -1,37 +1,45 @@
-== Custom User Standalone XML Configuration
-= Usage
+= Custom User Standalone XML Configuration
 
-To provide custom configurations you must:
-1. Create a config map containing at least `standalone.xml` which is mounted at `/opt/datagrid/standalone/configuration/user`
-2. Set the environment variable `USER_CONFIG_MAP=true` in your template
-3. Expose the required services and ports in your template
+== Providing Custom Configuration
 
-When `USER_CONFIG_MAP=true` our image copies the contents of `opt/datagrid/standalone/configuration/user`. i.e. the configmap, to `/opt/datagrid/standalone/configuration`.
-This means that in addition to passing `standalone.xml`, it is also possible to provide `logging.properties`, `application-role.properties` etc in the configmap.
+Do the following:
 
-Creating a configmap containing the desired configuration files is trivial, as an entire directory can be used to create a configmap consisting of filenames and their contents as key/values in the configmap. This can be achieved via `oc create configmap <name-of-configmap> --from-file=<local-dir>`.
+1. Mount `standalone.xml` at `/opt/datagrid/standalone/configuration/user`.
+2. Set the environment variable `USER_CONFIG_MAP=true` in your template.
+3. Expose the required services and ports in your template.
 
-To create an application that uses a custom configuration, login to your openshift cluster via `oc`, push your built image to the cluster's repository and execute the following:
+If `USER_CONFIG_MAP=true`, Data Grid copies the contents of `opt/datagrid/standalone/configuration/user` to `/opt/datagrid/standalone/configuration`. As a result, you can also provide `logging.properties`, `application-role.properties`, and so on in the ConfigMap.
+
+== Creating Custom Data Grid Applications
+
+Do the following:
 
 1. `oc create -f docs/examples/user-configuration/user-config-template.yaml`
 2. `oc create configmap datagrid-config --from-file=docs/examples/user-configuration`
 3. `oc new-app user-config`
 
-The server should then startup with the provided configuration files.
+Your Data Grid for OpenShift cluster starts with the configuration files from the ConfigMap.
 
 = Example Template
-`docs/examples/user-configuration/user-config-template.yaml` is a basic template that shows how a config map can be created and the `USER_CONFIG_MAP` should be set.
-Furthermore, this template exposes the ports required for the ping, hotrod and rest protocols.
 
-NOTE: If using openshift.DNS_PING protocol for JGroups discovery (recommended) it's also necessary to set the ENV variable `OPENSHIFT_DNS_PING_SERVICE_NAME` to the name of the ping service
-and `OPENSHIFT_DNS_PING_SERVICE_PORT` to the exposed port.
+link:examples/user-configuration/user-config-template.yaml[examples/user-configuration/user-config-template.yaml] illustrates how to create a ConfigMap and set `USER_CONFIG_MAP`.
 
-= Image Env Variables
-In the provided link:examples/user-configuration/standalone.xml[standalone.xml] we have included several comments beginning and ending with `##`, e.g. `<!-- ##JGROUPS_ENCRYPT## -->`.
-If you keep these comments in your `standalone.xml` file, then it remains possible to use some of the images environment variables
-for more complicated tasks such as enabling encryption in JGroups. Environment variables related infinispan caches
-and endpoints no longer work when providing a configuration via a configmap, therefore all cache/endpoint configuration
-has to occur in your `standalone.xml` file.
+`user-config-template.yaml` also exposes ports for the ping, hotrod, and rest protocols.
 
-NOTE: It is possible to remove the aforementioned xml comments, however it will result in certain environment variables
-being ignored.
+**NOTE:** If you use the `openshift.DNS_PING` protocol for cluster discovery (recommended), you must set the following environment variables:
+
+* `OPENSHIFT_DNS_PING_SERVICE_NAME` specifies the name of the ping service.
+* `OPENSHIFT_DNS_PING_SERVICE_PORT` specifies the exposed port.
+
+= Image Environment Variables
+link:examples/user-configuration/standalone.xml[examples/user-configuration/standalone.xml] includes several comments that begin and end with two # signs, for example:
+
+```
+<!-- ##JGROUPS_ENCRYPT## -->
+```
+
+These comments act as placeholders for environment variables. Keep these comments in `standalone.xml` to use environment variables for configuration tasks such as enabling JGroups encryption. If you remove the comments, certain environment variables no longer take effect.
+
+Likewise, environment variables related to Infinispan caches and endpoints do not take effect when using custom server configuration via a ConfigMap. For this reason, your `standalone.xml` file must contain all cache/endpoint configuration.
+
+For more information about creating custom configuration, see link:https://access.redhat.com/documentation/en-us/red_hat_data_grid/7.3/html-single/red_hat_data_grid_for_openshift/index#os_custom_xml[Applying Custom Configuration through the ConfigMap API] in the _Red Hat Data Grid for OpenShift_ documentation.
