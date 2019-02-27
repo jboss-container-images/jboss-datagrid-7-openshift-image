@@ -4,38 +4,28 @@
     generator or the input template (./*.in)
 ////
 
-= Application Templates
+= Data Grid for OpenShift Templates
 
-This project contains OpenShift v3 application templates which support applications based on JBoss Middleware products.
-Source can be found https://github.com/jboss-openshift/application-templates/tree/master[here].
+Data Grid for OpenShift provides templates that reduce time and complexity when deploying Data Grid clusters.
 
-:icons: font
-:toc: macro
+== Service Templates
 
-toc::[levels=1]
+* link:cache-service.asciidoc[cache-service]
+* link:datagrid-service.asciidoc[datagrid-service]
 
-== templates
+See link:https://access.redhat.com/documentation/en-us/red_hat_data_grid/7.3/html-single/red_hat_data_grid_for_openshift/index#os_services[Data Grid 7.3 Services] in the _Red Hat Data Grid for OpenShift_ documentation.
 
-* link:./templates/datagrid72-basic.adoc[datagrid72-basic]
-* link:./templates/datagrid72-https.adoc[datagrid72-https]
-* link:./templates/datagrid72-image-stream.adoc[datagrid72-image-stream]
-* link:./templates/datagrid72-mysql-persistent.adoc[datagrid72-mysql-persistent]
-* link:./templates/datagrid72-mysql.adoc[datagrid72-mysql]
-* link:./templates/datagrid72-partition.adoc[datagrid72-partition]
-* link:./templates/datagrid72-postgresql-persistent.adoc[datagrid72-postgresql-persistent]
-* link:./templates/datagrid72-postgresql.adoc[datagrid72-postgresql]
+== Deployment Configuration Templates
 
-////
-  the source for the release notes part of this page is in the file
-  ./release-notes.adoc.in
-////
+**NOTE:** As of Data Grid 7.3, the deployment configuration templates are deprecated. Use the `cache-service` and `datagrid-service` templates.
 
-== Release Notes
+* link:datagrid73-basic.adoc[datagrid73-basic]
+* link:datagrid73-https.adoc[datagrid73-https]
+* link:datagrid73-image-stream.adoc[datagrid73-image-stream]
+* link:datagrid73-mysql-persistent.adoc[datagrid73-mysql-persistent]
+* link:datagrid73-mysql.adoc[datagrid73-mysql]
+* link:datagrid73-partition.adoc[datagrid73-partition]
+* link:./templates/datagrid73-postgresql-persistent.adoc[datagrid73-postgresql-persistent]
+* link:./templates/datagrid73-postgresql.adoc[datagrid73-postgresql]
 
-Red Hat Data Grid 7.2
-
-=== Release 1.0
- * Initial release of DG 7.2 images, templates, image-stream and quickstarts
-
-
-
+See link:https://access.redhat.com/documentation/en-us/red_hat_data_grid/7.3/html-single/red_hat_data_grid_for_openshift/index#os_templates[Data Grid 7.3 Deployment Configuration Templates] in the _Red Hat Data Grid for OpenShift_ documentation.
