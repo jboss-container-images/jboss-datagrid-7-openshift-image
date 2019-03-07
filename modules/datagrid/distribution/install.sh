@@ -3,7 +3,7 @@
 set -e
 
 ARTIFACTS_DIR=/tmp/artifacts
-DISTRIBUTION_ZIP="jboss-datagrid-7.3.0-server.zip"
+DISTRIBUTION_ZIP="jboss-datagrid-7.3.0-1-server.zip"
 DATAGRID_VERSION="7.3.0"
 DEV_SERVER_NAME='infinispan-server-8.5.*-redhat-SNAPSHOT'
 DEV_SERVER_NAME_ZIP="${DEV_SERVER_NAME}-*-bin.zip"
