@@ -203,13 +203,13 @@ modules:
     - name: os-eap-probes
     - name: jboss-maven
     - name: os-eap-db-drivers
-    - name: datagrid7-openshift
     - name: os-java-run
     - name: os-partition
     - name: openshift-layer
     - name: openshift-passwd
     - name: os-logging
     - name: datagrid.launch
+    - name: datagrid.runtime
 
 packages:
   content_sets_file: content_sets.yml
