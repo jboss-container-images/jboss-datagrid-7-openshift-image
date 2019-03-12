@@ -1,7 +1,7 @@
 schema_version: 1
-name: datagrid7-openshift
+name: datagrid.runtime
 version: 1.0
-description: Legacy datagrid7-openshift script package
+description: Datagrid runtime scripts/probes
 
 execute:
   - script: configure.sh
