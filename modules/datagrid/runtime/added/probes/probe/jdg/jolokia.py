@@ -20,6 +20,7 @@ import re
 from probe.api import Status, Test
 from probe.jolokia import JolokiaProbe
 
+
 class JdgProbe(JolokiaProbe):
     """
     JDG probe which uses the Jolokia interface to query server state (i.e.
@@ -34,7 +35,7 @@ class JdgProbe(JolokiaProbe):
                 CacheStatusTest(),
                 JoinStatusTest(),
                 StateTransferStateTest(),
-                CacheManagerTest()
+                TransportTest()
             ]
         )
 
@@ -88,19 +89,21 @@ class CacheStatusTest(Test):
                 status.add(Status.FAILURE)
         return (min(status), messages)
 
-class CacheManagerTest(Test):
+
+class TransportTest(Test):
     """
-    Checks that all defined caches are running.
+    Checks that all defined caches are running, as it's not possible for the Transport to start until this is the case.
     """
 
     def __init__(self):
-        super(CacheManagerTest, self).__init__(
+        super(TransportTest, self).__init__(
             {
                 "type": "read",
-                "attribute": [ "definedCacheCount", "createdCacheCount", "runningCacheCount" ],
-                "mbean": "jboss.datagrid-infinispan:type=CacheManager,name=\"clustered\",component=CacheManager"
+                "attribute": [ "hostName" ],
+                "mbean": "jboss.datagrid-infinispan:type=Server,name=*,component=Transport"
             }
         )
+
 
     def evaluate(self, results):
         """
@@ -112,33 +115,13 @@ class CacheManagerTest(Test):
         """
 
         if results["status"] != 200:
-            return (Status.FAILURE, "Jolokia query failed")
+            return Status.FAILURE, results
 
-	if not results["value"]:
-            return (Status.FAILURE, "No CacheManager attributes")
+        if not results["value"]:
+            return Status.FAILURE, "No Transport attributes"
 
-        status = set()
-        messages = {}
-        messages["results"] = results["value"]
-        for key, value in results["value"].items():
-            if key == "createdCacheCount":
-		createdCacheCount = value
-		messages["createdCacheCount"] = createdCacheCount
-	    elif key == "definedCacheCount":
-		definedCacheCount = value
-		messages["definedCacheCount"] = definedCacheCount
-	    elif key == "runningCacheCount":
-		runningCacheCount = value
-		messages["runningCacheCount"] = runningCacheCount
-  
-        if runningCacheCount == 0:
-	    status.add(Status.NOT_READY)
-        elif createdCacheCount == runningCacheCount:
-            status.add(Status.READY)
-        else:
-            status.add(Status.FAILURE)
- 
-        return (min(status), messages)
+        return Status.READY, {}
+
 
 class JoinStatusTest(Test):
     """
