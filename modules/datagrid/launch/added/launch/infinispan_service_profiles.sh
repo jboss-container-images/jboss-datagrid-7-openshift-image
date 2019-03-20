@@ -57,6 +57,9 @@ function configure() {
          export DEFAULT_CACHE_MEMORY_EVICTION_TYPE="MEMORY"
          export DEFAULT_CACHE_MEMORY_EVICTION_STRATEGY=${evictionStrategyType}
 
+         # Enable Prometheus
+         export AB_ENABLE_PROMETHEUS=${AB_ENABLE_PROMETHEUS:-TRUE}
+
          # EVICTION_TOTAL_MEMORY_B exported by adjust_memory.sh
          source ${JBOSS_HOME}/bin/launch/adjust_memory.sh
          export DEFAULT_CACHE_MEMORY_EVICTION_SIZE=${EVICTION_TOTAL_MEMORY_B}
@@ -76,6 +79,9 @@ function configure() {
          export DEFAULT_CACHE_PARTITION_HANDLING_WHEN_SPLIT="DENY_READ_WRITES"
          export DEFAULT_CACHE_PARTITION_HANDLING_MERGE_POLICY="REMOVE_ALL"
          export DEFAULT_CACHE_MEMORY_STORAGE_TYPE="off-heap"
+
+         # Enable Prometheus
+         export AB_ENABLE_PROMETHEUS=${AB_ENABLE_PROMETHEUS:-TRUE}
       fi
    fi
 }
