@@ -202,7 +202,6 @@ modules:
     - name: os-eap-db-drivers
     - name: os-partition
     - name: openshift-layer
-    - name: openshift-passwd
     - name: datagrid.launch
     - name: datagrid.runtime
 
