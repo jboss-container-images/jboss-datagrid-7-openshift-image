@@ -203,7 +203,6 @@ modules:
     - name: os-partition
     - name: openshift-layer
     - name: openshift-passwd
-    - name: os-logging
     - name: datagrid.launch
     - name: datagrid.runtime
 
