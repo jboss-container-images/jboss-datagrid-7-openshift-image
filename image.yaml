@@ -201,7 +201,6 @@ modules:
     - name: os-eap7-launch
     - name: os-eap-logging
     - name: os-eap-probes
-    - name: jboss-maven
     - name: os-eap-db-drivers
     - name: os-java-run
     - name: os-partition
