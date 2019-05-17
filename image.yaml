@@ -189,7 +189,6 @@ modules:
       version: "8"
     - name: datagrid.distribution
     - name: dynamic-resources
-    - name: s2i-common
     - name: java-alternatives
     - name: os-eap7-openshift
     - name: os-eap-s2i
