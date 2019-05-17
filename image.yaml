@@ -192,7 +192,6 @@ modules:
     - name: java-alternatives
     - name: os-eap7-openshift
     - name: os-eap-s2i
-    - name: os-java-jolokia
     - name: jolokia
     - name: datagrid.module-overrides
     - name: os-eap7-ping
