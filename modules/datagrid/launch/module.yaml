@@ -5,6 +5,8 @@ description: Red Hat Data Grid 7.3 script package
 
 modules:
   install:
+    - name: os-eap-node-name
+    - name: os-partition-txnrecovery
     - name: os-eap-migration
     - name: datagrid.configuration
 
