@@ -1,6 +1,8 @@
 #!/bin/sh
 set -e
 
+JBOSS_HOME=/opt/datagrid
+
 unset DEBUG_QUERY_API_PARAM
 
 SCRIPT_DIR=$(dirname $0)

@@ -7,8 +7,6 @@ execute:
   - script: install_as_root.sh
 
 packages:
-  repositories:
-    - jboss-os
   install:
     - python-enum34
     - python-requests

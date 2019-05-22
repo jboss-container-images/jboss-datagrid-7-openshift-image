@@ -3,6 +3,8 @@
 # NOTE: this overrides the openshift-launch.sh script in os-eap64-launch
 set -e
 
+JBOSS_HOME=/opt/datagrid
+
 SCRIPT_DIR=$(dirname $0)
 ADDED_DIR=${SCRIPT_DIR}/added
 

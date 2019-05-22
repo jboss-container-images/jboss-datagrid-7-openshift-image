@@ -1,6 +1,7 @@
 #!/bin/bash
-
 set -e
+
+JBOSS_HOME=/opt/datagrid
 
 ARTIFACTS_DIR=/tmp/artifacts
 DISTRIBUTION_ZIP="jboss-datagrid-7.3.1-server.zip"

@@ -8,8 +8,6 @@ execute:
     user: '185'
 
 packages:
-  repositories:
-    - jboss-os
   install:
     - python-enum34
     - python-requests

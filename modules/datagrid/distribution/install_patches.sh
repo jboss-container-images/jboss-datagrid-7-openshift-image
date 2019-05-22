@@ -1,6 +1,7 @@
 #!/bin/sh
-
 set -e
+
+JBOSS_HOME=/opt/datagrid
 
 ARTIFACTS_DIR=/tmp/artifacts
 # Add patches to the array below and they will be applied in order
