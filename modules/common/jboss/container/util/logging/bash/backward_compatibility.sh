@@ -1,6 +1,8 @@
 #!/bin/sh
 set -e
 
+JBOSS_HOME=/opt/datagrid
+
 if [ -n "$AMQ_HOME" ]; then
   BIN_HOME="$AMQ_HOME"
 elif [ -n "$JWS_HOME" ]; then

@@ -8,9 +8,6 @@ execute:
     user: '185'
 
 packages:
-  repositories:
-    - jboss-os
-    - jboss-rhscl
   install:
     - rh-mongodb32-mongo-java-driver
     - postgresql-jdbc

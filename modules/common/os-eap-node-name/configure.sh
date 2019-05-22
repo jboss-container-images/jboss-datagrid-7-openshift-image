@@ -1,6 +1,8 @@
 set -u
 set -e
 
+JBOSS_HOME=/opt/datagrid
+
 SCRIPT_DIR=$(dirname $0)
 ADDED_DIR=${SCRIPT_DIR}/added
 
