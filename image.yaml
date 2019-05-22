@@ -189,25 +189,17 @@ modules:
       version: "8"
     - name: datagrid.distribution
     - name: dynamic-resources
-    - name: s2i-common
     - name: java-alternatives
     - name: os-eap7-openshift
     - name: os-eap-s2i
-    - name: os-java-jolokia
     - name: jolokia
     - name: datagrid.module-overrides
     - name: os-eap7-ping
-    - name: os-eap-launch
-    - name: os-eap7-launch
     - name: os-eap-logging
     - name: os-eap-probes
-    - name: jboss-maven
     - name: os-eap-db-drivers
-    - name: os-java-run
     - name: os-partition
     - name: openshift-layer
-    - name: openshift-passwd
-    - name: os-logging
     - name: datagrid.launch
     - name: datagrid.runtime
 
