@@ -250,22 +250,23 @@
                 <provider-sasl-server-factory name="global"/>
             </sasl>
         </subsystem>
+        <!-- ##INFINISPAN_ENDPOINT## -->
         <!-- The INFINISPAN_ENDPOINT placeholder configures the Data Grid
              endpoint subsystem. The Data Grid launch script sets "clustered"
              as the name of the default cache container. Do not change the name
              of the default cache container. -->
-        <!-- ##INFINISPAN_ENDPOINT## -->
         <subsystem xmlns="urn:infinispan:server:core:9.4" default-cache-container="clustered">
-          <!-- Modify the INFINISPAN_CORE placeholder to disable it. This
-               placeholder configures the default Data Grid cache. -->
-          <!-- ##DISABLE_INFINISPAN_CORE## -->
-          <!-- Start Custom Configuration -->
+        <!-- Remove the INFINISPAN_CORE placeholder to disable it. If the
+             Data Grid launch script detects this placeholder, it configures
+             the default Data Grid cache. -->
+        <!-- Specify the default cache for the Data Grid cluster. -->
           <cache-container name="clustered" default-cache="custom">
-            <!-- Add a JGroups transport channel for the clustered cache. -->
+          <!-- Start Custom Cache Configuration -->
+          <!-- Add a JGroups transport channel for the clustered cache. -->
             <transport channel="cluster"/>
-            <!-- Add custom cache configuration to this cache container. -->
+            <!-- Add your custom cache definions to this cache container. -->
           </cache-container>
-          <!-- End Custom Configuration -->
+          <!-- End Custom Cache Configuration -->
         </subsystem>
         <subsystem xmlns="urn:infinispan:server:jgroups:9.4">
             <channels default="cluster">
