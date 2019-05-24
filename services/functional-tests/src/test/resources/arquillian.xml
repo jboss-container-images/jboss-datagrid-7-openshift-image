@@ -20,7 +20,7 @@
         <property name="env.setup.script.url">setup.sh</property>
         <property name="env.teardown.script.url">destroy.sh</property>
         <property name="namespace.use.current">true</property>
-        <property name="namespace.destroy.timeout">120</property>
+        <property name="namespace.destroy.timeout">240</property>
         <!-- For debugging purposes:
            * comment out this line and start the definitions manually before the test via:
               oc create -f target/classes/eap7-testrunner.yaml
@@ -32,6 +32,7 @@
         -->
         <property name="definitionsFile">target/classes/eap7-testrunner.yaml</property>
         <property name="wait.for.service.list">cache-service, datagrid-service</property>
+        <property name="wait.timeout">600000</property>
         <property name="env.script.env">image=${image}</property>
         <property name="proxiedContainerPorts">testrunner:9990</property>
         <!-- Fetch the logs from Openshift and pods, and save them into target/surefire-reports -->
