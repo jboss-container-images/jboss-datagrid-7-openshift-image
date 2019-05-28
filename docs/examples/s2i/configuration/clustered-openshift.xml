@@ -253,7 +253,8 @@
         <!-- ##INFINISPAN_ENDPOINT## -->
         <!-- The INFINISPAN_ENDPOINT placeholder configures the Data Grid
              endpoint subsystem. The Data Grid launch script sets "clustered"
-             as the name of the default cache container. Do not change the name
+             as the name of the default cache container and configures the
+             default ReadinessProbe to use it. Do not change the name
              of the default cache container. -->
         <subsystem xmlns="urn:infinispan:server:core:9.4" default-cache-container="clustered">
         <!-- Remove the INFINISPAN_CORE placeholder to disable it. If the
