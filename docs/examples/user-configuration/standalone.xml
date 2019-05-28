@@ -54,7 +54,9 @@
             </logger>
         </audit-log>
         <management-interfaces>
-            <http-interface http-upgrade-enabled="true" console-enabled="false"><!-- ##MGMT_IFACE_REALM## -->
+            <!-- ##MGMT_IFACE_REALM## -->
+            <http-interface console-enabled="false">
+                <http-upgrade enabled="true"/>
                 <socket-binding http="management-http"/>
             </http-interface>
         </management-interfaces>
@@ -165,6 +167,10 @@
             </datasources>
         </subsystem>
         <!-- Configure Infinispan Endpoints -->
+        <!-- The Data Grid launch script sets "clustered"
+             as the name of the default cache container and configures the
+             default ReadinessProbe to use it. Do not change the name
+             of the default cache container. -->
         <subsystem xmlns="urn:infinispan:server:endpoint:9.4">
             <hotrod-connector cache-container="clustered" socket-binding="hotrod" name="hotrod"/>
             <rest-connector name="rest" socket-binding="rest" cache-container="clustered"/>
