@@ -3,6 +3,10 @@ name: datagrid.distribution
 version: 1.0
 description: Red Hat Data Grid 7.3 distribution module
 
+artifacts:
+  - name: jboss-datagrid-server.zip
+    path: /tmp/artifacts
+
 execute:
   - script: install.sh
   # Uncomment the line below to apply patches

@@ -215,7 +215,7 @@ packages:
     - PyYAML
     - openssl
 artifacts:
-  - name: jboss-datagrid-7.3.2-server.zip
+  - name: jboss-datagrid-server.zip
     description: "Pre-release artifact (CR1), not available in customer portal"
     md5: 82a4be9d2ee60d91e40d9c839bfd0108
 
