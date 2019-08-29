@@ -76,6 +76,8 @@ pipeline {
       cleanup {
          sh 'make stop-openshift clean-docker'
          sh 'git clean -qfdx || echo "git clean failed, exit code $?"'
+         sh 'docker container prune -f'
+         sh 'docker rmi $(docker images -f "dangling=true" -q) || true'
       }
    }
 }
