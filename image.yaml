@@ -216,8 +216,8 @@ packages:
     - openssl
 artifacts:
   - name: jboss-datagrid-server.zip
-    description: "Pre-release artifact (7.3.3.ER1), not available in customer portal"
-    md5: d165f683e3e1aac46b6998ef077a5443
+    description: "Pre-release artifact (7.3.3.CR2), not available in customer portal"
+    md5: 5e6e12099f4f32a81bd6f521186d8c02
 
 run:
   user: 185
