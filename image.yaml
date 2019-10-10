@@ -216,7 +216,7 @@ packages:
     - openssl
 artifacts:
   - name: jboss-datagrid-server.zip
-    description: "Pre-release artifact (7.3.3.CR2), not available in customer portal"
+    description: "Artifact (patch) is available on Customer Portal: https://access.redhat.com/jbossnetwork/restricted/softwareDownload.html?softwareId=73761"
     md5: 5e6e12099f4f32a81bd6f521186d8c02
 
 run:
