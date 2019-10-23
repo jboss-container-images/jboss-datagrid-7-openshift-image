@@ -61,13 +61,16 @@ objects:
       targetPort: 8443
     selector:
       deploymentConfig: ${APPLICATION_NAME}
-- apiVersion: apps/v1beta1
+- apiVersion: apps/v1
   kind: StatefulSet
   metadata:
     labels:
       application: ${APPLICATION_NAME}
     name: ${APPLICATION_NAME}
   spec:
+    selector:
+      matchLabels:
+        application: ${APPLICATION_NAME}
     replicas: ${{NUMBER_OF_INSTANCES}}
     serviceName: ${APPLICATION_NAME}-ping
     strategy:
