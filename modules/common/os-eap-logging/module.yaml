@@ -8,7 +8,11 @@ execute:
     user: '185'
 
 artifacts:
-  - url: https://maven.repository.redhat.com/ga/org/glassfish/javax.json/1.0.4.redhat-1/javax.json-1.0.4.redhat-1.jar
-    md5: 2bfa4e10093a30d7132c220de8419d75
+  - name: javax.json-1.1.2.redhat-1.jar
+    url: https://maven.repository.redhat.com/ga/org/glassfish/javax.json/1.1.2.redhat-1/javax.json-1.1.2.redhat-1.jar
+    md5: 674ee0e9de93c147d091bc0edb27f6b5
+  - name: javax.json-api-1.1.2.redhat-1.jar
+    url: https://maven.repository.redhat.com/ga/javax/json/javax.json-api/1.1.2.redhat-1/javax.json-api-1.1.2.redhat-1.jar
+    md5: 8cf850fdfead55cf9b5f38f7a3f3d985
   - name: jboss-logmanager-ext-1.0.0.Alpha5-redhat-1.jar
     md5: 3c84f54725ea5657913cf6d1610798b0
