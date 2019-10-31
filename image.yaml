@@ -194,7 +194,6 @@ modules:
     - name: jolokia
     - name: datagrid.module-overrides
     - name: os-eap7-ping
-    - name: os-eap-logging
     - name: os-eap-probes
     - name: os-eap-db-drivers
     - name: os-partition
