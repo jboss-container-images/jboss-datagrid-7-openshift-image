@@ -205,14 +205,7 @@ modules:
 packages:
 #  content_sets_file: content_sets.yml
   install:
-    - rh-mongodb32-mongo-java-driver
-    - postgresql-jdbc
-    - mysql-connector-java
     - hostname
-    - python-requests
-    - python-enum34
-    - coreutils
-    - PyYAML
     - openssl
 artifacts:
   - name: jboss-datagrid-server.zip
