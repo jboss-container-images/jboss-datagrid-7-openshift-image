@@ -3,7 +3,7 @@ name: jboss-datagrid-7/datagrid73-openj9-11-openshift
 version: 1.4
 description: "Red Hat JBoss Data Grid 7.3 for OpenShift container image"
 
-from: rhel7:7-released
+from: ubi8:latest
 
 labels:
   - name: "com.redhat.component"
@@ -204,6 +204,7 @@ modules:
 
 packages:
 #  content_sets_file: content_sets.yml
+  manager: dnf
   install:
     - hostname
     - openssl
