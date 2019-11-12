@@ -9,8 +9,7 @@ execute:
 
 packages:
   install:
-    - python-enum34
-    - python-requests
+    - python3-requests
 
 envs:
   - name: "PROBE_DISABLE_BOOT_ERRORS_CHECK"
