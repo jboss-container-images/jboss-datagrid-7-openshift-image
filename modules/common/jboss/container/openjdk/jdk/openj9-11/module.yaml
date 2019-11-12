@@ -1,0 +1,32 @@
+schema_version: 1
+
+name: "jboss.container.openjdk.jdk"
+description: "Installs the JDK for OpenJ9 11."
+version: "openj9-11"
+
+labels:
+- name: "org.jboss.product"
+  value: "openjdk"
+- name: "org.jboss.product.version"
+  value: "11"
+- name: "org.jboss.product.openjdk.version"
+  value: "11"
+
+envs:
+- name: "JAVA_HOME"
+  value: "/usr/lib/jvm/jre-11-openj9"
+- name: "JAVA_VENDOR"
+  value: "openj9"
+- name: "JAVA_VERSION"
+  value: "11"
+
+packages:
+  install:
+  - java-11-openj9-devel
+
+modules:
+  install:
+  - name: jboss.container.user
+
+execute:
+- script: configure.sh

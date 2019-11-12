@@ -1,4 +1,4 @@
 osbs:
   repository:
     name: containers/jboss-datagrid-7
-    branch: jb-datagrid-7.3-openshift-cp-rhel-7
+    branch: jb-datagrid-7.3-openj9-11-openshift-cp-rhel8

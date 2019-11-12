@@ -1,5 +1,5 @@
 schema_version: 1
-name: jboss-datagrid-7/datagrid73-openshift
+name: jboss-datagrid-7/datagrid73-openj9-11-openshift
 version: 1.4
 description: "Red Hat JBoss Data Grid 7.3 for OpenShift container image"
 
@@ -7,7 +7,7 @@ from: rh-osbs/ubi8:8.1-released
 
 labels:
   - name: "com.redhat.component"
-    value: "jboss-datagrid-7-datagrid73-openshift-container"
+    value: "jboss-datagrid-7-datagrid73-openj9-11-openshift-container"
   - name: "org.jboss.product"
     value: "datagrid"
   - name: "org.jboss.product.version"
@@ -27,7 +27,7 @@ labels:
   - name: "io.k8s.description"
     value: "Provides a scalable in-memory distributed database designed for fast access to large volumes of data."
   - name: "io.k8s.display-name"
-    value: "JBoss Data Grid 7.3"
+    value: "JBoss Data Grid 7.3 OpenJ9 11"
   - name: "io.openshift.expose-services"
     value: "8080:http"
   - name: "io.openshift.tags"
@@ -185,8 +185,9 @@ modules:
     - name: common.modules
       path: modules/common
   install:
+    - name: jboss.container.java.rm-openjdk
     - name: jboss.container.openjdk.jdk
-      version: "11"
+      version: "openj9-11"
     - name: datagrid.distribution
     - name: dynamic-resources
     - name: os-eap7-openshift
@@ -203,6 +204,7 @@ modules:
 
 packages:
   content_sets_file: content_sets.yml
+  manager: dnf
   install:
     - hostname
     - openssl
@@ -221,4 +223,4 @@ osbs:
     container_file: container.yaml
   repository:
     name: containers/jboss-datagrid-7
-    branch: jb-datagrid-7.3-openshift-rhel-7
+    branch: jb-datagrid-7.3-openj9-11-openshift-rhel8
