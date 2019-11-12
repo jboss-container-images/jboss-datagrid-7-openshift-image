@@ -35,7 +35,7 @@ class DmrProbe(BatchingProbe):
         super(DmrProbe, self).__init__(tests)
         self.logger = logging.getLogger(qualifiedClassName(self))
         self.__readConfig()
-        
+
     def __readConfig(self):
         """
         Configuration consists of:
@@ -44,7 +44,7 @@ class DmrProbe(BatchingProbe):
             user: $ADMIN_USERNAME
             password: $ADMIN_PASSWORD
         """
-        
+
         self.host = "localhost"
         self.port = 9990 + int(os.getenv('PORT_OFFSET', 0))
         self.user = os.getenv('ADMIN_USERNAME')
@@ -55,7 +55,7 @@ class DmrProbe(BatchingProbe):
         self.logger.debug("Configuration set as follows: host=%s, port=%s, user=%s, password=***", self.host, self.port, self.user)
 
     def getTestInput(self, results, testIndex):
-        return results["result"].values()[testIndex]
+        return list(results["result"].values())[testIndex]
 
     def createRequest(self):
         steps = []
@@ -94,11 +94,11 @@ class DmrProbe(BatchingProbe):
             response because one of the test steps failed, in which case we pass the
             response to the tests to let them decide how to handle things
             """
-            self.failUnusableResponse(response)
+            self.failUnusableResponse(response, request, url)
 
         return response.json(object_pairs_hook = OrderedDict)
 
-    def failUnusableResponse(self, response):
+    def failUnusableResponse(self, response, request, url):
         respDict = None
         try:
             respDict = response.json(object_pairs_hook = OrderedDict)
@@ -110,7 +110,7 @@ class DmrProbe(BatchingProbe):
             """
             An outcome=failed response is usable if the result node has an element for each test
             """
-            stepResults = respDict["result"].values()
+            stepResults = list(respDict["result"].values())
             for index, test in enumerate(self.tests):
                 if not stepResults[index]:
                     unusable = True

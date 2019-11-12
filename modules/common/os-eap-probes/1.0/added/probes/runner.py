@@ -27,7 +27,7 @@ class ProbeRunner(object):
     Simply executes a series of Probes, returning the combined Status and
     messages.
     """
-    
+
     def __init__(self, probes = []):
         self.probes = probes
         self.logger = logging.getLogger(qualifiedClassName(self))
@@ -54,7 +54,7 @@ def toStatus(value):
     Helper method which converts a string to a Status.  Used by the
     ArgumentParser.
     """
-    
+
     return Status[value]
 
 if __name__ == "__main__":
@@ -66,17 +66,17 @@ if __name__ == "__main__":
     parser.add_argument("--logfile", help = "Log file.")
     parser.add_argument("--loglevel", default = "CRITICAL", choices = ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"], help = "Log level.")
     parser.add_argument("probes", nargs = argparse.REMAINDER, help = "The probes to execute.")
-    
+
     args = parser.parse_args()
-    
+
     # don't spam warnings (e.g. when not verifying ssl connections)
     logging.captureWarnings(True)
-    
+
     if args.logfile:
         logging.basicConfig(filename = args.logfile, format = '%(asctime)s %(levelname)s [%(name)s] %(message)s', level = args.loglevel.upper())
     else:
         logging.basicConfig(level = args.loglevel.upper())
-    
+
     logger = logging.getLogger(__name__)
 
     logger.debug("Starting probe runner with args: %s", args)
@@ -87,10 +87,10 @@ if __name__ == "__main__":
         probeModule = importlib.import_module(probe.rsplit(".", 1)[0])
         probeClass = getattr(probeModule, probe.rsplit(".", 1)[1])
         runner.addProbe(probeClass())
-    
+
     maxruns = args.maxruns
     okStatus = set(args.check)
-    
+
     logger.info("Probes will fail for the following states: [%s]", ", ".join(str(status) for status in set(Status) - okStatus))
 
     probeStatus = set()

@@ -18,7 +18,7 @@ permissions and limitations under the License.
 import argparse
 import json
 import logging
-import urllib2
+import osquery
 
 from enum import Enum
 
@@ -27,6 +27,7 @@ class QueryType(Enum):
     """
     Represents what could be queried.
     PODS: list of pods
+    PODS_LIVING: list of living pods
     LOG: log from particular pod
     """
 
@@ -53,46 +54,8 @@ class OutputFormat(Enum):
         return self.value
 
 
-class OpenShiftQuery():
-    """
-    Utility class to help query OpenShift api. Declares constant
-    to get token and uri of the query. Having methods doing the query etc.
-    """
-
-    API_URL = 'https://openshift.default.svc'
-    TOKEN_FILE_PATH = '/var/run/secrets/kubernetes.io/serviceaccount/token'
-    NAMESPACE_FILE_PATH = '/var/run/secrets/kubernetes.io/serviceaccount/namespace'
-    CERT_FILE_PATH = '/var/run/secrets/kubernetes.io/serviceaccount/ca.crt'
-    STATUS_LIVING_PODS = ['Pending', 'Running', 'Unknown']
-
-    @staticmethod
-    def __readFile(fileToRead):
-        with open(fileToRead, 'r') as readingfile:
-            return readingfile.read().strip()
-
-    @staticmethod
-    def getToken():
-        return OpenShiftQuery.__readFile(OpenShiftQuery.TOKEN_FILE_PATH)
-
-    @staticmethod
-    def getNameSpace():
-        return OpenShiftQuery.__readFile(OpenShiftQuery.NAMESPACE_FILE_PATH)
-
-    @staticmethod
-    def queryApi(urlSuffix):
-        request = urllib2.Request(OpenShiftQuery.API_URL + urlSuffix,
-            headers = {'Authorization': 'Bearer ' + OpenShiftQuery.getToken(), "Accept": 'application/json'})
-        logger.debug('query for: "%s"', request.get_full_url())
-        try:
-            return urllib2.urlopen(request, cafile = OpenShiftQuery.CERT_FILE_PATH).read()
-        except:
-            logger.critical('Cannot query OpenShift API for "%s"', request.get_full_url())
-            raise
-
-
-
 def getPodsJsonData():
-    jsonText = OpenShiftQuery.queryApi('/api/v1/namespaces/{}/pods'.format(OpenShiftQuery.getNameSpace()))
+    jsonText = osquery.OpenShiftQuery.queryApi('/api/v1/namespaces/{}/pods'.format(osquery.OpenShiftQuery.getNameSpace()))
     return json.loads(jsonText)
 
 def getPods():
@@ -109,15 +72,15 @@ def getLivingPods():
     pods = []
     for pod in jsonPodsData["items"]:
         logger.debug('query pod %s of status %s', pod["metadata"]["name"], pod["status"]["phase"])
-        if pod["status"]["phase"] in OpenShiftQuery.STATUS_LIVING_PODS:
+        if pod["status"]["phase"] in osquery.OpenShiftQuery.STATUS_LIVING_PODS:
             pods.append(pod["metadata"]["name"])
     return pods
 
 def getLog(podName, sinceTime, tailLine):
     sinceTimeParam = '' if sinceTime is None else '&sinceTime=' + sinceTime
     tailLineParam = '' if tailLine is None else '&tailLines=' + tailLine
-    podLogLines = OpenShiftQuery.queryApi('/api/v1/namespaces/{}/pods/{}/log?timestamps=true{}{}'
-            .format(OpenShiftQuery.getNameSpace(), podName, sinceTimeParam, tailLineParam))
+    podLogLines = osquery.OpenShiftQuery.queryApi('/api/v1/namespaces/{}/pods/{}/log?timestamps=true{}{}'
+            .format(osquery.OpenShiftQuery.getNameSpace(), podName, sinceTimeParam, tailLineParam))
     return podLogLines
 
 if __name__ == "__main__":
@@ -160,10 +123,10 @@ if __name__ == "__main__":
         exit(1)
 
     if args.format == OutputFormat.LIST_SPACE:
-        print ' '.join(queryResult)
+        print(' '.join(queryResult))
     elif args.format == OutputFormat.LIST_COMMA:
-        print ','.join(queryResult)
+        print(','.join(queryResult))
     else: # RAW format
-        print queryResult,
+        print(queryResult)
 
     exit(0)

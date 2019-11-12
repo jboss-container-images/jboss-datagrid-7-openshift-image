@@ -8,5 +8,4 @@ execute:
 
 packages:
   install:
-    - python-enum34
-    - python-requests
+    - python3-requests

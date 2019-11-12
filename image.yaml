@@ -195,7 +195,10 @@ modules:
     - name: jolokia
     - name: datagrid.module-overrides
     - name: os-eap7-ping
+    - name: os-eap-python
+      version: "3.6"
     - name: os-eap-probes
+      version: "3.0"
     - name: os-eap-db-drivers
     - name: os-partition
     - name: openshift-layer

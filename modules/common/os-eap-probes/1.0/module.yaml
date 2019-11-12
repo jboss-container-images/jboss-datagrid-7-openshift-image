@@ -1,7 +1,7 @@
 schema_version: 1
 name: os-eap-probes
-version: 1.0
-description: Legacy os-eap-probes script package
+version: '1.0'
+description: Legacy os-eap-probes script package (ported for Python 3)
 
 execute:
   - script: configure.sh
@@ -9,8 +9,7 @@ execute:
 
 packages:
   install:
-    - python-enum34
-    - python-requests
+    - python3-requests
 
 envs:
   - name: "PROBE_DISABLE_BOOT_ERRORS_CHECK"

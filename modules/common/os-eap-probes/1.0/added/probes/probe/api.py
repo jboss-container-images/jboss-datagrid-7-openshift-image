@@ -43,7 +43,7 @@ class Status(Enum):
     FAILURE = 2
     NOT_READY = 4
     READY = 8
-    
+
     def __str__(self):
         return self.name
 
@@ -81,7 +81,7 @@ class Test(object):
 
     def __init__(self, query):
         self.query = query
-        
+
     def getQuery(self):
         """
         Returns the query used by this test.  The return value is Probe
@@ -89,11 +89,11 @@ class Test(object):
         which means this function would return a dict.
         """
         return self.query
-        
+
     def evaluate(self, results):
         """
         Evaluate the response from the server, returning Status and messages.
-        messages should be returned as an object, list or dict. 
+        messages should be returned as an object, list or dict.
         """
         raise NotImplementedError("Implement evaluate() for Test: " + qualifiedClassName(self))
 
@@ -113,7 +113,7 @@ class Probe(object):
         as JSON).  The Test must be capable of understanding the results
         returned by the Probe (e.g. a JSON response from DMR).
         """
-        
+
         self.tests.append(test)
 
     def execute(self):
@@ -121,7 +121,7 @@ class Probe(object):
         Executes the queries and evaluates the tests and returns a set of Status
         and messages collected for each test.
         """
-        
+
         raise NotImplementedError("Implement execute() for Probe: " + qualifiedClassName(self))
 
 class BatchingProbe(Probe):
@@ -129,7 +129,7 @@ class BatchingProbe(Probe):
     Base class which supports batching queries to be sent to a server and
     splitting the results to correspond with the individual tests.
     """
-    
+
     def __init__(self, tests = []):
         super(BatchingProbe, self).__init__(tests)
         self.logger = logging.getLogger(qualifiedClassName(self))
@@ -166,7 +166,7 @@ class BatchingProbe(Probe):
         Create the request to send to the server.  Subclasses should include the
         queries from all tests in the request.
         """
-        
+
         raise NotImplementedError("Implement createRequest() for BatchingProbe: " + qualifiedClassName(self))
 
     def sendRequest(self, request):
@@ -180,5 +180,5 @@ class BatchingProbe(Probe):
         """
         Return the results specific to the indexed test.
         """
-        
+
         raise NotImplementedError("Implement getTestInput() for BatchingProbe: " + qualifiedClassName(self))
