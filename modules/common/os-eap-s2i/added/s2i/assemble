@@ -6,7 +6,6 @@ if [ "${SCRIPT_DEBUG}" = "true" ] ; then
 fi
 
 source "$JBOSS_CONTAINER_MAVEN_DEFAULT_MODULE"/maven.sh
-source "$JBOSS_CONTAINER_MAVEN_DEFAULT_MODULE"/scl-enable-maven
 
 LOCAL_SOURCE_DIR=/tmp/src
 

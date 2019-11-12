@@ -3,7 +3,7 @@ name: jboss-datagrid-7/datagrid73-openshift
 version: 1.4
 description: "Red Hat JBoss Data Grid 7.3 for OpenShift container image"
 
-from: rhel7:7-released
+from: rh-osbs/ubi8:8.1-released
 
 labels:
   - name: "com.redhat.component"
@@ -204,14 +204,7 @@ modules:
 packages:
   content_sets_file: content_sets.yml
   install:
-    - rh-mongodb32-mongo-java-driver
-    - postgresql-jdbc
-    - mysql-connector-java
     - hostname
-    - python-requests
-    - python-enum34
-    - coreutils
-    - PyYAML
     - openssl
 artifacts:
   - name: jboss-datagrid-server.zip
