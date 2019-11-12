@@ -13,9 +13,6 @@ envs:
   - name: MAVEN_VERSION
     value: "3.5"
 
-execute:
-  - script: configure.sh
-
 packages:
   install:
-    - rh-maven35
+    - maven
