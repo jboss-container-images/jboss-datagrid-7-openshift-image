@@ -202,7 +202,7 @@ modules:
     - name: datagrid.runtime
 
 packages:
-  content_sets_file: content_sets.yml
+#  content_sets_file: content_sets.yml
   install:
     - rh-mongodb32-mongo-java-driver
     - postgresql-jdbc
