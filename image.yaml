@@ -186,7 +186,7 @@ modules:
       path: modules/common
   install:
     - name: jboss.container.openjdk.jdk
-      version: "11"
+      version: "openj9-11"
     - name: datagrid.distribution
     - name: dynamic-resources
     - name: os-eap7-openshift

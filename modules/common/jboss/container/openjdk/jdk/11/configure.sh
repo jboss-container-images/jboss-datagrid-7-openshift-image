@@ -13,6 +13,13 @@ pushd ${ARTIFACTS_DIR}
 cp -pr * /
 popd
 
+# Set this JDK as the alternative in use
+_arch="$(uname -i)"
+alternatives --set java java-11-openjdk.${_arch}
+alternatives --set javac java-11-openjdk.${_arch}
+alternatives --set java_sdk_openjdk java-11-openjdk.${_arch}
+alternatives --set jre_openjdk java-11-openjdk.${_arch}
+
 # As of rhel 7.6, rh-maven35 pulls in jdk8, so we need to remove them
 # XXX: This code should eventually move to the maven module, once layering is fully supported in cekit, as this module
 # would be installed before maven (i.e. there's nothing to remove when this module is installed)
