@@ -2,6 +2,3 @@ platforms:
   only:
     - x86_64
     - s390x
-
-compose:
-  pulp_repos: true
