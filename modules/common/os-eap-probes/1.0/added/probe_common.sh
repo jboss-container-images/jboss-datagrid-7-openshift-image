@@ -13,7 +13,7 @@ run_cli_cmd() {
 
     #Default for EAP7
     cli_port=9990
-    
+
     if [ -f "$JBOSS_HOME/bin/run.sh" ]; then
       version=$($JBOSS_HOME/bin/run.sh -V)
       if [[ "$version" == *"JBoss Enterprise Application Platform 6"* ]]; then

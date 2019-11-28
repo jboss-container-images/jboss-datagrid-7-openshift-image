@@ -35,4 +35,3 @@ if python $JBOSS_HOME/bin/probes/runner.py -c READY --maxruns $COUNT --sleep $SL
     exit 0
 fi
 exit 1
-

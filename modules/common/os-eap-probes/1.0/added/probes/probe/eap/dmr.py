@@ -53,7 +53,7 @@ class ServerStatusTest(Test):
         Evaluates the test:
             READY for "running"
             FAILURE if the query itself failed
-            NOT_READY for all other states 
+            NOT_READY for all other states
         """
 
         if results["outcome"] != "success" and results.get("failure-description"):
@@ -196,7 +196,7 @@ class HealthCheckTest(Test):
         """
         Evaluates the test:
             if the overall composite failed with JBAS014883 or WFLYCTL0030
-                READY as the failure means no health check extension configured on the system 
+                READY as the failure means no health check extension configured on the system
             elsif the 'read-resource' step failed:
                 READY as failure means no health check subsystem configured on the system
             elsif the 'check' step succeeded:

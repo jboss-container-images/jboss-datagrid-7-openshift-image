@@ -50,4 +50,3 @@ if [ "$DEBUG_SCRIPT" == "true" ]; then
 fi
 
 exit 1
-

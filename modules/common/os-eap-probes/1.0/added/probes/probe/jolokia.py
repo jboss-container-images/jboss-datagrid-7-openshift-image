@@ -19,8 +19,8 @@ import logging
 import os
 import requests
 import sys
-import ConfigParser
-import StringIO
+import configparser as ConfigParser
+from io import StringIO
 
 from collections import OrderedDict
 
@@ -37,7 +37,7 @@ class JolokiaProbe(BatchingProbe):
         super(JolokiaProbe, self).__init__(tests)
         self.logger = logging.getLogger(qualifiedClassName(self))
         self.__readConfig()
-        
+
     def __readConfig(self):
         """
         Configuration is read from /opt/jolokia/etc/jolokia.properties and
@@ -48,7 +48,7 @@ class JolokiaProbe(BatchingProbe):
             user: jolokia.user
             password: jolokia.password
         """
-        
+
         jolokiaConfig = ConfigParser.ConfigParser(
             defaults = {
                 "port": 8778,
@@ -57,12 +57,12 @@ class JolokiaProbe(BatchingProbe):
                 "protocol": "http"
             }
         )
-        
+
         self.logger.info("Reading jolokia properties file")
         with open("/opt/jolokia/etc/jolokia.properties") as jolokiaProperties:
             # fake a section
-            jolokiaConfig.readfp(StringIO.StringIO("[jolokia]\n" + jolokiaProperties.read()))
-        
+            jolokiaConfig.readfp(StringIO("[jolokia]\n" + jolokiaProperties.read()))
+
         self.host = "localhost"
         self.port = int(jolokiaConfig.get("jolokia", "port")) + int(os.getenv('PORT_OFFSET', 0))
         self.protocol = jolokiaConfig.get("jolokia", "protocol")

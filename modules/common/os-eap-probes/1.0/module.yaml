@@ -1,7 +1,7 @@
 schema_version: 1
 name: os-eap-probes
 version: '1.0'
-description: Legacy os-eap-probes script package (for Python 2)
+description: Legacy os-eap-probes script package (ported for Python 3)
 
 execute:
   - script: configure.sh

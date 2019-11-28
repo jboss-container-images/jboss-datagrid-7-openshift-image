@@ -35,7 +35,7 @@ class DmrProbe(BatchingProbe):
         super(DmrProbe, self).__init__(tests)
         self.logger = logging.getLogger(qualifiedClassName(self))
         self.__readConfig()
-        
+
     def __readConfig(self):
         """
         Configuration consists of:
@@ -44,7 +44,7 @@ class DmrProbe(BatchingProbe):
             user: $ADMIN_USERNAME
             password: $ADMIN_PASSWORD
         """
-        
+
         self.host = "localhost"
         self.port = 9990 + int(os.getenv('PORT_OFFSET', 0))
         self.user = os.getenv('ADMIN_USERNAME')
@@ -114,8 +114,9 @@ class DmrProbe(BatchingProbe):
             for index, test in enumerate(self.tests):
                 if not stepResults[index]:
                     unusable = True
-                    break;
+                    break
 
         if unusable:
+            url = "http://%s:%s/management" % (self.host, self.port)
             self.logger.error("Probe request failed.  Status code: %s", response.status_code)
-            raise Exception("Probe request failed, code: " + str(response.status_code) + str(url) + str(request) + str(response.json(object_pairs_hook = OrderedDict)))
+            raise Exception("Probe request failed, code: " + str(response.status_code) + str(url) + str(response.json(object_pairs_hook = OrderedDict)))
