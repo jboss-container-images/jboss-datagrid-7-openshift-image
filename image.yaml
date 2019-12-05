@@ -197,7 +197,7 @@ modules:
     - name: os-eap-python
       version: "3.6"
     - name: os-eap-probes
-      version: "1.0"
+      version: "3.0"
     - name: os-eap-db-drivers
     - name: os-partition
     - name: openshift-layer
