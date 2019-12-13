@@ -7,7 +7,7 @@ from: ubi8:8.0-released
 
 labels:
   - name: "com.redhat.component"
-    value: "jboss-datagrid-7-datagrid73-openshift-container"
+    value: "jboss-datagrid-7-datagrid73-openj9-11-openshift-container"
   - name: "org.jboss.product"
     value: "datagrid"
   - name: "org.jboss.product.version"
