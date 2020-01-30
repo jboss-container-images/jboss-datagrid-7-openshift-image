@@ -5,7 +5,7 @@
         "annotations": {
             "iconClass": "icon-datagrid",
             "tags": "datagrid,jboss",
-            "version": "1.4",
+            "version": "1.5",
             "openshift.io/display-name": "Red Hat JBoss Data Grid 7.3 + MySQL (with https)",
             "openshift.io/provider-display-name": "Red Hat, Inc.",
             "description": "An example Red Hat JBoss Data Grid application with a MySQL database. For more information about using this template, see https://github.com/jboss-openshift/application-templates.",
@@ -527,7 +527,7 @@
                             "from": {
                                 "kind": "ImageStreamTag",
                                 "namespace": "${IMAGE_STREAM_NAMESPACE}",
-                                "name": "jboss-datagrid73-openshift:1.4"
+                                "name": "jboss-datagrid73-openshift:1.5"
                             }
                         }
                     },
