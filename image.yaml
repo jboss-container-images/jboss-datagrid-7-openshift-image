@@ -3,7 +3,7 @@ name: jboss-datagrid-7/datagrid73-openj9-11-openshift
 version: 1.4
 description: "Red Hat JBoss Data Grid 7.3 for OpenShift container image"
 
-from: ubi8:8.0-released
+from: rh-osbs/ubi8:8.1-released
 
 labels:
   - name: "com.redhat.component"
