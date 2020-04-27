@@ -43,7 +43,6 @@ import io.fabric8.kubernetes.api.model.Pod;
 @RunWith(ArquillianConditionalRunner.class)
 @RequiresOpenshift
 public class CachingServiceTest {
-
    private static final String SERVICE_NAME = "cache-service";
 
    private URL restService;
@@ -60,7 +59,8 @@ public class CachingServiceTest {
             .addPackage(CachingServiceTest.class.getPackage())
             .addPackage(ReadinessCheck.class.getPackage())
             .addPackage(ScalingTester.class.getPackage())
-            .addPackage(HotRodTester.class.getPackage());
+            .addPackage(HotRodTester.class.getPackage())
+            .addAsWebInfResource("jboss-deployment-structure.xml", "jboss-deployment-structure.xml");
    }
 
    @Before

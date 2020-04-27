@@ -21,12 +21,28 @@
 
     <profiles>
         <!-- Configure the JBoss GA Maven repository -->
+	<profile>
+            <id>public-repository</id>
+            <repositories>
+                <repository>
+                    <id>central</id>
+                    <url>https://repo1.maven.org/maven2</url>
+                    <releases>
+                        <enabled>true</enabled>
+                        <updatePolicy>never</updatePolicy>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+        </profile>
         <profile>
             <id>jboss-ga-repository</id>
             <repositories>
                 <repository>
                     <id>jboss-ga-repository</id>
-                    <url>http://maven.repository.redhat.com/techpreview/all</url>
+                    <url>https://maven.repository.redhat.com/techpreview/all</url>
                     <releases>
                         <enabled>true</enabled>
                     </releases>
@@ -38,7 +54,7 @@
             <pluginRepositories>
                 <pluginRepository>
                     <id>jboss-ga-plugin-repository</id>
-                    <url>http://maven.repository.redhat.com/techpreview/all</url>
+                    <url>https://maven.repository.redhat.com/techpreview/all</url>
                     <releases>
                         <enabled>true</enabled>
                     </releases>
@@ -81,6 +97,7 @@
 
     <activeProfiles>
         <!-- Optionally, make the repositories active by default -->
+        <activeProfile>public-repository</activeProfile>
         <activeProfile>jboss-ga-repository</activeProfile>
         <activeProfile>jboss-earlyaccess-repository</activeProfile>
     </activeProfiles>
