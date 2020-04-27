@@ -47,7 +47,8 @@ public class DatagridServiceTest {
          .addPackage(DatagridServiceTest.class.getPackage())
          .addPackage(ReadinessCheck.class.getPackage())
          .addPackage(ScalingTester.class.getPackage())
-         .addPackage(HotRodTester.class.getPackage());
+         .addPackage(HotRodTester.class.getPackage())
+         .addAsWebInfResource("jboss-deployment-structure.xml", "jboss-deployment-structure.xml");
    }
 
    @Before
