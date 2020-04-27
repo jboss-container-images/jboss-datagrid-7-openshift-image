@@ -72,7 +72,8 @@ public class PersistedIndexSurvivesTest {
          .addPackage(ReadinessCheck.class.getPackage())
          .addPackage(ScalingTester.class.getPackage())
          .addPackage(HotRodTester.class.getPackage())
-         .addPackage(AnalyzerTestEntity.class.getPackage());
+         .addPackage(AnalyzerTestEntity.class.getPackage())
+         .addAsWebInfResource("jboss-deployment-structure.xml", "jboss-deployment-structure.xml");
    }
 
    @Before

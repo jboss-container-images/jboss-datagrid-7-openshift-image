@@ -45,7 +45,8 @@ public abstract class BasePermanentCacheTest {
          .addPackage(ReadinessCheck.class.getPackage())
          .addPackage(ScalingTester.class.getPackage())
          .addPackage(HotRodTester.class.getPackage())
-         .addPackage(BasePermanentCacheTest.class.getPackage());
+         .addPackage(BasePermanentCacheTest.class.getPackage())
+         .addAsWebInfResource("jboss-deployment-structure.xml", "jboss-deployment-structure.xml");
    }
 
    @Before
