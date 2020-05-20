@@ -1,6 +1,6 @@
 schema_version: 1
 name: jboss-datagrid-7/datagrid73-openj9-11-openshift
-version: 1.5
+version: 1.6
 description: "Red Hat JBoss Data Grid 7.3 for OpenShift container image"
 
 from: rh-osbs/ubi8:8.1-released
@@ -11,9 +11,9 @@ labels:
   - name: "org.jboss.product"
     value: "datagrid"
   - name: "org.jboss.product.version"
-    value: "7.3.5.GA"
+    value: "7.3.6.GA"
   - name: "org.jboss.product.datagrid.version"
-    value: "7.3.5.GA"
+    value: "7.3.6.GA"
   - name: "org.jboss.deployments-dir"
     value: "/opt/datagrid/standalone/deployments"
   - name: "com.redhat.deployments-dir"
@@ -41,9 +41,9 @@ envs:
   - name: "JBOSS_PRODUCT"
     value: "datagrid"
   - name: "JBOSS_DATAGRID_VERSION"
-    value: "7.3.5.GA"
+    value: "7.3.6.GA"
   - name: "PRODUCT_VERSION"
-    value: "7.3.5.GA"
+    value: "7.3.6.GA"
   - name: "JBOSS_HOME"
     value: "/opt/datagrid"
   - name: "JBOSS_MODULES_SYSTEM_PKGS"
@@ -213,8 +213,8 @@ packages:
     - openssl
 artifacts:
   - name: jboss-datagrid-server.zip
-    description: "Artifact (patch) is available on Customer Portal: https://access.redhat.com/jbossnetwork/restricted/softwareDownload.html?softwareId=77761"
-    md5: 6dcb7e3c6df222ec4497be329e969f38
+    description: "Artifact (patch) is available on Customer Portal: https://access.redhat.com/jbossnetwork/restricted/softwareDownload.html?softwareId=81521"
+    md5: bd4d8516223e5257ae7fe8a00feb1b3b
 
 run:
   user: 185
