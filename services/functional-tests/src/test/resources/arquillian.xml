@@ -46,7 +46,7 @@
     <container qualifier="testrunner" mode="suite" default="true">
         <!-- Pod running remote tests. -->
         <configuration>
-            <property name="chameleonTarget">jboss eap:7.0:remote</property>
+            <property name="allowConnectingToRunningServer">true</property>
             <property name="username">admin</property>
             <property name="password">Admin#70365</property>
         </configuration>
