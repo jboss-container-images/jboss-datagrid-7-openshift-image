@@ -1,5 +1,6 @@
 package org.infinispan.online.service.utils;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -42,7 +43,7 @@ public class ReadinessCheck {
 
          if (numReady + numNotReady == numAll) {
             log.infof("Expected %d pods to be ready, but %d are not ready (all pods are %d)", numReady, numNotReady, numAll);
-            log.infof("Not ready: %s", notReadyPods);
+            log.infof("Not ready: %s", Arrays.toString(notReadyPods.stream().map(p -> p.getMetadata().getName()).toArray()));
             return notReadyPods.isEmpty();
          }
 
@@ -66,7 +67,7 @@ public class ReadinessCheck {
 
          if (numReady != expectedNumPods) {
             log.infof("Expected %d pods to be ready: ready=%d,notReady=%d,all=%d", expectedNumPods, numReady, numNotReady, numAll);
-            log.infof("Not ready: %s", notReadyPods);
+            log.infof("Not ready: %s", Arrays.toString(notReadyPods.stream().map(p -> p.getMetadata().getName()).toArray()));
 
             if (numReady + numNotReady != expectedNumPods) {
                log.infof("There is a mismatch between ready and not ready Pods. numberReadyPods=%d, numberNotReadyPods=%d, numUnknown=%d, numberAllPods=%d", numReady, numNotReady, numUnknown, numAll);

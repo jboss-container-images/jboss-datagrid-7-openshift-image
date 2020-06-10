@@ -14,7 +14,7 @@ public class ScalingTester {
 
    public void scaleDownStatefulSet(int numReplicas, String statefulSetName) {
       CommandLine.scaleStatefulSet(statefulSetName, numReplicas);
-      READINESS_CHECK.waitUntilTargetNumberOfReplicasAreReady(statefulSetName, 1);
+      READINESS_CHECK.waitUntilTargetNumberOfReplicasAreReady(statefulSetName, numReplicas);
    }
 
 }
