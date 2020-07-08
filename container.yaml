@@ -1,6 +1,7 @@
 platforms:
   only:
     - s390x
+    - ppc64le
 compose:
   pulp_repos: true
   packages:
