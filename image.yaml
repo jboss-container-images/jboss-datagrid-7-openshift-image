@@ -11,9 +11,9 @@ labels:
   - name: "org.jboss.product"
     value: "datagrid"
   - name: "org.jboss.product.version"
-    value: "7.3.8.CR1"
+    value: "7.3.8.GA"
   - name: "org.jboss.product.datagrid.version"
-    value: "7.3.8.CR1"
+    value: "7.3.8.GA"
   - name: "org.jboss.deployments-dir"
     value: "/opt/datagrid/standalone/deployments"
   - name: "com.redhat.deployments-dir"
@@ -41,9 +41,9 @@ envs:
   - name: "JBOSS_PRODUCT"
     value: "datagrid"
   - name: "JBOSS_DATAGRID_VERSION"
-    value: "7.3.8.CR1"
+    value: "7.3.8.GA"
   - name: "PRODUCT_VERSION"
-    value: "7.3.8.CR1"
+    value: "7.3.8.GA"
   - name: "JBOSS_HOME"
     value: "/opt/datagrid"
   - name: "JBOSS_MODULES_SYSTEM_PKGS"
@@ -215,7 +215,7 @@ packages:
     - openssl
 artifacts:
   - name: jboss-datagrid-server.zip
-    description: "Pre-release artifact (CR1), not available in customer portal"
+    description: "Artifact (patch) is available on Customer Portal: https://access.redhat.com/jbossnetwork/restricted/softwareDownload.html?softwareId=73761"
     md5: 3eb94c97620581181c31d76f77e8fbce
 
 run:

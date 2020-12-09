@@ -507,7 +507,7 @@
                             "from": {
                                 "kind": "ImageStreamTag",
                                 "namespace": "${IMAGE_STREAM_NAMESPACE}",
-                                "name": "jboss-datagrid73-openshift:1.7"
+                                "name": "jboss-datagrid73-openshift:1.8"
                             }
                         }
                     },
