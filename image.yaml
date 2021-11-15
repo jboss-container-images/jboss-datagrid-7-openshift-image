@@ -187,7 +187,7 @@ modules:
   install:
     - name: jboss.container.java.rm-openjdk
     - name: jboss.container.openjdk.jdk
-      version: "openj9-11"
+      version: "semeru-11-open"
     - name: datagrid.distribution
     - name: dynamic-resources
     - name: os-eap7-openshift
