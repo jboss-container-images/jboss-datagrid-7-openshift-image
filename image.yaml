@@ -185,7 +185,6 @@ modules:
     - name: common.modules
       path: modules/common
   install:
-    - name: jboss.container.java.rm-openjdk
     - name: jboss.container.openjdk.jdk
       version: "semeru-11-open"
     - name: datagrid.distribution
@@ -204,6 +203,7 @@ modules:
     - name: openshift-layer
     - name: datagrid.launch
     - name: datagrid.runtime
+    - name: jboss.container.java.rm-openjdk
 
 packages:
   content_sets_file: content_sets.yml
