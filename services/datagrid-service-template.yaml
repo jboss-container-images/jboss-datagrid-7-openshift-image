@@ -40,6 +40,7 @@ objects:
     ports:
     - name: ping
       port: 8888
+    publishNotReadyAddresses: true
     selector:
       deploymentConfig: ${APPLICATION_NAME}
 - apiVersion: v1
